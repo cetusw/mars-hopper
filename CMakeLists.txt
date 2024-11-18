@@ -11,6 +11,8 @@ add_executable(mars-hopper main.cpp
         src/game/Game.cpp
         src/utils/RandomGenerator.cpp
         src/utils/TextureLoader.cpp
+        src/entities/GameBackground.h
+        src/entities/GameBackground.cpp
 )
 
 target_link_libraries(mars-hopper

@@ -1,24 +1,32 @@
 #include "Platform.h"
 
 #include <iostream>
+#include "../utils/Constants.h"
 
-Platform::Platform() : size{400.f, 50.f} {}
+Platform::Platform() : size{PLATFORM_SIZE} {}
 
 void Platform::init(const float x, const float y)
 {
-    body.setPosition({x, y});
-    body.setPointCount(4);
-    body.setPoint(0, {0, 0});
-    body.setPoint(1, {size.width, 0});
-    body.setPoint(2, {size.width, size.height});
-    body.setPoint(3, {0, size.height});
-    body.setPosition(x, y);
-    body.setFillColor(sf::Color(0xFF, 0xFF, 0xFF));
+    top.setPosition(x, y);
+    top.setPointCount(4);
+    top.setPoint(0, {0, 0});
+    top.setPoint(1, {size.width, 0});
+    top.setPoint(2, {size.width, size.height});
+    top.setPoint(3, {0, size.height});
+    top.setFillColor(sf::Color(0xFF, 0xFF, 0xFF));
+
+    landscape.setPosition(x, y);
+    landscape.setPointCount(4);
+    landscape.setPoint(0, {0, size.height / 2});
+    landscape.setPoint(1, {size.width, size.height / 2});
+    landscape.setPoint(2, {size.width + 50.f, size.height + 100.f});
+    landscape.setPoint(3, {-50.f, size.height + 100.f});
+    landscape.setFillColor(sf::Color(0xFF, 0x00, 0x00));
 }
 
 sf::Vector2f Platform::getPosition() const
 {
-    return body.getPosition();
+    return top.getPosition();
 }
 
 Size Platform::getSize() const
@@ -26,7 +34,12 @@ Size Platform::getSize() const
     return size;
 }
 
-sf::ConvexShape& Platform::getBody() {
-    return body;
+sf::ConvexShape& Platform::getTop() {
+    return top;
+}
+
+sf::ConvexShape& Platform::getLandscape()
+{
+    return landscape;
 }
 

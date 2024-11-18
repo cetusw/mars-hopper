@@ -5,7 +5,7 @@
 #include "../utils/TextureLoader.h"
 #include "../utils/Constants.h"
 
-Hopper::Hopper() : velocity{0, 0}, acceleration{0, 0}, position{400, 300}, size{150.f, 150.f}
+Hopper::Hopper() : velocity{0, 0}, acceleration{0, 0}, position{400, 300}, size{HOPPER_SIZE}
 {
 }
 
@@ -62,16 +62,14 @@ void Hopper::reduceAccelerationY()
 
 void Hopper::handleInput(const sf::Keyboard::Key key)
 {
-    std::cout << velocity.x << std::endl;
-    std::cout << velocity.y << std::endl;
     if (key == sf::Keyboard::Up) {
-        acceleration.y += 80.0f;
+        acceleration.y += VEHICLE_TRUST_Y;
     } else if (key == sf::Keyboard::Right) {
-        acceleration.x += 30.0f;
-        acceleration.y += 80.0f;
+        acceleration.x += VEHICLE_TRUST_X;
+        acceleration.y += 25.f;
     } else if (key == sf::Keyboard::Left) {
-        acceleration.x -= 30.0f;
-        acceleration.y += 80.0f;
+        acceleration.x -= VEHICLE_TRUST_X;
+        acceleration.y += 25.f;
     }
 }
 

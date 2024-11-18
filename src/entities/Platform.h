@@ -10,10 +10,12 @@ public:
     void init(float x, float y);
     sf::Vector2f getPosition() const;
     Size getSize() const;
-    sf::ConvexShape& getBody();
+    sf::ConvexShape& getTop();
+    sf::ConvexShape& getLandscape();
 
 private:
-    sf::ConvexShape body;
+    sf::ConvexShape top;
+    sf::ConvexShape landscape;
     Size size;
 };
 

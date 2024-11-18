@@ -4,6 +4,7 @@
 
 #include "../utils/Constants.h"
 #include "../utils/RandomGenerator.h"
+#include "../utils/TextureLoader.h"
 
 Game::Game() : window(sf::VideoMode(1920, 1080), "Mars Hopper", sf::Style::Default)
 {
@@ -13,6 +14,7 @@ Game::Game() : window(sf::VideoMode(1920, 1080), "Mars Hopper", sf::Style::Defau
 void Game::init()
 {
     hopper.init("../assets/crew-dragon.png");
+    background.init("../assets/game-background.png");
     for (int i = 0; i < 3; i++)
     {
         platforms.emplace_back();
@@ -28,9 +30,6 @@ void Game::run()
     sf::Clock clock;
     while (window.isOpen())
     {
-        std::cout << hopper.getPosition().y << std::endl;
-        std::cout << hopper.getAcceleration().y << std::endl;
-        std::cout << hopper.getVelocity().y << std::endl;
         const float deltaTime = clock.restart().asSeconds();
         pollEvents();
         update(deltaTime);
@@ -65,7 +64,6 @@ bool Game::collidedWithPlatform(const Hopper &hopper, const Platform &platform)
 void Game::update(const float deltaTime)
 {
     hopper.updatePosition();
-    bool collided = false;
 
     for (Platform &platform: platforms)
     {
@@ -77,7 +75,6 @@ void Game::update(const float deltaTime)
                 hopper.setPosition({
                     hopper.getPosition().x, platform.getPosition().y - hopper.getSize().height
                 });
-                collided = true;
                 break;
             }
         }
@@ -88,10 +85,12 @@ void Game::update(const float deltaTime)
 void Game::draw()
 {
     window.clear(sf::Color(0x00, 0x00, 0x00));
+    window.draw(background.getBackgroundSprite());
     window.draw(hopper.getBody());
     for (Platform &currentPlatform: platforms)
     {
-        window.draw(currentPlatform.getBody());
+        window.draw(currentPlatform.getLandscape());
+        window.draw(currentPlatform.getTop());
     }
     window.display();
 }
