@@ -1,12 +1,12 @@
-#ifndef HOPPER_H
-#define HOPPER_H
+#ifndef VEHICLE_H
+#define VEHICLE_H
 
 #include <SFML/Graphics.hpp>
 #include "../utils/Size.h"
 
-class Hopper {
+class Vehicle {
 public:
-    Hopper();
+    Vehicle();
     void init(const std::string &filePath);
     void updatePosition();
     void reduceAccelerationX();
@@ -30,4 +30,4 @@ private:
     Size size;
 };
 
-#endif //HOPPER_H
+#endif //VEHICLE_H

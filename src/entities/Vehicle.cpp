@@ -1,15 +1,15 @@
-#include "Hopper.h"
+#include "Vehicle.h"
 
 #include <iostream>
 
 #include "../utils/TextureLoader.h"
 #include "../utils/Constants.h"
 
-Hopper::Hopper() : velocity{0, 0}, acceleration{0, 0}, position{400, 300}, size{HOPPER_SIZE}
+Vehicle::Vehicle() : velocity{0, 0}, acceleration{0, 0}, position{400, 300}, size{VEHICLE_SIZE}
 {
 }
 
-void Hopper::init(const std::string &filePath)
+void Vehicle::init(const std::string &filePath)
 {
     TextureLoader::loadTexture(texture, filePath);
     body.setTexture(texture);
@@ -18,10 +18,10 @@ void Hopper::init(const std::string &filePath)
         size.height / static_cast<float>(texture.getSize().y)
     );
     body.setOrigin(0, 0);
-    body.setPosition(START_HOPPER_POSITION);
+    body.setPosition(START_VEHICLE_POSITION);
 }
 
-void Hopper::updatePosition()
+void Vehicle::updatePosition()
 {
     velocity.x += acceleration.x;
     velocity.y += FREE_FALL_ACCELERATION - acceleration.y;
@@ -29,7 +29,7 @@ void Hopper::updatePosition()
     reduceAccelerationY();
 }
 
-void Hopper::reduceAccelerationX()
+void Vehicle::reduceAccelerationX()
 {
     if (acceleration.x > 0)
     {
@@ -49,7 +49,7 @@ void Hopper::reduceAccelerationX()
     }
 }
 
-void Hopper::reduceAccelerationY()
+void Vehicle::reduceAccelerationY()
 {
     if (acceleration.y > 0)
     {
@@ -60,7 +60,7 @@ void Hopper::reduceAccelerationY()
     }
 }
 
-void Hopper::handleInput(const sf::Keyboard::Key key)
+void Vehicle::handleInput(const sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up) {
         acceleration.y += VEHICLE_VERTICAL_TRUST;
@@ -73,42 +73,42 @@ void Hopper::handleInput(const sf::Keyboard::Key key)
     }
 }
 
-sf::Vector2f Hopper::getPosition() const
+sf::Vector2f Vehicle::getPosition() const
 {
     return body.getPosition();
 }
 
-Size Hopper::getSize() const
+Size Vehicle::getSize() const
 {
     return size;
 }
 
-sf::Sprite& Hopper::getBody()
+sf::Sprite& Vehicle::getBody()
 {
     return body;
 }
 
-sf::Vector2f Hopper::getVelocity() const
+sf::Vector2f Vehicle::getVelocity() const
 {
     return velocity;
 }
 
-sf::Vector2f Hopper::getAcceleration() const
+sf::Vector2f Vehicle::getAcceleration() const
 {
     return acceleration;
 }
 
-void Hopper::setPosition(const sf::Vector2f position)
+void Vehicle::setPosition(const sf::Vector2f position)
 {
     body.setPosition(position);
 }
 
-void Hopper::setVelocity(const sf::Vector2f newVelocity)
+void Vehicle::setVelocity(const sf::Vector2f newVelocity)
 {
     velocity = newVelocity;
 }
 
-void Hopper::setAcceleration(const sf::Vector2f newAcceleration)
+void Vehicle::setAcceleration(const sf::Vector2f newAcceleration)
 {
     acceleration = newAcceleration;
 }

@@ -55,12 +55,6 @@ build CMakeFiles/mars-hopper.dir/main.cpp.o: CXX_COMPILER__mars-hopper_unscanned
   OBJECT_DIR = CMakeFiles/mars-hopper.dir
   OBJECT_FILE_DIR = CMakeFiles/mars-hopper.dir
 
-build CMakeFiles/mars-hopper.dir/src/entities/Hopper.cpp.o: CXX_COMPILER__mars-hopper_unscanned_Debug /home/yogurt/Documents/projects/design-workshop/mars-hopper/src/entities/Hopper.cpp || cmake_object_order_depends_target_mars-hopper
-  DEP_FILE = CMakeFiles/mars-hopper.dir/src/entities/Hopper.cpp.o.d
-  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles/mars-hopper.dir
-  OBJECT_FILE_DIR = CMakeFiles/mars-hopper.dir/src/entities
-
 build CMakeFiles/mars-hopper.dir/src/entities/Platform.cpp.o: CXX_COMPILER__mars-hopper_unscanned_Debug /home/yogurt/Documents/projects/design-workshop/mars-hopper/src/entities/Platform.cpp || cmake_object_order_depends_target_mars-hopper
   DEP_FILE = CMakeFiles/mars-hopper.dir/src/entities/Platform.cpp.o.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
@@ -91,6 +85,12 @@ build CMakeFiles/mars-hopper.dir/src/entities/GameBackground.cpp.o: CXX_COMPILER
   OBJECT_DIR = CMakeFiles/mars-hopper.dir
   OBJECT_FILE_DIR = CMakeFiles/mars-hopper.dir/src/entities
 
+build CMakeFiles/mars-hopper.dir/src/entities/Vehicle.cpp.o: CXX_COMPILER__mars-hopper_unscanned_Debug /home/yogurt/Documents/projects/design-workshop/mars-hopper/src/entities/Vehicle.cpp || cmake_object_order_depends_target_mars-hopper
+  DEP_FILE = CMakeFiles/mars-hopper.dir/src/entities/Vehicle.cpp.o.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/mars-hopper.dir
+  OBJECT_FILE_DIR = CMakeFiles/mars-hopper.dir/src/entities
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target mars-hopper
@@ -99,7 +99,7 @@ build CMakeFiles/mars-hopper.dir/src/entities/GameBackground.cpp.o: CXX_COMPILER
 #############################################
 # Link the executable mars-hopper
 
-build mars-hopper: CXX_EXECUTABLE_LINKER__mars-hopper_Debug CMakeFiles/mars-hopper.dir/main.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Hopper.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Platform.cpp.o CMakeFiles/mars-hopper.dir/src/game/Game.cpp.o CMakeFiles/mars-hopper.dir/src/utils/RandomGenerator.cpp.o CMakeFiles/mars-hopper.dir/src/utils/TextureLoader.cpp.o CMakeFiles/mars-hopper.dir/src/entities/GameBackground.cpp.o | /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
+build mars-hopper: CXX_EXECUTABLE_LINKER__mars-hopper_Debug CMakeFiles/mars-hopper.dir/main.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Platform.cpp.o CMakeFiles/mars-hopper.dir/src/game/Game.cpp.o CMakeFiles/mars-hopper.dir/src/utils/RandomGenerator.cpp.o CMakeFiles/mars-hopper.dir/src/utils/TextureLoader.cpp.o CMakeFiles/mars-hopper.dir/src/entities/GameBackground.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Vehicle.cpp.o | /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1  /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1  /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1  /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
   OBJECT_DIR = CMakeFiles/mars-hopper.dir

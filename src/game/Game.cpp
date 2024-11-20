@@ -13,7 +13,7 @@ Game::Game() : window(sf::VideoMode(1920, 1080), "Mars Hopper", sf::Style::Defau
 
 void Game::init()
 {
-    hopper.init("../assets/crew-dragon.png");
+    vehicle.init("../assets/crew-dragon.png");
     background.init("../assets/game-background.png");
     for (int i = 0; i < 3; i++)
     {
@@ -56,55 +56,55 @@ void Game::pollEvents()
             window.close();
         } else if (event.type == sf::Event::KeyPressed)
         {
-            hopper.handleInput(event.key.code);
+            vehicle.handleInput(event.key.code);
         }
     }
 }
 
-bool Game::collidedWithPlatform(const Hopper &hopper, const Platform &platform)
+bool Game::collidedWithPlatform(const Vehicle &vehicle, const Platform &platform)
 {
-    return !(hopper.getPosition().y >= platform.getPosition().y + platform.getSize().height ||
-             (hopper.getPosition().x + hopper.getSize().width <= platform.getPosition().x ||
-              hopper.getPosition().x >= platform.getPosition().x + platform.getSize().width ||
-              hopper.getPosition().y + hopper.getSize().height <= platform.getPosition().y));
+    return !(vehicle.getPosition().y >= platform.getPosition().y + platform.getSize().height ||
+             (vehicle.getPosition().x + vehicle.getSize().width <= platform.getPosition().x ||
+              vehicle.getPosition().x >= platform.getPosition().x + platform.getSize().width ||
+              vehicle.getPosition().y + vehicle.getSize().height <= platform.getPosition().y));
 }
 
 
 void Game::update(const float deltaTime)
 {
-    hopper.updatePosition();
+    vehicle.updatePosition();
 
     for (Platform &platform: platforms)
     {
-        if (collidedWithPlatform(hopper, platform))
+        if (collidedWithPlatform(vehicle, platform))
         {
-            if (hopper.getPosition().y + hopper.getSize().height <= platform.getPosition().y + platform.getSize().height)
+            if (vehicle.getPosition().y + vehicle.getSize().height <= platform.getPosition().y + platform.getSize().height)
             {
-                hopper.setVelocity({0, 0});
-                hopper.setPosition({
-                    hopper.getPosition().x, platform.getPosition().y - hopper.getSize().height
+                vehicle.setVelocity({0, 0});
+                vehicle.setPosition({
+                    vehicle.getPosition().x, platform.getPosition().y - vehicle.getSize().height
                 });
                 break;
             }
         }
     }
 
-    if (hopper.getPosition().y >= GROUND_LEVEL)
+    if (vehicle.getPosition().y >= GROUND_LEVEL)
     {
-        hopper.setPosition(START_HOPPER_POSITION);
-        hopper.setVelocity({0, 0});
-        hopper.setAcceleration({0, 0});
+        vehicle.setPosition(START_VEHICLE_POSITION);
+        vehicle.setVelocity({0, 0});
+        vehicle.setAcceleration({0, 0});
         return;
     }
 
-    hopper.setPosition({hopper.getPosition().x + hopper.getVelocity().x * deltaTime, hopper.getPosition().y + hopper.getVelocity().y * deltaTime});
+    vehicle.setPosition({vehicle.getPosition().x + vehicle.getVelocity().x * deltaTime, vehicle.getPosition().y + vehicle.getVelocity().y * deltaTime});
 }
 
 void Game::draw()
 {
     window.clear(sf::Color(0x00, 0x00, 0x00));
     window.draw(background.getBackgroundSprite());
-    window.draw(hopper.getBody());
+    window.draw(vehicle.getBody());
     for (Platform &currentPlatform: platforms)
     {
         window.draw(currentPlatform.getLandscape());

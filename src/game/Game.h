@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../entities/GameBackground.h"
-#include "../entities/Hopper.h"
+#include "../entities/Vehicle.h"
 #include "../entities/Platform.h"
 
 class Game {
@@ -14,7 +14,7 @@ public:
 
 private:
     sf::RenderWindow window;
-    Hopper hopper;
+    Vehicle vehicle;
     std::vector<Platform> platforms;
     GameBackground background;
 
@@ -22,7 +22,7 @@ private:
     void update(float deltaTime);
     void draw();
     void pollEvents();
-    static bool collidedWithPlatform(const Hopper &hopper, const Platform &platform);
+    static bool collidedWithPlatform(const Vehicle &vehicle, const Platform &platform);
 };
 
 
