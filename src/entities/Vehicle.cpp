@@ -5,7 +5,7 @@
 #include "../utils/TextureLoader.h"
 #include "../utils/Constants.h"
 
-Vehicle::Vehicle() : velocity{0, 0}, acceleration{0, 0}, position{400, 300}, size{VEHICLE_SIZE}
+Vehicle::Vehicle() : velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, size{VEHICLE_SIZE}
 {
 }
 
@@ -18,7 +18,7 @@ void Vehicle::init(const std::string &filePath)
         size.height / static_cast<float>(texture.getSize().y)
     );
     body.setOrigin(0, 0);
-    body.setPosition(START_VEHICLE_POSITION);
+    body.setPosition(VEHICLE_START_POSITION);
 }
 
 void Vehicle::updatePosition()

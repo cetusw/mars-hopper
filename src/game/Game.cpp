@@ -15,16 +15,19 @@ void Game::init()
 {
     vehicle.init("../assets/crew-dragon.png");
     background.init("../assets/game-background.png");
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 6; i++)
     {
         platforms.emplace_back();
     }
 
-    platforms[0].init(100, WINDOW_HEIGHT / 2);
+    platforms[0].init((WINDOW_WIDTH / 2) - (PLATFORM_SIZE.width / 2), (WINDOW_HEIGHT / 2) + (VEHICLE_SIZE.height / 2));
 
-    for (int i = 1; i < 3; i++)
+    for (int i = 1; i < 6; i++)
     {
-        platforms[i].init(RandomGenerator::getRandomNumber(0, WINDOW_WIDTH), RandomGenerator::getRandomNumber(0, GROUND_LEVEL));
+        platforms[i].init(
+            RandomGenerator::getRandomNumber(static_cast<float>(i + 1) * (WINDOW_WIDTH / 3), static_cast<float>(i + 2) * ((WINDOW_WIDTH / 3) - PLATFORM_SIZE.width)),
+            RandomGenerator::getRandomNumber(500, GROUND_LEVEL)
+        );
     }
 }
 
@@ -88,7 +91,7 @@ void Game::updatePlatformsPosition(const float deltaTime)
     if (vehicle.getPosition().x > FREE_MOVE_BOX_RIGHT)
     {
         vehicle.setPosition({FREE_MOVE_BOX_RIGHT, vehicle.getPosition().y});
-        for (auto &platform : platforms)
+        for (auto &platform: platforms)
         {
             platform.setPosition(platform.getPosition().x - vehicle.getVelocity().x * deltaTime, platform.getPosition().y);
             movePlatformForward(platform);
@@ -97,7 +100,7 @@ void Game::updatePlatformsPosition(const float deltaTime)
     if (vehicle.getPosition().x < FREE_MOVE_BOX_LEFT)
     {
         vehicle.setPosition({FREE_MOVE_BOX_LEFT, vehicle.getPosition().y});
-        for (auto &platform : platforms)
+        for (auto &platform: platforms)
         {
             platform.setPosition(platform.getPosition().x - vehicle.getVelocity().x * deltaTime, platform.getPosition().y);
             movePlatformForward(platform);
@@ -106,7 +109,7 @@ void Game::updatePlatformsPosition(const float deltaTime)
     if (vehicle.getPosition().y < FREE_MOVE_BOX_TOP)
     {
         vehicle.setPosition({vehicle.getPosition().x, FREE_MOVE_BOX_TOP});
-        for (auto &platform : platforms)
+        for (auto &platform: platforms)
         {
             platform.setPosition(platform.getPosition().x, platform.getPosition().y - vehicle.getVelocity().y * deltaTime);
             movePlatformForward(platform);
@@ -115,7 +118,7 @@ void Game::updatePlatformsPosition(const float deltaTime)
     if (vehicle.getPosition().y > FREE_MOVE_BOX_BOTTOM)
     {
         vehicle.setPosition({vehicle.getPosition().x, FREE_MOVE_BOX_BOTTOM});
-        for (auto &platform : platforms)
+        for (auto &platform: platforms)
         {
             platform.setPosition(platform.getPosition().x, platform.getPosition().y - vehicle.getVelocity().y * deltaTime);
             movePlatformForward(platform);
@@ -128,7 +131,6 @@ void Game::update(const float deltaTime)
 {
     updatePlatformsPosition(deltaTime);
     vehicle.updatePosition();
-
 
     for (Platform &platform: platforms)
     {
@@ -147,13 +149,14 @@ void Game::update(const float deltaTime)
 
     if (vehicle.getPosition().y >= GROUND_LEVEL)
     {
-        vehicle.setPosition(START_VEHICLE_POSITION);
+        vehicle.setPosition(VEHICLE_START_POSITION);
         vehicle.setVelocity({0, 0});
         vehicle.setAcceleration({0, 0});
         return;
     }
 
-    vehicle.setPosition({vehicle.getPosition().x + vehicle.getVelocity().x * deltaTime, vehicle.getPosition().y + vehicle.getVelocity().y * deltaTime});
+    vehicle.setPosition(
+        {vehicle.getPosition().x + vehicle.getVelocity().x * deltaTime, vehicle.getPosition().y + vehicle.getVelocity().y * deltaTime});
 }
 
 void Game::draw()
@@ -168,5 +171,3 @@ void Game::draw()
     }
     window.display();
 }
-
-
