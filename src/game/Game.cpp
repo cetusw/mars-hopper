@@ -6,7 +6,7 @@
 #include "../utils/RandomGenerator.h"
 #include "../utils/TextureLoader.h"
 
-Game::Game() : window(sf::VideoMode(1920, 1080), "Mars Hopper", sf::Style::Default)
+Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default)
 {
     init();
 }
@@ -19,9 +19,12 @@ void Game::init()
     {
         platforms.emplace_back();
     }
-    for (Platform &platform: platforms)
+
+    platforms[0].init(100, WINDOW_HEIGHT / 2);
+
+    for (int i = 1; i < 3; i++)
     {
-        platform.init(RandomGenerator::getRandomNumber(0, WINDOW_WIDTH), RandomGenerator::getRandomNumber(0, GROUND_LEVEL));
+        platforms[i].init(RandomGenerator::getRandomNumber(0, WINDOW_WIDTH), RandomGenerator::getRandomNumber(0, GROUND_LEVEL));
     }
 }
 
@@ -69,10 +72,63 @@ bool Game::collidedWithPlatform(const Vehicle &vehicle, const Platform &platform
               vehicle.getPosition().y + vehicle.getSize().height <= platform.getPosition().y));
 }
 
+void Game::movePlatformForward(Platform &platform)
+{
+    if (platform.getPosition().x + platform.getSize().width < -WINDOW_WIDTH)
+    {
+        platform.setPosition(
+            WINDOW_WIDTH + RandomGenerator::getRandomNumber(0, 200),
+            RandomGenerator::getRandomNumber(100, WINDOW_HEIGHT - 100)
+        );
+    }
+}
+
+void Game::updatePlatformsPosition(const float deltaTime)
+{
+    if (vehicle.getPosition().x > FREE_MOVE_BOX_RIGHT)
+    {
+        vehicle.setPosition({FREE_MOVE_BOX_RIGHT, vehicle.getPosition().y});
+        for (auto &platform : platforms)
+        {
+            platform.setPosition(platform.getPosition().x - vehicle.getVelocity().x * deltaTime, platform.getPosition().y);
+            movePlatformForward(platform);
+        }
+    }
+    if (vehicle.getPosition().x < FREE_MOVE_BOX_LEFT)
+    {
+        vehicle.setPosition({FREE_MOVE_BOX_LEFT, vehicle.getPosition().y});
+        for (auto &platform : platforms)
+        {
+            platform.setPosition(platform.getPosition().x - vehicle.getVelocity().x * deltaTime, platform.getPosition().y);
+            movePlatformForward(platform);
+        }
+    }
+    if (vehicle.getPosition().y < FREE_MOVE_BOX_TOP)
+    {
+        vehicle.setPosition({vehicle.getPosition().x, FREE_MOVE_BOX_TOP});
+        for (auto &platform : platforms)
+        {
+            platform.setPosition(platform.getPosition().x, platform.getPosition().y - vehicle.getVelocity().y * deltaTime);
+            movePlatformForward(platform);
+        }
+    }
+    if (vehicle.getPosition().y > FREE_MOVE_BOX_BOTTOM)
+    {
+        vehicle.setPosition({vehicle.getPosition().x, FREE_MOVE_BOX_BOTTOM});
+        for (auto &platform : platforms)
+        {
+            platform.setPosition(platform.getPosition().x, platform.getPosition().y - vehicle.getVelocity().y * deltaTime);
+            movePlatformForward(platform);
+        }
+    }
+}
+
 
 void Game::update(const float deltaTime)
 {
+    updatePlatformsPosition(deltaTime);
     vehicle.updatePosition();
+
 
     for (Platform &platform: platforms)
     {
@@ -112,3 +168,5 @@ void Game::draw()
     }
     window.display();
 }
+
+

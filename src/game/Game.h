@@ -23,6 +23,8 @@ private:
     void draw();
     void pollEvents();
     static bool collidedWithPlatform(const Vehicle &vehicle, const Platform &platform);
+    void updatePlatformsPosition(float deltaTime);
+    void movePlatformForward(Platform &platform);
 };
 
 

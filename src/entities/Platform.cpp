@@ -43,3 +43,9 @@ sf::ConvexShape& Platform::getLandscape()
     return landscape;
 }
 
+void Platform::setPosition(const float x, const float y)
+{
+    top.setPosition(x, y);
+    landscape.setPosition(x, y);
+}
+

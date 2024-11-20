@@ -117,6 +117,11 @@ void Vehicle::increaseDiagonalAcceleration(const std::string &direction)
 
 void Vehicle::increaseVerticalAcceleration()
 {
+    if (acceleration.x >= MAX_VEHICLE_ACCELERATION || acceleration.y >= MAX_VEHICLE_ACCELERATION)
+    {
+        return;
+    }
+
     acceleration.y += VEHICLE_VERTICAL_TRUST;
 }
 

@@ -3,8 +3,12 @@
 
 #include "Size.h"
 
-constexpr unsigned WINDOW_WIDTH = 1920;
-constexpr unsigned WINDOW_HEIGHT = 1080;
+constexpr float WINDOW_WIDTH = 1920.0f;
+constexpr float WINDOW_HEIGHT = 1080.0f;
+constexpr float FREE_MOVE_BOX_LEFT = (WINDOW_WIDTH / 5) * 2;
+constexpr float FREE_MOVE_BOX_RIGHT = (WINDOW_WIDTH / 5) * 3;
+constexpr float FREE_MOVE_BOX_TOP = (WINDOW_HEIGHT / 5) * 2;
+constexpr float FREE_MOVE_BOX_BOTTOM = (WINDOW_HEIGHT / 5) * 3;
 
 constexpr float FPS = 60.0f;
 constexpr float TIME_STEP = 1.0f / FPS;

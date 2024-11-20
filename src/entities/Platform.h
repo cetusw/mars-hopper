@@ -8,10 +8,12 @@ class Platform {
 public:
     Platform();
     void init(float x, float y);
+    void updatePosition();
     sf::Vector2f getPosition() const;
     Size getSize() const;
     sf::ConvexShape& getTop();
     sf::ConvexShape& getLandscape();
+    void setPosition(float x, float y);
 
 private:
     sf::ConvexShape top;
