@@ -12,10 +12,11 @@ constexpr float TIME_STEP = 1.0f / FPS;
 constexpr int GROUND_LEVEL = 900;
 
 constexpr float FREE_FALL_ACCELERATION = 3.7f;
-constexpr float MAX_VEHICLE_VELOCITY = 50.f;
+constexpr float HORIZONTAL_ACCELERATION = 1.0f;
+constexpr float MAX_VEHICLE_ACCELERATION = 5.f;
 
 constexpr Size VEHICLE_SIZE = {100.f, 100.f};
-constexpr Size PLATFORM_SIZE = {300.f, 35.f};
+constexpr Size PLATFORM_SIZE = {200.f, 35.f};
 
 const sf::Vector2f START_PLATFORM_POSITION = {100.f, 800.f};
 const sf::Vector2f FIRST_PLATFORM_POSITION = {600.f, 400.f};

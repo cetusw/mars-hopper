@@ -21,7 +21,7 @@ void Game::init()
     }
     for (Platform &platform: platforms)
     {
-        platform.init(RandomGenerator::getRandomNumber(0, WINDOW_WIDTH), RandomGenerator::getRandomNumber(0, WINDOW_HEIGHT));
+        platform.init(RandomGenerator::getRandomNumber(0, WINDOW_WIDTH), RandomGenerator::getRandomNumber(0, GROUND_LEVEL));
     }
 }
 

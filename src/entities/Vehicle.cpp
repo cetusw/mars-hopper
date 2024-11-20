@@ -23,10 +23,36 @@ void Vehicle::init(const std::string &filePath)
 
 void Vehicle::updatePosition()
 {
-    velocity.x += acceleration.x;
-    velocity.y += FREE_FALL_ACCELERATION - acceleration.y;
+    reduceVelocityX();
+    reduceVelocityY();
     reduceAccelerationX();
     reduceAccelerationY();
+}
+
+void Vehicle::reduceVelocityX()
+{
+    velocity.x += acceleration.x;
+    if (velocity.x > 0)
+    {
+        velocity.x -= HORIZONTAL_ACCELERATION;
+        if (velocity.x < 0)
+        {
+            velocity.x = 0;
+        }
+    }
+    else if (velocity.x < 0)
+    {
+        velocity.x += HORIZONTAL_ACCELERATION;
+        if (velocity.x > 0)
+        {
+            velocity.x = 0;
+        }
+    }
+}
+
+void Vehicle::reduceVelocityY()
+{
+    velocity.y += FREE_FALL_ACCELERATION - acceleration.y;
 }
 
 void Vehicle::reduceAccelerationX()
@@ -63,15 +89,37 @@ void Vehicle::reduceAccelerationY()
 void Vehicle::handleInput(const sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up) {
-        acceleration.y += VEHICLE_VERTICAL_TRUST;
-    } else if (key == sf::Keyboard::Right) {
-        acceleration.x += VEHICLE_DIAGONAL_TRUST_X;
-        acceleration.y += VEHICLE_DIAGONAL_TRUST_Y;
+        increaseVerticalAcceleration();
     } else if (key == sf::Keyboard::Left) {
-        acceleration.x -= VEHICLE_VERTICAL_TRUST;
-        acceleration.y += VEHICLE_DIAGONAL_TRUST_Y;
+        increaseDiagonalAcceleration("left");
+    } else if (key == sf::Keyboard::Right) {
+        increaseDiagonalAcceleration("right");
     }
 }
+
+void Vehicle::increaseDiagonalAcceleration(const std::string &direction)
+{
+    if (acceleration.x >= MAX_VEHICLE_ACCELERATION || acceleration.y >= MAX_VEHICLE_ACCELERATION)
+    {
+        return;
+    }
+
+    if (direction == "left")
+    {
+        acceleration.x += VEHICLE_DIAGONAL_TRUST_X;
+    }
+    else if (direction == "right")
+    {
+        acceleration.x -= VEHICLE_DIAGONAL_TRUST_X;
+    }
+    acceleration.y += VEHICLE_DIAGONAL_TRUST_Y;
+}
+
+void Vehicle::increaseVerticalAcceleration()
+{
+    acceleration.y += VEHICLE_VERTICAL_TRUST;
+}
+
 
 sf::Vector2f Vehicle::getPosition() const
 {

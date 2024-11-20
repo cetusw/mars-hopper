@@ -9,6 +9,10 @@ public:
     Vehicle();
     void init(const std::string &filePath);
     void updatePosition();
+    void increaseDiagonalAcceleration(const std::string &direction);
+    void increaseVerticalAcceleration();
+    void reduceVelocityX();
+    void reduceVelocityY();
     void reduceAccelerationX();
     void reduceAccelerationY();
     void handleInput(sf::Keyboard::Key key);
