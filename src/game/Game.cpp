@@ -27,12 +27,21 @@ void Game::init()
 
 void Game::run()
 {
+    float timeSinceLastUpdate = 0.0f;
     sf::Clock clock;
     while (window.isOpen())
     {
         const float deltaTime = clock.restart().asSeconds();
+        timeSinceLastUpdate += deltaTime;
+
         pollEvents();
-        update(deltaTime);
+
+        while (timeSinceLastUpdate >= TIME_STEP)
+        {
+            update(TIME_STEP);
+            timeSinceLastUpdate -= TIME_STEP;
+        }
+
         draw();
     }
 }
@@ -79,6 +88,15 @@ void Game::update(const float deltaTime)
             }
         }
     }
+
+    if (hopper.getPosition().y >= GROUND_LEVEL)
+    {
+        hopper.setPosition(START_HOPPER_POSITION);
+        hopper.setVelocity({0, 0});
+        hopper.setAcceleration({0, 0});
+        return;
+    }
+
     hopper.setPosition({hopper.getPosition().x + hopper.getVelocity().x * deltaTime, hopper.getPosition().y + hopper.getVelocity().y * deltaTime});
 }
 

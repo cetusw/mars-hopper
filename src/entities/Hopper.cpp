@@ -63,13 +63,13 @@ void Hopper::reduceAccelerationY()
 void Hopper::handleInput(const sf::Keyboard::Key key)
 {
     if (key == sf::Keyboard::Up) {
-        acceleration.y += VEHICLE_TRUST_Y;
+        acceleration.y += VEHICLE_VERTICAL_TRUST;
     } else if (key == sf::Keyboard::Right) {
-        acceleration.x += VEHICLE_TRUST_X;
-        acceleration.y += 25.f;
+        acceleration.x += VEHICLE_DIAGONAL_TRUST_X;
+        acceleration.y += VEHICLE_DIAGONAL_TRUST_Y;
     } else if (key == sf::Keyboard::Left) {
-        acceleration.x -= VEHICLE_TRUST_X;
-        acceleration.y += 25.f;
+        acceleration.x -= VEHICLE_VERTICAL_TRUST;
+        acceleration.y += VEHICLE_DIAGONAL_TRUST_Y;
     }
 }
 
