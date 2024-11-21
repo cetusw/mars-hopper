@@ -14,6 +14,8 @@ add_executable(mars-hopper main.cpp
         src/entities/GameBackground.cpp
         src/entities/Vehicle.h
         src/entities/Vehicle.cpp
+        src/entities/Landscape.h
+        src/entities/Landscape.cpp
 )
 
 target_link_libraries(mars-hopper

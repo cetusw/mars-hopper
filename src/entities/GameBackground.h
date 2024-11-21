@@ -1,7 +1,3 @@
-//
-// Created by yogurt on 11/18/24.
-//
-
 #ifndef GAMEBACKGROUND_H
 #define GAMEBACKGROUND_H
 
@@ -9,17 +5,19 @@
 #include <SFML/Graphics/Texture.hpp>
 
 
-class GameBackground {
+class GameBackground
+{
 public:
     GameBackground();
+
     void init(const std::string &filePath);
+
     sf::Sprite getBackgroundSprite();
 
 private:
     sf::Sprite background;
     sf::Texture texture;
 };
-
 
 
 #endif //GAMEBACKGROUND_H

@@ -1,7 +1,5 @@
 #include "Vehicle.h"
 
-#include <iostream>
-
 #include "../utils/TextureLoader.h"
 #include "../utils/Constants.h"
 
@@ -39,8 +37,7 @@ void Vehicle::reduceVelocityX()
         {
             velocity.x = 0;
         }
-    }
-    else if (velocity.x < 0)
+    } else if (velocity.x < 0)
     {
         velocity.x += HORIZONTAL_ACCELERATION;
         if (velocity.x > 0)
@@ -64,8 +61,7 @@ void Vehicle::reduceAccelerationX()
         {
             acceleration.x = 0;
         }
-    }
-    else if (acceleration.x < 0)
+    } else if (acceleration.x < 0)
     {
         acceleration.x += FREE_FALL_ACCELERATION;
         if (acceleration.x > 0)
@@ -88,11 +84,14 @@ void Vehicle::reduceAccelerationY()
 
 void Vehicle::handleInput(const sf::Keyboard::Key key)
 {
-    if (key == sf::Keyboard::Up) {
+    if (key == sf::Keyboard::Up)
+    {
         increaseVerticalAcceleration();
-    } else if (key == sf::Keyboard::Left) {
+    } else if (key == sf::Keyboard::Left)
+    {
         increaseDiagonalAcceleration("left");
-    } else if (key == sf::Keyboard::Right) {
+    } else if (key == sf::Keyboard::Right)
+    {
         increaseDiagonalAcceleration("right");
     }
 }
@@ -107,8 +106,7 @@ void Vehicle::increaseDiagonalAcceleration(const std::string &direction)
     if (direction == "left")
     {
         acceleration.x += VEHICLE_DIAGONAL_TRUST_X;
-    }
-    else if (direction == "right")
+    } else if (direction == "right")
     {
         acceleration.x -= VEHICLE_DIAGONAL_TRUST_X;
     }
@@ -136,7 +134,7 @@ Size Vehicle::getSize() const
     return size;
 }
 
-sf::Sprite& Vehicle::getBody()
+sf::Sprite &Vehicle::getBody()
 {
     return body;
 }
@@ -165,6 +163,3 @@ void Vehicle::setAcceleration(const sf::Vector2f newAcceleration)
 {
     acceleration = newAcceleration;
 }
-
-
-

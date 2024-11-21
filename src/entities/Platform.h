@@ -17,7 +17,7 @@ public:
 
 private:
     sf::ConvexShape top;
-    sf::ConvexShape landscape;
+    sf::ConvexShape bottom;
     Size size;
 };
 

@@ -3,7 +3,8 @@
 
 #include <random>
 
-namespace RandomGenerator {
+namespace RandomGenerator
+{
     float getRandomNumber(float min, float max);
 };
 

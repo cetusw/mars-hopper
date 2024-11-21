@@ -1,9 +1,10 @@
 #include "Platform.h"
 
-#include <iostream>
 #include "../utils/Constants.h"
 
-Platform::Platform() : size{PLATFORM_SIZE} {}
+Platform::Platform() : size{PLATFORM_SIZE}
+{
+}
 
 void Platform::init(const float x, const float y)
 {
@@ -15,13 +16,13 @@ void Platform::init(const float x, const float y)
     top.setPoint(3, {0, size.height});
     top.setFillColor(sf::Color(0xFF, 0xFF, 0xFF));
 
-    landscape.setPosition(x, y);
-    landscape.setPointCount(4);
-    landscape.setPoint(0, {0, size.height / 2});
-    landscape.setPoint(1, {size.width, size.height / 2});
-    landscape.setPoint(2, {size.width + 50.f, size.height + 100.f});
-    landscape.setPoint(3, {-50.f, size.height + 100.f});
-    landscape.setFillColor(sf::Color(0xFF, 0x00, 0x00));
+    bottom.setPosition(x, y);
+    bottom.setPointCount(4);
+    bottom.setPoint(0, {0, 0});
+    bottom.setPoint(1, {size.width, 0});
+    bottom.setPoint(2, {size.width + 500.f, size.height + WINDOW_HEIGHT});
+    bottom.setPoint(3, {-500.f, size.height + WINDOW_HEIGHT});
+    bottom.setFillColor(sf::Color(0xFF, 0x00, 0x00));
 }
 
 sf::Vector2f Platform::getPosition() const
@@ -34,18 +35,18 @@ Size Platform::getSize() const
     return size;
 }
 
-sf::ConvexShape& Platform::getTop() {
+sf::ConvexShape &Platform::getTop()
+{
     return top;
 }
 
-sf::ConvexShape& Platform::getLandscape()
+sf::ConvexShape &Platform::getLandscape()
 {
-    return landscape;
+    return bottom;
 }
 
 void Platform::setPosition(const float x, const float y)
 {
     top.setPosition(x, y);
-    landscape.setPosition(x, y);
+    bottom.setPosition(x, y);
 }
-

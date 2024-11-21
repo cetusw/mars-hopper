@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../entities/GameBackground.h"
+#include "../entities/Landscape.h"
 #include "../entities/Vehicle.h"
 #include "../entities/Platform.h"
 
@@ -17,14 +18,22 @@ private:
     Vehicle vehicle;
     std::vector<Platform> platforms;
     GameBackground background;
+    std::vector<Landscape> landscapes;
 
     void init();
-    void update(float deltaTime);
+    void update();
     void draw();
     void pollEvents();
     static bool collidedWithPlatform(const Vehicle &vehicle, const Platform &platform);
-    void updatePlatformsPosition(float deltaTime);
-    void movePlatformForward(Platform &platform);
+    static bool collidedWithPlatformBottom(const Vehicle &vehicle, const Platform &platform);
+    static bool collidedWithLandscape(const Vehicle &vehicle, const Landscape &landscape);
+    void updateMapPosition();
+    void updateCollidedWithPlatforms();
+    void updateCollidedWithLandscape();
+    static void movePlatformForward(Platform &platform);
+    static void moveLandscapeForward(Landscape &landscape);
+    void updatePlatformsPosition(std::string direction);
+    void updateLandscapesPosition(std::string direction);
 };
 
 

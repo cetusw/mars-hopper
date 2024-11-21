@@ -3,10 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
-namespace  TextureLoader {
+namespace TextureLoader
+{
     void loadTexture(sf::Texture &texture, const std::string &filePath);
 };
-
-
 
 #endif //TEXTURELOADER_H

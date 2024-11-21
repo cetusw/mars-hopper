@@ -1,16 +1,10 @@
-//
-// Created by yogurt on 11/18/24.
-//
-
 #include "GameBackground.h"
 
 #include "../utils/Constants.h"
 #include "../utils/TextureLoader.h"
 
 GameBackground::GameBackground()
-{
-
-}
+= default;
 
 void GameBackground::init(const std::string &filePath)
 {
@@ -19,7 +13,7 @@ void GameBackground::init(const std::string &filePath)
     background.setScale(
         WINDOW_WIDTH / background.getLocalBounds().width,
         WINDOW_HEIGHT / background.getLocalBounds().height
-    );
+    ); // мало логики
 }
 
 sf::Sprite GameBackground::getBackgroundSprite()
