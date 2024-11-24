@@ -2,8 +2,8 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
-#include "../entities/GameBackground.h"
 #include "../entities/Landscape.h"
 #include "../entities/Vehicle.h"
 #include "../entities/Platform.h"
@@ -12,28 +12,23 @@ class Game {
 public:
     Game();
     void run();
+    std::vector<Platform> platforms;
+    std::vector<Landscape> landscapes;
+    Vehicle vehicle;
 
 private:
     sf::RenderWindow window;
-    Vehicle vehicle;
-    std::vector<Platform> platforms;
-    GameBackground background;
-    std::vector<Landscape> landscapes;
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
 
     void init();
+    void initBackground(const std::string &filePath);
     void update();
     void draw();
     void pollEvents();
-    static bool collidedWithPlatform(const Vehicle &vehicle, const Platform &platform);
-    static bool collidedWithPlatformBottom(const Vehicle &vehicle, const Platform &platform);
-    static bool collidedWithLandscape(const Vehicle &vehicle, const Landscape &landscape);
     void updateMapPosition();
-    void updateCollidedWithPlatforms();
-    void updateCollidedWithLandscape();
-    static void movePlatformForward(Platform &platform);
-    static void moveLandscapeForward(Landscape &landscape);
-    void updatePlatformsPosition(std::string direction);
-    void updateLandscapesPosition(std::string direction);
+    void updatePlatformsPosition(const std::string &direction);
+    void updateLandscapesPosition(const std::string &direction);
 };
 
 

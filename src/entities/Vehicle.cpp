@@ -1,5 +1,7 @@
 #include "Vehicle.h"
 
+#include "Platform.h"
+#include "../game/Game.h"
 #include "../utils/TextureLoader.h"
 #include "../utils/Constants.h"
 
@@ -123,6 +125,86 @@ void Vehicle::increaseVerticalAcceleration()
     acceleration.y += VEHICLE_VERTICAL_TRUST;
 }
 
+bool Vehicle::collidedWithPlatform(Platform &platform) const
+{
+    return getPosition().y < platform.getPosition().y + platform.getSize().height &&
+           getPosition().x + getSize().width > platform.getPosition().x &&
+           getPosition().x < platform.getPosition().x + platform.getSize().width &&
+           getPosition().y + getSize().height > platform.getPosition().y;
+}
+
+bool Vehicle::collidedWithPlatformBottom(Platform &platform) const
+{
+    const sf::Vector2f leftLineStart = {platform.getPosition().x, platform.getPosition().y};
+    const sf::Vector2f leftLineEnd = {platform.getPosition().x - 500, platform.getPosition().y + WINDOW_HEIGHT};
+    const sf::Vector2f rightLineStart = {platform.getPosition().x + platform.getSize().width, platform.getPosition().y};
+    const sf::Vector2f rightLineEnd = {platform.getPosition().x + platform.getSize().width + 500, platform.getPosition().y + WINDOW_HEIGHT};
+
+    const float leftK = (leftLineEnd.y - leftLineStart.y) / (leftLineEnd.x - leftLineStart.x);
+    const float leftB = leftLineStart.y - leftK * leftLineStart.x;
+
+    const float rightK = (rightLineEnd.y - rightLineStart.y) / (rightLineEnd.x - rightLineStart.x);
+    const float rightB = rightLineStart.y - rightK * rightLineStart.x;
+
+    return getPosition().y + getSize().height > leftK * (getPosition().x + getSize().width) + leftB &&
+           getPosition().y + getSize().height > rightK * getPosition().x + rightB &&
+           getPosition().y + getSize().height > platform.getPosition().y;
+}
+
+void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
+{
+    for (Platform &platform: platforms)
+    {
+        if (collidedWithPlatform(platform))
+        {
+            setVelocity({0, 0});
+            setPosition({
+                getPosition().x, platform.getPosition().y - getSize().height
+            });
+            break;
+        }
+
+        if (collidedWithPlatformBottom(platform))
+        {
+            setPosition({VEHICLE_START_POSITION});
+            setVelocity({0, 0});
+            setAcceleration({0, 0});
+        }
+    }
+}
+
+bool Vehicle::collidedWithLandscape(const Landscape &landscape) const
+{
+    const sf::Vector2f leftLineStart = {landscape.getPosition().x, landscape.getPosition().y};
+    const sf::Vector2f leftLineEnd = {landscape.getPosition().x - 500, landscape.getPosition().y + landscape.getSize().height};
+    const sf::Vector2f rightLineStart = {landscape.getPosition().x + landscape.getSize().width, landscape.getPosition().y};
+    const sf::Vector2f rightLineEnd = {
+        landscape.getPosition().x + landscape.getSize().width + 500, landscape.getPosition().y + landscape.getSize().height
+    };
+
+    const float leftK = (leftLineEnd.y - leftLineStart.y) / (leftLineEnd.x - leftLineStart.x);
+    const float leftB = leftLineStart.y - leftK * leftLineStart.x;
+
+    const float rightK = (rightLineEnd.y - rightLineStart.y) / (rightLineEnd.x - rightLineStart.x);
+    const float rightB = rightLineStart.y - rightK * rightLineStart.x;
+
+    return getPosition().y + getSize().height > leftK * (getPosition().x + getSize().width) + leftB &&
+           getPosition().y + getSize().height > rightK * getPosition().x + rightB &&
+           getPosition().y + getSize().height > landscape.getPosition().y;
+}
+
+void Vehicle::updateCollidedWithLandscape(std::vector<Landscape> &landscapes)
+{
+    for (Landscape &landscape: landscapes)
+    {
+        if (collidedWithLandscape(landscape))
+        {
+            setPosition({VEHICLE_START_POSITION});
+            setVelocity({0, 0});
+            setAcceleration({0, 0});
+        }
+    }
+}
 
 sf::Vector2f Vehicle::getPosition() const
 {

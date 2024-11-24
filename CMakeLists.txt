@@ -7,11 +7,11 @@ find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 add_executable(mars-hopper main.cpp
         src/entities/Platform.cpp
+        src/entities/Platform.h
         src/game/Game.cpp
+        src/game/Game.h
         src/utils/RandomGenerator.cpp
         src/utils/TextureLoader.cpp
-        src/entities/GameBackground.h
-        src/entities/GameBackground.cpp
         src/entities/Vehicle.h
         src/entities/Vehicle.cpp
         src/entities/Landscape.h

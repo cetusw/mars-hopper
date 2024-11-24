@@ -1,6 +1,7 @@
 #include "Platform.h"
 
 #include "../utils/Constants.h"
+#include "../utils/RandomGenerator.h"
 
 Platform::Platform() : size{PLATFORM_SIZE}
 {
@@ -25,7 +26,31 @@ void Platform::init(const float x, const float y)
     bottom.setFillColor(sf::Color(0xFF, 0x00, 0x00));
 }
 
-sf::Vector2f Platform::getPosition() const
+void Platform::moveForward()
+{
+    if (getPosition().x + getSize().width < -WINDOW_WIDTH - 500)
+    {
+        setPosition(
+            WINDOW_WIDTH + 500,
+            RandomGenerator::getRandomNumber(200, GROUND_LEVEL)
+        );
+    }
+}
+
+void Platform::updatePosition(const std::string &direction, const sf::Vector2f &velocity)
+{
+    if (direction == "horizontal")
+    {
+        setPosition(getPosition().x - velocity.x * TIME_STEP, getPosition().y);
+    }
+    else if (direction == "vertical")
+    {
+        setPosition(getPosition().x, getPosition().y - velocity.y * TIME_STEP);
+    }
+    moveForward();
+}
+
+sf::Vector2f Platform::getPosition()
 {
     return top.getPosition();
 }

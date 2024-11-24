@@ -2,20 +2,26 @@
 #define VEHICLE_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
+
+#include "Platform.h"
+#include "Landscape.h"
 #include "../utils/Size.h"
+
 
 class Vehicle {
 public:
     Vehicle();
     void init(const std::string &filePath);
     void updatePosition();
-    void increaseDiagonalAcceleration(const std::string &direction);
-    void increaseVerticalAcceleration();
-    void reduceVelocityX();
-    void reduceVelocityY();
-    void reduceAccelerationX();
-    void reduceAccelerationY();
     void handleInput(sf::Keyboard::Key key);
+
+    bool collidedWithPlatform(Platform &platform) const;
+    void updateCollidedWithPlatforms(std::vector<Platform> &platforms);
+    bool collidedWithPlatformBottom(Platform &platform) const;
+    void updateCollidedWithLandscape(std::vector<Landscape> &landscapes);
+    bool collidedWithLandscape(const Landscape &landscape) const;
+
     sf::Vector2f getPosition() const;
     sf::Vector2f getVelocity() const;
     sf::Vector2f getAcceleration() const;
@@ -32,6 +38,13 @@ private:
     sf::Vector2f acceleration;
     sf::Vector2f position;
     Size size;
+
+    void increaseDiagonalAcceleration(const std::string &direction);
+    void increaseVerticalAcceleration();
+    void reduceVelocityX();
+    void reduceVelocityY();
+    void reduceAccelerationX();
+    void reduceAccelerationY();
 };
 
 #endif //VEHICLE_H
