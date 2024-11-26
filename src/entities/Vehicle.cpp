@@ -11,7 +11,7 @@ Vehicle::Vehicle() : velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_
 
 void Vehicle::init(const std::string &filePath)
 {
-    TextureLoader::loadTexture(texture, filePath);
+    loadTexture(texture, filePath);
     body.setTexture(texture);
     body.setScale(
         size.width / static_cast<float>(texture.getSize().x),

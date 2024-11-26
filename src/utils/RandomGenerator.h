@@ -3,9 +3,6 @@
 
 #include <random>
 
-namespace RandomGenerator
-{
-    float getRandomNumber(float min, float max);
-};
+float getRandomNumber(float min, float max);
 
 #endif //RANDOMGENERATOR_H

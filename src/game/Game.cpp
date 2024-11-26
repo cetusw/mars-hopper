@@ -26,8 +26,8 @@ void Game::init()
     for (int i = 1; i < 5; i++)
     {
         platforms[i].init(
-            RandomGenerator::getRandomNumber(static_cast<float>(i + 1) * (WINDOW_WIDTH / 2), static_cast<float>(i + 2) * ((WINDOW_WIDTH / 2) - PLATFORM_SIZE.width)),
-            RandomGenerator::getRandomNumber(500, GROUND_LEVEL - platforms[0].getSize().width)
+            getRandomNumber(static_cast<float>(i + 1) * (WINDOW_WIDTH / 2), static_cast<float>(i + 2) * ((WINDOW_WIDTH / 2) - PLATFORM_SIZE.width)),
+            getRandomNumber(500, GROUND_LEVEL - platforms[0].getSize().width)
         );
     }
 
@@ -44,7 +44,7 @@ void Game::init()
 
 void Game::initBackground(const std::string &filePath)
 {
-    TextureLoader::loadTexture(backgroundTexture, filePath);
+    loadTexture(backgroundTexture, filePath);
     backgroundSprite.setTexture(backgroundTexture);
     backgroundSprite.setScale(
         WINDOW_WIDTH / backgroundSprite.getLocalBounds().width,

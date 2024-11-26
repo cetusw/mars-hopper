@@ -32,7 +32,7 @@ void Platform::moveForward()
     {
         setPosition(
             WINDOW_WIDTH + 500,
-            RandomGenerator::getRandomNumber(200, GROUND_LEVEL)
+            getRandomNumber(200, GROUND_LEVEL)
         );
     }
 }

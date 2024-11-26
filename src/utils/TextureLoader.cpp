@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-void TextureLoader::loadTexture(sf::Texture &texture, const std::string &filePath)
+void loadTexture(sf::Texture &texture, const std::string &filePath)
 {
-    if (!texture.loadFromFile(filePath)) // нет смысла создавать класс ради 3 строчек кода
+    if (!texture.loadFromFile(filePath))
     {
         std::cerr << "Не удалось открыть файл" << std::endl;
     }
