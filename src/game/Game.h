@@ -5,8 +5,11 @@
 #include <vector>
 
 #include "../entities/Landscape.h"
+#include "../entities/MainMenu.h"
 #include "../entities/Vehicle.h"
 #include "../entities/Platform.h"
+#include "../entities/Settings.h"
+#include "../utils/GameState.h"
 
 class Game {
 public:
@@ -20,9 +23,13 @@ private:
     sf::RenderWindow window;
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
+    GameState gameState;
+    MainMenu mainMenu;
+    Settings settings;
 
     void init();
     void initBackground(const std::string &filePath);
+    void handlePlaying();
     void update();
     void draw();
     void pollEvents();

@@ -2,7 +2,7 @@
 
 #include "Platform.h"
 #include "../game/Game.h"
-#include "../utils/TextureLoader.h"
+#include "../utils/LoadTexture.h"
 #include "../utils/Constants.h"
 
 Vehicle::Vehicle() : velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, size{VEHICLE_SIZE}

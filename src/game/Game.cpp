@@ -5,9 +5,10 @@
 
 #include "../utils/Constants.h"
 #include "../utils/RandomGenerator.h"
-#include "../utils/TextureLoader.h"
+#include "../utils/LoadTexture.h"
 
-Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default)
+Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default),
+    gameState(GameState::MainMenu)
 {
     init();
 }
@@ -54,6 +55,28 @@ void Game::initBackground(const std::string &filePath)
 
 void Game::run()
 {
+    while (window.isOpen())
+    {
+        switch (gameState)
+        {
+            case GameState::MainMenu:
+                mainMenu.handleMainMenu(window, gameState);
+            break;
+            case GameState::Playing:
+                handlePlaying();
+            break;
+            case GameState::Settings:
+                settings.handleSettings(window, gameState);
+            break;
+            case GameState::Exit:
+                window.close();
+            break;
+        }
+    }
+}
+
+void Game::handlePlaying()
+{
     float timeSinceLastUpdate = 0.0f;
     sf::Clock clock;
     while (window.isOpen())
@@ -81,7 +104,8 @@ void Game::pollEvents()
         if (event.type == sf::Event::Closed)
         {
             window.close();
-        } else if (event.type == sf::Event::KeyPressed)
+        }
+        else if (event.type == sf::Event::KeyPressed)
         {
             vehicle.handleInput(event.key.code);
         }
@@ -148,6 +172,7 @@ void Game::update()
 void Game::draw()
 {
     window.clear(sf::Color(0x00, 0x00, 0x00));
+
     window.draw(backgroundSprite);
     window.draw(vehicle.getBody());
     for (Platform &currentPlatform: platforms)
@@ -159,5 +184,6 @@ void Game::draw()
     {
         window.draw(currentLandscape.getLandscape());
     }
+
     window.display();
 }
