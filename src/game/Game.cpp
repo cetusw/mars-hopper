@@ -60,13 +60,13 @@ void Game::run()
         switch (gameState)
         {
             case GameState::MainMenu:
-                mainMenu.handleMainMenu(window, gameState);
+                menu.handleMenu(window, gameState);
             break;
             case GameState::Playing:
                 handlePlaying();
             break;
             case GameState::Settings:
-                settings.handleSettings(window, gameState);
+                menu.handleMenu(window, gameState);
             break;
             case GameState::Exit:
                 window.close();

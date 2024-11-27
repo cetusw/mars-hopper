@@ -15,16 +15,14 @@ add_executable(mars-hopper main.cpp
         src/entities/Vehicle.cpp
         src/entities/Landscape.h
         src/entities/Landscape.cpp
-        src/entities/MainMenu.h
-        src/entities/MainMenu.cpp
+        src/entities/Menu.h
+        src/entities/Menu.cpp
         src/utils/LoadTexture.h
         src/utils/LoadTexture.cpp
         src/utils/LoadTexture.cpp
         src/utils/LoadFont.cpp
         src/utils/LoadFont.h
         src/utils/GameState.h
-        src/entities/Settings.h
-        src/entities/Settings.cpp
 )
 
 target_link_libraries(mars-hopper

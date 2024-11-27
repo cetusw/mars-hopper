@@ -5,10 +5,9 @@
 #include <vector>
 
 #include "../entities/Landscape.h"
-#include "../entities/MainMenu.h"
+#include "../entities/Menu.h"
 #include "../entities/Vehicle.h"
 #include "../entities/Platform.h"
-#include "../entities/Settings.h"
 #include "../utils/GameState.h"
 
 class Game {
@@ -24,8 +23,7 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
     GameState gameState;
-    MainMenu mainMenu;
-    Settings settings;
+    Menu menu;
 
     void init();
     void initBackground(const std::string &filePath);
