@@ -3,9 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-
 #include "Platform.h"
 #include "Landscape.h"
+#include "Engine.h"
 #include "../utils/Size.h"
 
 
@@ -16,10 +16,15 @@ public:
     void updatePosition();
     void handleInput(sf::Keyboard::Key key);
 
-    bool collidedWithPlatform(Platform &platform) const;
+    bool collidedWithPlatform(const Platform &platform) const;
     void updateCollidedWithPlatforms(std::vector<Platform> &platforms);
-    bool collidedWithPlatformBottom(Platform &platform) const;
+    bool collidedWithPlatformBottom(const Platform &platform) const;
     void updateCollidedWithLandscape(std::vector<Landscape> &landscapes);
+
+    void updateTilt();
+
+    void updateThrusters();
+
     bool collidedWithLandscape(const Landscape &landscape) const;
 
     sf::Vector2f getPosition() const;
@@ -31,13 +36,18 @@ public:
     void setVelocity(sf::Vector2f newVelocity);
     void setAcceleration(sf::Vector2f newAcceleration);
 
+    Engine leftThruster;
+    Engine rightThruster;
+
 private:
     sf::Sprite body;
     sf::Texture texture;
     sf::Vector2f velocity;
     sf::Vector2f acceleration;
     sf::Vector2f position;
+    float rotation;
     Size size;
+    float fuel;
 
     void increaseDiagonalAcceleration(const std::string &direction);
     void increaseVerticalAcceleration();

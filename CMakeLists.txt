@@ -10,19 +10,20 @@ add_executable(mars-hopper main.cpp
         src/entities/Platform.h
         src/game/Game.cpp
         src/game/Game.h
-        src/utils/RandomGenerator.cpp
+        src/utils/randomGenerator.cpp
         src/entities/Vehicle.h
         src/entities/Vehicle.cpp
         src/entities/Landscape.h
         src/entities/Landscape.cpp
         src/entities/Menu.h
         src/entities/Menu.cpp
-        src/utils/LoadTexture.h
-        src/utils/LoadTexture.cpp
-        src/utils/LoadTexture.cpp
-        src/utils/LoadFont.cpp
-        src/utils/LoadFont.h
+        src/utils/loadTexture.cpp
+        src/utils/loadFont.cpp
         src/utils/GameState.h
+        src/entities/Engine.h
+        src/entities/Engine.cpp
+        src/utils/constants.h
+        src/utils/loadSound.cpp
 )
 
 target_link_libraries(mars-hopper

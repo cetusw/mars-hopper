@@ -10,7 +10,6 @@ class Landscape {
 public:
     Landscape();
     void init(float x, float y);
-
     void moveForward();
     void updatePosition(const std::string &direction, const sf::Vector2f &velocity);
 

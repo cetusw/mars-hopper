@@ -1,4 +1,4 @@
-#include "RandomGenerator.h"
+#include <random>
 
 float getRandomNumber(const float min, const float max)
 {

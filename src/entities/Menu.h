@@ -17,6 +17,7 @@ public:
     void handleOptionList(GameState &state) const;
     void handleMainMenuOptionList(GameState &state) const;
     void handleSettingsOptionList(GameState &state) const;
+    void handlePauseOptionList(GameState &state) const;
     int getSelectedOption() const;
 
 private:

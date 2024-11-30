@@ -1,4 +1,3 @@
-#include "src/entities/Menu.h"
 #include "src/game/Game.h"
 
 int main() {

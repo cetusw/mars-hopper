@@ -1,6 +1,6 @@
 #include "Landscape.h"
 
-#include "../utils/Constants.h"
+#include "../utils/constants.h"
 
 Landscape::Landscape() : size{WINDOW_WIDTH, WINDOW_HEIGHT}
 {

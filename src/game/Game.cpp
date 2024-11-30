@@ -1,14 +1,13 @@
 #include "Game.h"
-
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "../utils/constants.h"
 
-#include "../utils/Constants.h"
-#include "../utils/RandomGenerator.h"
-#include "../utils/LoadTexture.h"
+extern float getRandomNumber(float min, float max);
+extern void loadTexture(sf::Texture &texture, const std::string &filePath);
 
 Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default),
-    gameState(GameState::MainMenu)
+               gameState(GameState::MainMenu)
 {
     init();
 }
@@ -43,6 +42,13 @@ void Game::init()
     }
 }
 
+void Game::reset()
+{
+    platforms.clear();
+    landscapes.clear();
+    init();
+}
+
 void Game::initBackground(const std::string &filePath)
 {
     loadTexture(backgroundTexture, filePath);
@@ -57,20 +63,22 @@ void Game::run()
 {
     while (window.isOpen())
     {
-        switch (gameState)
+        if (gameState == GameState::MainMenu || gameState == GameState::Settings || gameState == GameState::Pause)
         {
-            case GameState::MainMenu:
-                menu.handleMenu(window, gameState);
-            break;
-            case GameState::Playing:
-                handlePlaying();
-            break;
-            case GameState::Settings:
-                menu.handleMenu(window, gameState);
-            break;
-            case GameState::Exit:
-                window.close();
-            break;
+            menu.handleMenu(window, gameState);
+        }
+        else if (gameState == GameState::Start)
+        {
+            reset();
+            handlePlaying();
+        }
+        else if (gameState == GameState::Playing)
+        {
+            handlePlaying();
+        }
+        else if (gameState == GameState::Exit)
+        {
+            window.close();
         }
     }
 }
@@ -79,7 +87,7 @@ void Game::handlePlaying()
 {
     float timeSinceLastUpdate = 0.0f;
     sf::Clock clock;
-    while (window.isOpen())
+    while (window.isOpen() && (gameState == GameState::Playing || gameState == GameState::Start))
     {
         const float deltaTime = clock.restart().asSeconds();
         timeSinceLastUpdate += deltaTime;
@@ -107,7 +115,14 @@ void Game::pollEvents()
         }
         else if (event.type == sf::Event::KeyPressed)
         {
-            vehicle.handleInput(event.key.code);
+            if (event.key.code == sf::Keyboard::Escape)
+            {
+                gameState = GameState::Pause;
+            }
+            else
+            {
+                vehicle.handleInput(event.key.code);
+            }
         }
     }
 }
@@ -159,14 +174,13 @@ void Game::updateMapPosition()
 
 void Game::update()
 {
+    vehicle.setPosition(
+        {vehicle.getPosition().x + vehicle.getVelocity().x * TIME_STEP, vehicle.getPosition().y + vehicle.getVelocity().y * TIME_STEP}
+    );
     updateMapPosition();
     vehicle.updatePosition();
     vehicle.updateCollidedWithPlatforms(platforms);
     vehicle.updateCollidedWithLandscape(landscapes);
-
-    vehicle.setPosition(
-        {vehicle.getPosition().x + vehicle.getVelocity().x * TIME_STEP, vehicle.getPosition().y + vehicle.getVelocity().y * TIME_STEP}
-    );
 }
 
 void Game::draw()
@@ -175,6 +189,8 @@ void Game::draw()
 
     window.draw(backgroundSprite);
     window.draw(vehicle.getBody());
+    vehicle.rightThruster.draw(window);
+    vehicle.leftThruster.draw(window);
     for (Platform &currentPlatform: platforms)
     {
         window.draw(currentPlatform.getLandscape());
@@ -184,6 +200,5 @@ void Game::draw()
     {
         window.draw(currentLandscape.getLandscape());
     }
-
     window.display();
 }

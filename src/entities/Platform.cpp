@@ -1,7 +1,8 @@
 #include "Platform.h"
 
-#include "../utils/Constants.h"
-#include "../utils/RandomGenerator.h"
+#include "../utils/constants.h"
+
+extern float getRandomNumber(float min, float max);
 
 Platform::Platform() : size{PLATFORM_SIZE}
 {
@@ -50,7 +51,7 @@ void Platform::updatePosition(const std::string &direction, const sf::Vector2f &
     moveForward();
 }
 
-sf::Vector2f Platform::getPosition()
+sf::Vector2f Platform::getPosition() const
 {
     return top.getPosition();
 }

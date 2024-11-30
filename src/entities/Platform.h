@@ -8,11 +8,10 @@ class Platform {
 public:
     Platform();
     void init(float x, float y);
-
     void moveForward();
     void updatePosition(const std::string &direction, const sf::Vector2f &velocity);
 
-    sf::Vector2f getPosition();
+    sf::Vector2f getPosition() const;
     Size getSize() const;
     sf::ConvexShape& getTop();
     sf::ConvexShape& getLandscape();
@@ -23,7 +22,5 @@ private:
     sf::ConvexShape bottom;
     Size size;
 };
-
-
 
 #endif //PLATFORM_H

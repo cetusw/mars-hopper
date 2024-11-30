@@ -1,7 +1,13 @@
 #include "Menu.h"
-#include "../utils/LoadTexture.h"
-#include "../utils/Constants.h"
-#include "../utils/LoadFont.h"
+
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
+
+#include "../game/Game.h"
+#include "../utils/constants.h"
+
+extern void loadTexture(sf::Texture &texture, const std::string &filePath);
+extern void loadFont(sf::Font& font, const std::string &filePath);
 
 Menu::Menu() : selectedOption(0)
 {
@@ -26,7 +32,7 @@ void Menu::init(const std::string &filePath, const std::string &titleContent, co
         option.setString(menuOptions[i]);
         option.setCharacterSize(50);
         option.setFillColor(sf::Color(0xFF, 0xFF, 0xFF));
-        option.setPosition(300, 600 + i * 70);
+        option.setPosition(300, static_cast<float>(600 + i * 70));
         if (i == selectedOption)
         {
             option.setString(option.getString() + " <");
@@ -44,6 +50,9 @@ void Menu::initSpecificMenu(const GameState &state)
         break;
         case GameState::Settings:
             init("../assets/fonts/SpaceMono-Bold.ttf", "Settings", {"Volume", "Back"});
+        break;
+        case GameState::Pause:
+            init("../assets/fonts/SpaceMono-Bold.ttf", "Pause", {"Continue", "Main Menu"});
         break;
         default:;
     }
@@ -83,11 +92,6 @@ void Menu::handleInput(sf::Event event)
         {
             selectedOption = (selectedOption + 1) % options.size();
         }
-
-        for (size_t i = 0; i < options.size(); ++i)
-        {
-            options[i].setFillColor(i == selectedOption ? sf::Color::Red : sf::Color::White);
-        }
     }
 }
 
@@ -126,6 +130,8 @@ void Menu::handleOptionList(GameState &state) const
         case GameState::Settings:
             handleSettingsOptionList(state);
         break;
+        case GameState::Pause:
+            handlePauseOptionList(state);
         default:;
     }
 }
@@ -135,7 +141,7 @@ void Menu::handleMainMenuOptionList(GameState &state) const
     switch (selectedOption)
     {
         case 0:
-            state = GameState::Playing;
+            state = GameState::Start;
         break;
         case 1:
             state = GameState::Settings;
@@ -143,7 +149,7 @@ void Menu::handleMainMenuOptionList(GameState &state) const
         case 2:
             state = GameState::Exit;
         break;
-        default: state = GameState::Playing;
+        default: state = GameState::MainMenu;
     }
 }
 
@@ -157,7 +163,21 @@ void Menu::handleSettingsOptionList(GameState &state) const
         case 1:
             state = GameState::MainMenu;
         break;
-        default: state = GameState::Playing;
+        default: state = GameState::Settings;
+    }
+}
+
+void Menu::handlePauseOptionList(GameState &state) const
+{
+    switch (selectedOption)
+    {
+        case 0:
+            state = GameState::Playing;
+        break;
+        case 1:
+            state = GameState::MainMenu;
+        break;
+        default: state = GameState::Pause;
     }
 }
 

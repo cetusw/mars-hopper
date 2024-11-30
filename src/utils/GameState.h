@@ -4,8 +4,10 @@
 enum class GameState
 {
     MainMenu,
+    Start,
     Playing,
     Settings,
+    Pause,
     Exit
 };
 

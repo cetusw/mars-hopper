@@ -26,6 +26,9 @@ private:
     Menu menu;
 
     void init();
+
+    void reset();
+
     void initBackground(const std::string &filePath);
     void handlePlaying();
     void update();

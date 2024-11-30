@@ -1,6 +1,5 @@
-#include "LoadTexture.h"
-
 #include <iostream>
+#include <SFML/Graphics/Texture.hpp>
 
 void loadTexture(sf::Texture &texture, const std::string &filePath)
 {
