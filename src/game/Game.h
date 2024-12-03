@@ -23,6 +23,8 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
     GameState gameState;
+    sf::SoundBuffer gameBuffer;
+    sf::Sound gameSound;
     Menu menu;
 
     void init();

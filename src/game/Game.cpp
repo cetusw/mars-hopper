@@ -5,6 +5,8 @@
 
 extern float getRandomNumber(float min, float max);
 extern void loadTexture(sf::Texture &texture, const std::string &filePath);
+extern void loadSound(sf::SoundBuffer &buffer, const std::string &filePath);
+
 
 Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default),
                gameState(GameState::MainMenu)
@@ -39,6 +41,13 @@ void Game::init()
     for (int i = 0; i < 3; i++)
     {
         landscapes[i].init(static_cast<float>(i) * WINDOW_WIDTH, GROUND_LEVEL);
+    }
+
+    loadSound(gameBuffer, "../assets/sounds/game-sound.wav");
+    gameSound.setBuffer(gameBuffer);
+    if (gameSound.getStatus() != sf::Sound::Playing)
+    {
+        gameSound.play();
     }
 }
 
