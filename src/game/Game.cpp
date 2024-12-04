@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <iostream>
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include "../utils/constants.h"
 
@@ -8,8 +9,7 @@ extern void loadTexture(sf::Texture &texture, const std::string &filePath);
 extern void loadSound(sf::SoundBuffer &buffer, const std::string &filePath);
 
 
-Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default),
-               gameState(GameState::MainMenu)
+Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default), landscapePoint(sf::LineStrip, 100), gameState(GameState::MainMenu)
 {
     init();
 }
@@ -33,14 +33,23 @@ void Game::init()
         );
     }
 
-    for (int i = 0; i < 3; i++)
-    {
-        landscapes.emplace_back();
-    }
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     landscapes.emplace_back();
+    // }
+    //
+    // for (int i = 0; i < 3; i++)
+    // {
+    //     landscapes[i].init(static_cast<float>(i) * WINDOW_WIDTH, GROUND_LEVEL);
+    // }
 
-    for (int i = 0; i < 3; i++)
+    std::vector<float> terrain = landscape.generateHeights(100, 0.05f);
+
+    for (int i = 0; i < terrain.size(); ++i)
     {
-        landscapes[i].init(static_cast<float>(i) * WINDOW_WIDTH, GROUND_LEVEL);
+        std::cout << terrain[i] << std::endl;
+        landscapePoint[i].position = sf::Vector2f(i * 10, WINDOW_HEIGHT - terrain[i]);
+        landscapePoint[i].color = sf::Color::Green;
     }
 
     loadSound(gameBuffer, "../assets/sounds/game-sound.wav");
@@ -209,5 +218,6 @@ void Game::draw()
     {
         window.draw(currentLandscape.getLandscape());
     }
+    window.draw(landscapePoint);
     window.display();
 }

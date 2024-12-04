@@ -1,5 +1,5 @@
 #include "Landscape.h"
-
+#include <cmath>
 #include "../utils/constants.h"
 
 Landscape::Landscape() : size{WINDOW_WIDTH, WINDOW_HEIGHT}
@@ -60,4 +60,28 @@ Size Landscape::getSize() const
 void Landscape::setPosition(const float x, const float y)
 {
     landscape.setPosition(x, y);
+}
+
+float Landscape::interpolate(const float a, const float b, const float t) {
+    return a + t * (b - a);
+}
+
+float Landscape::noise(const float x) {
+    const int x0 = static_cast<int>(std::floor(x)); // Левый "узел"
+    const int x1 = x0 + 1;                         // Правый "узел"
+
+    const float t = x - x0;                        // Доля между узлами
+
+    const float rand0 = std::sin(x0) * 43758.5453f; // Генерация псевдослучайного значения
+    const float rand1 = std::sin(x1) * 43758.5453f;
+
+    return interpolate(rand0 - std::floor(rand0), rand1 - std::floor(rand1), t);
+}
+
+std::vector<float> Landscape::generateHeights(const int width, const float scale) {
+    std::vector<float> heights(width);
+    for (int i = 0; i < width; ++i) {
+        heights[i] = noise(i * scale) * MAX_GROUND_HEIGHT; // noise() — функция шума Перлина
+    }
+    return heights;
 }

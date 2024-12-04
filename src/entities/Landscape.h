@@ -18,6 +18,12 @@ public:
     Size getSize() const;
     void setPosition(float x, float y);
 
+    float interpolate(float a, float b, float t);
+
+    float noise(float x);
+
+    std::vector<float> generateHeights(int width, float scale);
+
 private:
     sf::ConvexShape landscape;
     Size size;

@@ -15,6 +15,7 @@ constexpr float FPS = 60.0f;
 constexpr float TIME_STEP = 1.0f / FPS;
 
 constexpr int GROUND_LEVEL = 900;
+constexpr float MAX_GROUND_HEIGHT = 100.0f;
 
 constexpr float FREE_FALL_ACCELERATION = 3.7f;
 constexpr float HORIZONTAL_ACCELERATION = 1.0f;

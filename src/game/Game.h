@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream>
+#include <SFML/Graphics.hpp>
 
 #include "../entities/Landscape.h"
 #include "../entities/Menu.h"
@@ -16,12 +18,14 @@ public:
     void run();
     std::vector<Platform> platforms;
     std::vector<Landscape> landscapes;
+    Landscape landscape;
     Vehicle vehicle;
 
 private:
     sf::RenderWindow window;
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
+    sf::VertexArray landscapePoint;
     GameState gameState;
     sf::SoundBuffer gameBuffer;
     sf::Sound gameSound;
