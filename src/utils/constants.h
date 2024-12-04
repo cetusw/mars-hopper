@@ -3,6 +3,7 @@
 
 #include "Size.h"
 #include "../entities/Vehicle.h"
+#include <string>
 
 constexpr float WINDOW_WIDTH = 1920.0f;
 constexpr float WINDOW_HEIGHT = 1080.0f;
@@ -26,7 +27,7 @@ constexpr Size PLATFORM_SIZE = {200.f, 35.f};
 const sf::Vector2f START_PLATFORM_POSITION = {100.f, 800.f};
 const sf::Vector2f FIRST_PLATFORM_POSITION = {600.f, 400.f};
 const sf::Vector2f SECOND_PLATFORM_POSITION = {1500.f, 800.f};
-const sf::Vector2f VEHICLE_START_POSITION = {(WINDOW_WIDTH / 2) - (VEHICLE_SIZE.width / 2), (WINDOW_HEIGHT / 2) - (VEHICLE_SIZE.height / 2) - 100};
+const sf::Vector2f VEHICLE_START_POSITION = {(WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2)};
 
 constexpr float VEHICLE_DIAGONAL_TRUST_X = 20.f;
 constexpr float VEHICLE_DIAGONAL_TRUST_Y = 20.f;
@@ -38,5 +39,17 @@ constexpr float RETURN_ANGLE_SPEED = 25.f;
 constexpr float THRUSTER_OFFSET_X = VEHICLE_SIZE.width / 4.0f;
 constexpr float THRUSTER_OFFSET_Y = VEHICLE_SIZE.height / 1.7f;
 constexpr float THRUSTER_ANGLE = 195.f;
+
+const std::string BOLD_FONT = "../assets/fonts/SpaceMono-Bold.ttf";
+const std::string REGULAR_FONT = "../assets/fonts/SpaceMono-Regular.ttf";
+
+const std::vector<std::string> OPTIONS_MAIN_MENU = {"Start", "Settings", "Exit"};
+const std::vector<std::string> OPTIONS_SETTINGS = {"Volume", "Back"};
+const std::vector<std::string> OPTIONS_GAME_OVER = {"Restart", "Back to Main Menu"};
+const std::vector<std::string> OPTIONS_PAUSE = {"Restart", "Back to Main Menu"};
+
+const sf::Vector2f TITLE_POSITION_LEFT = {300.f, 200.f};
+
+
 
 #endif //CONSTANTS_H

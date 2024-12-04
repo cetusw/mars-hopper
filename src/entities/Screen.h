@@ -8,24 +8,26 @@
 
 #include "../utils/GameState.h"
 
-class Menu {
+class Screen {
 public:
-    Menu();
+    Screen();
     void draw(sf::RenderWindow &window);
     void handleInput(sf::Event event);
-    void handleMenu(sf::RenderWindow &window, GameState &state);
+    void handleScreen(sf::RenderWindow &window, GameState &state);
     void handleOptionList(GameState &state) const;
     void handleMainMenuOptionList(GameState &state) const;
     void handleSettingsOptionList(GameState &state) const;
     void handlePauseOptionList(GameState &state) const;
+    void handleGameOverOptionList(GameState &state) const;
     int getSelectedOption() const;
 
 private:
-    void init(const std::string &filePath, const std::string &titleContent, const std::vector<std::string> &menuOptions);
-    void initSpecificMenu(const GameState &state);
+    void init(const std::string &titleContent, const std::vector<std::string> &menuOptions, const std::string &alignment, sf::Color titleColor, sf::Color contentColor);
+    void initSpecificScreen(const GameState &state);
     void initBackground(const std::string &filePath);
 
-    sf::Font font;
+    sf::Font titleFont;
+    sf::Font contentFont;
     sf::Text title;
     std::vector<sf::Text> options;
     int selectedOption;

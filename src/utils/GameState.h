@@ -6,6 +6,7 @@ enum class GameState
     MainMenu,
     Start,
     Playing,
+    GameOver,
     Settings,
     Pause,
     Exit

@@ -1,5 +1,4 @@
 #include "Platform.h"
-
 #include "../utils/constants.h"
 
 extern float getRandomNumber(float min, float max);

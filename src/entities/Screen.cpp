@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "Screen.h"
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -9,29 +9,37 @@
 extern void loadTexture(sf::Texture &texture, const std::string &filePath);
 extern void loadFont(sf::Font& font, const std::string &filePath);
 
-Menu::Menu() : selectedOption(0)
+Screen::Screen() : selectedOption(0)
 {
     initBackground("../assets/menu-background.png");
 }
 
-void Menu::init(const std::string &filePath, const std::string &titleContent, const std::vector<std::string> &menuOptions)
+void Screen::init(const std::string &titleContent, const std::vector<std::string> &menuOptions, const std::string &alignment, const sf::Color titleColor, const sf::Color contentColor)
 {
     options.clear();
-    loadFont(font, filePath);
+    loadFont(titleFont, BOLD_FONT);
+    loadFont(contentFont, BOLD_FONT);
 
-    title.setFont(font);
+    title.setFont(titleFont);
     title.setString(titleContent);
     title.setCharacterSize(85);
-    title.setFillColor(sf::Color::White);
-    title.setPosition(300, 200);
+    title.setFillColor(titleColor);
+    if (alignment == "left")
+    {
+        title.setPosition(TITLE_POSITION_LEFT);
+    }
+    else if (alignment == "center")
+    {
+        title.setPosition(WINDOW_WIDTH / 2 - title.getGlobalBounds().width / 2, TITLE_POSITION_LEFT.y);
+    }
 
     for (int i = 0; i < menuOptions.size(); ++i)
     {
         sf::Text option;
-        option.setFont(font);
+        option.setFont(contentFont);
         option.setString(menuOptions[i]);
         option.setCharacterSize(50);
-        option.setFillColor(sf::Color(0xFF, 0xFF, 0xFF));
+        option.setFillColor(contentColor);
         option.setPosition(300, static_cast<float>(600 + i * 70));
         if (i == selectedOption)
         {
@@ -41,24 +49,27 @@ void Menu::init(const std::string &filePath, const std::string &titleContent, co
     }
 }
 
-void Menu::initSpecificMenu(const GameState &state)
+void Screen::initSpecificScreen(const GameState &state)
 {
     switch (state)
     {
         case GameState::MainMenu:
-            init("../assets/fonts/SpaceMono-Bold.ttf", "Mars Hopper", {"Start", "Settings", "Exit"});
+            init("Mars Hopper", OPTIONS_MAIN_MENU, "left", sf::Color::White, sf::Color::White);
         break;
         case GameState::Settings:
-            init("../assets/fonts/SpaceMono-Bold.ttf", "Settings", {"Volume", "Back"});
+            init("Settings", OPTIONS_SETTINGS, "left", sf::Color::White, sf::Color::White);
+        break;
+        case GameState::GameOver:
+            init("You Lose", OPTIONS_GAME_OVER, "center", sf::Color::Red, sf::Color::White);
         break;
         case GameState::Pause:
-            init("../assets/fonts/SpaceMono-Bold.ttf", "Pause", {"Continue", "Main Menu"});
+            init("Pause", OPTIONS_PAUSE, "left", sf::Color::White, sf::Color::White);
         break;
         default:;
     }
 }
 
-void Menu::initBackground(const std::string &filePath)
+void Screen::initBackground(const std::string &filePath)
 {
     loadTexture(backgroundTexture, filePath);
     backgroundSprite.setTexture(backgroundTexture);
@@ -68,7 +79,7 @@ void Menu::initBackground(const std::string &filePath)
     );
 }
 
-void Menu::draw(sf::RenderWindow &window)
+void Screen::draw(sf::RenderWindow &window)
 {
     window.clear(sf::Color(0x00, 0x00, 0x00));
     window.draw(backgroundSprite);
@@ -80,7 +91,7 @@ void Menu::draw(sf::RenderWindow &window)
     window.display();
 }
 
-void Menu::handleInput(sf::Event event)
+void Screen::handleInput(sf::Event event)
 {
     if (event.type == sf::Event::KeyPressed)
     {
@@ -95,9 +106,9 @@ void Menu::handleInput(sf::Event event)
     }
 }
 
-void Menu::handleMenu(sf::RenderWindow &window, GameState &state)
+void Screen::handleScreen(sf::RenderWindow &window, GameState &state)
 {
-    initSpecificMenu(state);
+    initSpecificScreen(state);
     sf::Event event;
     while (window.pollEvent(event))
     {
@@ -120,7 +131,7 @@ void Menu::handleMenu(sf::RenderWindow &window, GameState &state)
     draw(window);
 }
 
-void Menu::handleOptionList(GameState &state) const
+void Screen::handleOptionList(GameState &state) const
 {
     switch (state)
     {
@@ -130,13 +141,16 @@ void Menu::handleOptionList(GameState &state) const
         case GameState::Settings:
             handleSettingsOptionList(state);
         break;
+        case GameState::GameOver:
+            handleGameOverOptionList(state);
+        break;
         case GameState::Pause:
             handlePauseOptionList(state);
         default:;
     }
 }
 
-void Menu::handleMainMenuOptionList(GameState &state) const
+void Screen::handleMainMenuOptionList(GameState &state) const
 {
     switch (selectedOption)
     {
@@ -153,7 +167,7 @@ void Menu::handleMainMenuOptionList(GameState &state) const
     }
 }
 
-void Menu::handleSettingsOptionList(GameState &state) const
+void Screen::handleSettingsOptionList(GameState &state) const
 {
     switch (selectedOption)
     {
@@ -167,7 +181,7 @@ void Menu::handleSettingsOptionList(GameState &state) const
     }
 }
 
-void Menu::handlePauseOptionList(GameState &state) const
+void Screen::handlePauseOptionList(GameState &state) const
 {
     switch (selectedOption)
     {
@@ -181,7 +195,21 @@ void Menu::handlePauseOptionList(GameState &state) const
     }
 }
 
-int Menu::getSelectedOption() const
+void Screen::handleGameOverOptionList(GameState &state) const
+{
+    switch (selectedOption)
+    {
+        case 0:
+            state = GameState::Start;
+        break;
+        case 1:
+            state = GameState::MainMenu;
+        break;
+        default: state = GameState::Pause;
+    }
+}
+
+int Screen::getSelectedOption() const
 {
     return selectedOption;
 }

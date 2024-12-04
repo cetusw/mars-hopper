@@ -12,11 +12,6 @@ class Engine {
 public:
     Engine();
     void init(const std::string &filePath);
-
-    void start();
-
-    void stop();
-
     void update();
     void updateCurrentFrame();
     void updateThrusterPosition(sf::Vector2f offset, const sf::Vector2f &vehiclePosition);

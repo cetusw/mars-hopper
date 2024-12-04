@@ -72,9 +72,9 @@ void Game::run()
 {
     while (window.isOpen())
     {
-        if (gameState == GameState::MainMenu || gameState == GameState::Settings || gameState == GameState::Pause)
+        if (gameState == GameState::MainMenu || gameState == GameState::Settings || gameState == GameState::Pause || gameState == GameState::GameOver)
         {
-            menu.handleMenu(window, gameState);
+            menu.handleScreen(window, gameState);
         }
         else if (gameState == GameState::Start)
         {
@@ -190,6 +190,11 @@ void Game::update()
     vehicle.updatePosition();
     vehicle.updateCollidedWithPlatforms(platforms);
     vehicle.updateCollidedWithLandscape(landscapes);
+    if (vehicle.crashed)
+    {
+        vehicle.crashed = false;
+        gameState = GameState::GameOver;
+    }
 }
 
 void Game::draw()

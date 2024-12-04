@@ -9,7 +9,7 @@
 extern float toRadians(float degrees);
 extern void loadTexture(sf::Texture &texture, const std::string &filePath);
 
-Vehicle::Vehicle() : velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, rotation(0), size{VEHICLE_SIZE}, fuel(100)
+Vehicle::Vehicle() : crashed(false), velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, rotation(0), size{VEHICLE_SIZE}, fuel(100)
 {
 }
 
@@ -26,6 +26,7 @@ void Vehicle::init(const std::string &filePath)
         static_cast<float>(texture.getSize().y) / 2.0f
     );
     body.setPosition(VEHICLE_START_POSITION);
+    body.setRotation(0);
 
     leftThruster.init("../assets/flame.png");
     leftThruster.setRotation(15.0f);
@@ -198,9 +199,7 @@ void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
 
         if (collidedWithPlatformBottom(platform))
         {
-            setPosition({VEHICLE_START_POSITION});
-            setVelocity({0, 0});
-            setAcceleration({0, 0});
+            handleVehicleCrash();
         }
     }
 }
@@ -231,9 +230,7 @@ void Vehicle::updateCollidedWithLandscape(std::vector<Landscape> &landscapes)
     {
         if (collidedWithLandscape(landscape))
         {
-            setPosition({VEHICLE_START_POSITION});
-            setVelocity({0, 0});
-            setAcceleration({0, 0});
+            handleVehicleCrash();
         }
     }
 }
@@ -271,6 +268,14 @@ void Vehicle::updateThrusters()
     rightThruster.rotation = rotation - THRUSTER_ANGLE;
     leftThruster.updateThrusterPosition({THRUSTER_OFFSET_X, -THRUSTER_OFFSET_Y}, getPosition());
     rightThruster.updateThrusterPosition({-THRUSTER_OFFSET_X, -THRUSTER_OFFSET_Y}, getPosition());
+}
+
+void Vehicle::handleVehicleCrash()
+{
+    crashed = true;
+    setRotation(0);
+    setVelocity({0, 0});
+    setAcceleration({0, 0});
 }
 
 sf::Vector2f Vehicle::getPosition() const
@@ -311,4 +316,9 @@ void Vehicle::setVelocity(const sf::Vector2f newVelocity)
 void Vehicle::setAcceleration(const sf::Vector2f newAcceleration)
 {
     acceleration = newAcceleration;
+}
+
+void Vehicle::setRotation(const float newRotation)
+{
+    rotation = newRotation;
 }

@@ -15,8 +15,8 @@ add_executable(mars-hopper main.cpp
         src/entities/Vehicle.cpp
         src/entities/Landscape.h
         src/entities/Landscape.cpp
-        src/entities/Menu.h
-        src/entities/Menu.cpp
+        src/entities/Screen.h
+        src/entities/Screen.cpp
         src/utils/loadTexture.cpp
         src/utils/loadFont.cpp
         src/utils/GameState.h
