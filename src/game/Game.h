@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../entities/Landscape.h"
+#include "../entities/Meteorite.h"
 #include "../entities/Screen.h"
 #include "../entities/Vehicle.h"
 #include "../entities/Platform.h"
@@ -16,6 +17,7 @@ public:
     void run();
     std::vector<Platform> platforms;
     std::vector<Landscape> landscapes;
+    std::vector<Meteorite> meteorites;
     Vehicle vehicle;
 
 private:
@@ -27,8 +29,15 @@ private:
     void draw();
     void pollEvents();
     void updateMapPosition();
+
+    void addMeteorite();
+
+    void updateMeteoritePosition();
+
     void updatePlatformsPosition(const std::string &direction);
     void updateLandscapesPosition(const std::string &direction);
+
+    void updateMeteoritesPosition(const std::string &direction);
 
     sf::RenderWindow window;
     sf::Texture backgroundTexture;
@@ -37,6 +46,7 @@ private:
     sf::SoundBuffer gameBuffer;
     sf::Sound gameSound;
     Screen menu;
+    float timeSinceLastMeteorite;
 };
 
 

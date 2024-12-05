@@ -24,6 +24,8 @@ add_executable(mars-hopper main.cpp
         src/entities/Engine.cpp
         src/utils/constants.h
         src/utils/loadSound.cpp
+        src/entities/Meteorite.h
+        src/entities/Meteorite.cpp
 )
 
 target_link_libraries(mars-hopper

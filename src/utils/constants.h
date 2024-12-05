@@ -40,6 +40,9 @@ constexpr float THRUSTER_OFFSET_X = VEHICLE_SIZE.width / 4.0f;
 constexpr float THRUSTER_OFFSET_Y = VEHICLE_SIZE.height / 1.7f;
 constexpr float THRUSTER_ANGLE = 195.f;
 
+constexpr float METEORITE_RADIUS = 50.0f;
+constexpr int METEORITES_AMOUNT = 3;
+
 const std::string BOLD_FONT = "../assets/fonts/SpaceMono-Bold.ttf";
 const std::string REGULAR_FONT = "../assets/fonts/SpaceMono-Regular.ttf";
 

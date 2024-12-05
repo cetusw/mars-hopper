@@ -9,7 +9,7 @@
 extern float toRadians(float degrees);
 extern void loadTexture(sf::Texture &texture, const std::string &filePath);
 
-Vehicle::Vehicle() : crashed(false), velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, rotation(0), size{VEHICLE_SIZE}, fuel(100)
+Vehicle::Vehicle() : isCrashed(false), velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, rotation(0), size{VEHICLE_SIZE}, fuel(100)
 {
 }
 
@@ -106,6 +106,8 @@ void Vehicle::handleInput(const sf::Keyboard::Key key)
         return;
     }
 
+    isOnPlatform = false;
+
     if (key == sf::Keyboard::Up)
     {
         fuel -= 10.0f;
@@ -189,6 +191,7 @@ void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
         if (collidedWithPlatform(platform))
         {
             fuel = 100.f;
+            isOnPlatform = true;
             setVelocity({0, 0});
             setPosition({
                 getPosition().x,
@@ -235,6 +238,26 @@ void Vehicle::updateCollidedWithLandscape(std::vector<Landscape> &landscapes)
     }
 }
 
+bool Vehicle::collidedWithMeteorite(const Meteorite &meteorite) const
+{
+    return !isOnPlatform &&
+        getPosition().y - getSize().height / 3 < meteorite.getPosition().y + meteorite.getRadius() &&
+        getPosition().x + getSize().width / 3 > meteorite.getPosition().x - meteorite.getRadius() &&
+        getPosition().y + getSize().height / 3 > meteorite.getPosition().y - meteorite.getRadius() &&
+        getPosition().x - getSize().width / 3 < meteorite.getPosition().x + meteorite.getRadius();
+}
+
+void Vehicle::updateCollidedWithMeteorite(std::vector<Meteorite> &meteorites)
+{
+    for (Meteorite &meteorite: meteorites)
+    {
+        if (collidedWithMeteorite(meteorite))
+        {
+            handleVehicleCrash();
+        }
+    }
+}
+
 void Vehicle::updateTilt()
 {
     if (velocity.x > 0)
@@ -272,7 +295,7 @@ void Vehicle::updateThrusters()
 
 void Vehicle::handleVehicleCrash()
 {
-    crashed = true;
+    isCrashed = true;
     setRotation(0);
     setVelocity({0, 0});
     setAcceleration({0, 0});

@@ -1,6 +1,6 @@
 #include <random>
 
-float getRandomNumber(const float min, const float max)
+inline float getRandomNumber(const float min, const float max)
 {
     static std::random_device rd;
     static std::mt19937 generator(rd());

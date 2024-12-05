@@ -9,7 +9,7 @@ extern void loadSound(sf::SoundBuffer &buffer, const std::string &filePath);
 
 
 Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default),
-               gameState(GameState::MainMenu)
+               gameState(GameState::MainMenu), timeSinceLastMeteorite(0.0f)
 {
     init();
 }
@@ -43,6 +43,16 @@ void Game::init()
         landscapes[i].init(static_cast<float>(i) * WINDOW_WIDTH, GROUND_LEVEL);
     }
 
+    for (int i = 0; i < METEORITES_AMOUNT; i++)
+    {
+        meteorites.emplace_back();
+    }
+
+    for (int i = 0; i < METEORITES_AMOUNT; i++)
+    {
+        meteorites[i].init();
+    }
+
     loadSound(gameBuffer, "../assets/sounds/game-sound.wav");
     gameSound.setBuffer(gameBuffer);
     if (gameSound.getStatus() != sf::Sound::Playing)
@@ -55,6 +65,7 @@ void Game::reset()
 {
     platforms.clear();
     landscapes.clear();
+    meteorites.clear();
     init();
 }
 
@@ -152,6 +163,13 @@ void Game::updateLandscapesPosition(const std::string &direction)
     }
 }
 
+void Game::updateMeteoritesPosition(const std::string &direction)
+{
+    for (Meteorite &meteorite : meteorites)
+    {
+        meteorite.updatePosition(direction, vehicle.getVelocity());
+    }
+}
 
 void Game::updateMapPosition()
 {
@@ -160,24 +178,64 @@ void Game::updateMapPosition()
         vehicle.setPosition({FREE_MOVE_BOX_RIGHT, vehicle.getPosition().y});
         updatePlatformsPosition("horizontal");
         updateLandscapesPosition("horizontal");
+        updateMeteoritesPosition("horizontal");
     }
     if (vehicle.getPosition().x < FREE_MOVE_BOX_LEFT)
     {
         vehicle.setPosition({FREE_MOVE_BOX_LEFT, vehicle.getPosition().y});
         updatePlatformsPosition("horizontal");
         updateLandscapesPosition("horizontal");
+        updateMeteoritesPosition("horizontal");
     }
     if (vehicle.getPosition().y < FREE_MOVE_BOX_TOP)
     {
         vehicle.setPosition({vehicle.getPosition().x, FREE_MOVE_BOX_TOP});
         updatePlatformsPosition("vertical");
         updateLandscapesPosition("vertical");
+        updateMeteoritesPosition("vertical");
     }
     if (vehicle.getPosition().y > FREE_MOVE_BOX_BOTTOM)
     {
         vehicle.setPosition({vehicle.getPosition().x, FREE_MOVE_BOX_BOTTOM});
         updatePlatformsPosition("vertical");
         updateLandscapesPosition("vertical");
+        updateMeteoritesPosition("vertical");
+    }
+}
+
+void Game::addMeteorite()
+{
+    timeSinceLastMeteorite += TIME_STEP;
+
+    if (timeSinceLastMeteorite < getRandomNumber(1, 3))
+    {
+        return;
+    }
+
+    for (Meteorite &meteorite : meteorites)
+    {
+        timeSinceLastMeteorite = 0.0f;
+        if (!meteorite.isFalling)
+        {
+            meteorite.setPosition({getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800});
+            meteorite.setVelocity({-450, 450});
+            meteorite.isFalling = true;
+            break;
+        }
+    }
+}
+
+void Game::updateMeteoritePosition()
+{
+    for (Meteorite &meteorite : meteorites)
+    {
+        if (meteorite.isFalling)
+        {
+            meteorite.setPosition({
+                meteorite.getPosition().x + meteorite.getVelocity().x * TIME_STEP,
+                meteorite.getPosition().y + meteorite.getVelocity().y * TIME_STEP
+            });
+        }
     }
 }
 
@@ -186,13 +244,21 @@ void Game::update()
     vehicle.setPosition(
         {vehicle.getPosition().x + vehicle.getVelocity().x * TIME_STEP, vehicle.getPosition().y + vehicle.getVelocity().y * TIME_STEP}
     );
+    addMeteorite();
+    updateMeteoritePosition();
     updateMapPosition();
+    for (Meteorite &meteorite : meteorites)
+    {
+        meteorite.updateCollidedWithLandscape(landscapes);
+        meteorite.updateCollidedWithPlatforms(platforms);
+    }
     vehicle.updatePosition();
     vehicle.updateCollidedWithPlatforms(platforms);
     vehicle.updateCollidedWithLandscape(landscapes);
-    if (vehicle.crashed)
+    vehicle.updateCollidedWithMeteorite(meteorites);
+    if (vehicle.isCrashed)
     {
-        vehicle.crashed = false;
+        vehicle.isCrashed = false;
         gameState = GameState::GameOver;
     }
 }
@@ -213,6 +279,10 @@ void Game::draw()
     for (Landscape &currentLandscape: landscapes)
     {
         window.draw(currentLandscape.getLandscape());
+    }
+    for (Meteorite &currentMeteorite: meteorites)
+    {
+        window.draw(currentMeteorite.getBody());
     }
     window.display();
 }

@@ -6,6 +6,7 @@
 #include "Platform.h"
 #include "Landscape.h"
 #include "Engine.h"
+#include "Meteorite.h"
 #include "../utils/Size.h"
 
 
@@ -19,6 +20,11 @@ public:
     void updateCollidedWithPlatforms(std::vector<Platform> &platforms);
     bool collidedWithPlatformBottom(const Platform &platform) const;
     void updateCollidedWithLandscape(std::vector<Landscape> &landscapes);
+
+    bool collidedWithMeteorite(const Meteorite &meteorite) const;
+
+    void updateCollidedWithMeteorite(std::vector<Meteorite> &meteorites);
+
     void updateTilt();
     void updateThrusters();
 
@@ -36,7 +42,9 @@ public:
     void setAcceleration(sf::Vector2f newAcceleration);
     void setRotation(float newRotation);
 
-    bool crashed;
+    bool isCrashed;
+    bool isOnPlatform;
+
     Engine leftThruster;
     Engine rightThruster;
 
