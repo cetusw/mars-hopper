@@ -19,7 +19,7 @@ public:
     bool collidedWithPlatform(const Platform &platform) const;
     void updateCollidedWithPlatforms(std::vector<Platform> &platforms);
     bool collidedWithPlatformBottom(const Platform &platform) const;
-    void updateCollidedWithLandscape(std::vector<Landscape> &landscapes);
+    void updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points);
 
     bool collidedWithMeteorite(const Meteorite &meteorite) const;
 
@@ -30,7 +30,7 @@ public:
 
     void handleVehicleCrash();
 
-    bool collidedWithLandscape(const Landscape &landscape) const;
+    bool collidedWithLandscape(sf::Vector2f firstPoint, sf::Vector2f secondPoint) const;
 
     sf::Vector2f getPosition() const;
     sf::Vector2f getVelocity() const;

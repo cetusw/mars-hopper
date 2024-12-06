@@ -22,9 +22,11 @@ public:
 
     void updateCollidedWithPlatforms(std::vector<Platform> &platforms);
 
-    bool collidedWithLandscape(const Landscape &landscape) const;
+    bool collidedWithLandscape(sf::Vector2f firstPoint, sf::Vector2f secondPoint) const;
 
-    void updateCollidedWithLandscape(std::vector<Landscape> &landscapes);
+    // bool collidedWithLandscape(const Landscape &landscape) const;
+
+    void updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points);
 
     sf::CircleShape getBody();
 

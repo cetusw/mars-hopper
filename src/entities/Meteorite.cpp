@@ -62,32 +62,66 @@ void Meteorite::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
         }
     }
 }
+//
+// bool Meteorite::collidedWithLandscape(const Landscape &landscape) const
+// {
+//     const sf::Vector2f leftLineStart = {landscape.getPosition().x, landscape.getPosition().y};
+//     const sf::Vector2f leftLineEnd = {landscape.getPosition().x - 500, landscape.getPosition().y + landscape.getSize().height};
+//     const sf::Vector2f rightLineStart = {landscape.getPosition().x + landscape.getSize().width, landscape.getPosition().y};
+//     const sf::Vector2f rightLineEnd = {
+//         landscape.getPosition().x + landscape.getSize().width + 500, landscape.getPosition().y + landscape.getSize().height
+//     };
+//
+//     const float leftK = (leftLineEnd.y - leftLineStart.y) / (leftLineEnd.x - leftLineStart.x);
+//     const float leftB = leftLineStart.y - leftK * leftLineStart.x;
+//
+//     const float rightK = (rightLineEnd.y - rightLineStart.y) / (rightLineEnd.x - rightLineStart.x);
+//     const float rightB = rightLineStart.y - rightK * rightLineStart.x;
+//
+//     return getPosition().y + getRadius() > leftK * (getPosition().x + getRadius()) + leftB &&
+//            getPosition().y + getRadius() > rightK * (getPosition().x - getRadius()) + rightB &&
+//            getPosition().y + getRadius() > landscape.getPosition().y;
+// }
 
-bool Meteorite::collidedWithLandscape(const Landscape &landscape) const
+// void Meteorite::updateCollidedWithLandscape(std::vector<Landscape> &landscapes)
+// {
+//     for (Landscape &landscape: landscapes)
+//     {
+//         if (collidedWithLandscape(landscape))
+//         {
+//             handleMeteoriteOverflow();
+//         }
+//     }
+// }
+
+bool Meteorite::collidedWithLandscape(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint) const
 {
-    const sf::Vector2f leftLineStart = {landscape.getPosition().x, landscape.getPosition().y};
-    const sf::Vector2f leftLineEnd = {landscape.getPosition().x - 500, landscape.getPosition().y + landscape.getSize().height};
-    const sf::Vector2f rightLineStart = {landscape.getPosition().x + landscape.getSize().width, landscape.getPosition().y};
-    const sf::Vector2f rightLineEnd = {
-        landscape.getPosition().x + landscape.getSize().width + 500, landscape.getPosition().y + landscape.getSize().height
-    };
+    if (secondPoint.x == firstPoint.x)
+    {
+        return getPosition().x + getRadius() > firstPoint.x &&
+            getPosition().x - getRadius() < firstPoint.x &&
+            getPosition().y + getRadius() > std::min(firstPoint.y, secondPoint.y) &&
+            getPosition().y - getRadius() < std::max(firstPoint.y, secondPoint.y);
+    }
 
-    const float leftK = (leftLineEnd.y - leftLineStart.y) / (leftLineEnd.x - leftLineStart.x);
-    const float leftB = leftLineStart.y - leftK * leftLineStart.x;
+    const float k = (secondPoint.y - firstPoint.y) / (secondPoint.x - firstPoint.x);
+    const float b = firstPoint.y - k * firstPoint.x;
 
-    const float rightK = (rightLineEnd.y - rightLineStart.y) / (rightLineEnd.x - rightLineStart.x);
-    const float rightB = rightLineStart.y - rightK * rightLineStart.x;
+    const float vehicleCenterX = getPosition().x;
+    const float vehicleBottomY = getPosition().y + getRadius();
+    const float vehicleRightX = getPosition().x + getRadius();
+    const float vehicleLeftX = getPosition().x - getRadius();
 
-    return getPosition().y + getRadius() > leftK * (getPosition().x + getRadius()) + leftB &&
-           getPosition().y + getRadius() > rightK * (getPosition().x - getRadius()) + rightB &&
-           getPosition().y + getRadius() > landscape.getPosition().y;
+    return vehicleBottomY > k * vehicleCenterX + b &&
+        vehicleRightX > firstPoint.x &&
+        vehicleLeftX < secondPoint.x;
 }
 
-void Meteorite::updateCollidedWithLandscape(std::vector<Landscape> &landscapes)
+void Meteorite::updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points)
 {
-    for (Landscape &landscape: landscapes)
+    for (int i = 0; i < points.size() - 1; i++)
     {
-        if (collidedWithLandscape(landscape))
+        if (collidedWithLandscape(points[i], points[i + 1]))
         {
             handleMeteoriteOverflow();
         }

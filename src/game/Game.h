@@ -16,9 +16,10 @@ public:
     Game();
     void run();
     std::vector<Platform> platforms;
-    std::vector<Landscape> landscapes;
+    Landscape landscape;
     std::vector<Meteorite> meteorites;
     Vehicle vehicle;
+    std::vector<sf::Vector2f> points;
 
 private:
     void init();
@@ -35,7 +36,6 @@ private:
     void updateMeteoritePosition();
 
     void updatePlatformsPosition(const std::string &direction);
-    void updateLandscapesPosition(const std::string &direction);
 
     void updateMeteoritesPosition(const std::string &direction);
 

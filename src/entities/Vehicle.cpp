@@ -207,31 +207,35 @@ void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
     }
 }
 
-bool Vehicle::collidedWithLandscape(const Landscape &landscape) const
+bool Vehicle::collidedWithLandscape(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint) const
 {
-    const sf::Vector2f leftLineStart = {landscape.getPosition().x, landscape.getPosition().y};
-    const sf::Vector2f leftLineEnd = {landscape.getPosition().x - 500, landscape.getPosition().y + landscape.getSize().height};
-    const sf::Vector2f rightLineStart = {landscape.getPosition().x + landscape.getSize().width, landscape.getPosition().y};
-    const sf::Vector2f rightLineEnd = {
-        landscape.getPosition().x + landscape.getSize().width + 500, landscape.getPosition().y + landscape.getSize().height
-    };
 
-    const float leftK = (leftLineEnd.y - leftLineStart.y) / (leftLineEnd.x - leftLineStart.x);
-    const float leftB = leftLineStart.y - leftK * leftLineStart.x;
+    if (secondPoint.x == firstPoint.x)
+    {
+        return getPosition().x + getSize().width / 2.0f > firstPoint.x &&
+            getPosition().x - getSize().width / 2.0f < firstPoint.x &&
+            getPosition().y + getSize().height / 2.0f > std::min(firstPoint.y, secondPoint.y) &&
+            getPosition().y - getSize().height / 2.0f < std::max(firstPoint.y, secondPoint.y);
+    }
 
-    const float rightK = (rightLineEnd.y - rightLineStart.y) / (rightLineEnd.x - rightLineStart.x);
-    const float rightB = rightLineStart.y - rightK * rightLineStart.x;
+    const float k = (secondPoint.y - firstPoint.y) / (secondPoint.x - firstPoint.x);
+    const float b = firstPoint.y - k * firstPoint.x;
 
-    return getPosition().y + getSize().height / 2.0f > leftK * (getPosition().x + getSize().width / 2.0f) + leftB &&
-           getPosition().y + getSize().height / 2.0f > rightK * (getPosition().x - getSize().width / 2.0f) + rightB &&
-           getPosition().y + getSize().height / 2.0f > landscape.getPosition().y;
+    const float vehicleCenterX = getPosition().x;
+    const float vehicleBottomY = getPosition().y + getSize().height / 2.0f;
+    const float vehicleRightX = getPosition().x + getSize().width / 2.0f;
+    const float vehicleLeftX = getPosition().x - getSize().width / 2.0f;
+
+    return vehicleBottomY > k * vehicleCenterX + b &&
+        vehicleRightX > firstPoint.x &&
+        vehicleLeftX < secondPoint.x;
 }
 
-void Vehicle::updateCollidedWithLandscape(std::vector<Landscape> &landscapes)
+void Vehicle::updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points)
 {
-    for (Landscape &landscape: landscapes)
+    for (int i = 0; i < points.size() - 1; i++)
     {
-        if (collidedWithLandscape(landscape))
+        if (collidedWithLandscape(points[i], points[i + 1]))
         {
             handleVehicleCrash();
         }
