@@ -3,12 +3,11 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <string>
-
-#include "Landscape.h"
 #include "Platform.h"
 
 
-class Meteorite {
+class Meteorite
+{
 public:
     Meteorite();
 
@@ -24,8 +23,6 @@ public:
 
     bool collidedWithLandscape(sf::Vector2f firstPoint, sf::Vector2f secondPoint) const;
 
-    // bool collidedWithLandscape(const Landscape &landscape) const;
-
     void updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points);
 
     sf::CircleShape getBody();
@@ -40,7 +37,6 @@ public:
 
     void setVelocity(sf::Vector2f newVelocity);
 
-
     bool isFalling;
 
 private:
@@ -48,9 +44,7 @@ private:
     float radius;
     sf::Vector2f position;
     sf::Vector2f velocity;
-
 };
-
 
 
 #endif //METEORITE_H

@@ -11,10 +11,13 @@
 #include "../entities/Platform.h"
 #include "../utils/GameState.h"
 
-class Game {
+class Game
+{
 public:
     Game();
+
     void run();
+
     std::vector<Platform> platforms;
     Landscape landscape;
     std::vector<Meteorite> meteorites;
@@ -23,19 +26,26 @@ public:
 
 private:
     void init();
+
     void reset();
+
     void initBackground(const std::string &filePath);
+
     void handlePlaying();
+
     void update();
+
     void draw();
+
     void pollEvents();
+
     void updateMapPosition();
 
     void addMeteorite();
 
     void updateMeteoritePosition();
 
-    void updatePlatformsPosition(const std::string &direction);
+    void updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points);
 
     void updateMeteoritesPosition(const std::string &direction);
 
@@ -48,7 +58,6 @@ private:
     Screen menu;
     float timeSinceLastMeteorite;
 };
-
 
 
 #endif //GAME_H

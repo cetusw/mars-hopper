@@ -1,15 +1,12 @@
 #include "Vehicle.h"
-
 #include <iostream>
-
+#include "../utils/utils.cpp"
 #include "Platform.h"
 #include "../game/Game.h"
 #include "../utils/constants.h"
 
-extern float toRadians(float degrees);
-extern void loadTexture(sf::Texture &texture, const std::string &filePath);
-
-Vehicle::Vehicle() : isCrashed(false), velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, rotation(0), size{VEHICLE_SIZE}, fuel(100)
+Vehicle::Vehicle() : isCrashed(false), isOnPlatform(false), velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, rotation(0),
+                     size{VEHICLE_SIZE}, fuel(100)
 {
 }
 
@@ -160,28 +157,10 @@ void Vehicle::increaseVerticalAcceleration()
 
 bool Vehicle::collidedWithPlatform(const Platform &platform) const
 {
-    return getPosition().y + getSize().height / 2.0f > platform.getPosition().y &&
-           getPosition().x + getSize().width / 2.0f > platform.getPosition().x &&
-           getPosition().x - getSize().width / 2.0f < platform.getPosition().x + platform.getSize().width &&
-           getPosition().y - getSize().height / 2.0f < platform.getPosition().y + platform.getSize().height;
-}
-
-bool Vehicle::collidedWithPlatformBottom(const Platform &platform) const
-{
-    const sf::Vector2f leftLineStart = {platform.getPosition().x, platform.getPosition().y};
-    const sf::Vector2f leftLineEnd = {platform.getPosition().x - 500, platform.getPosition().y + WINDOW_HEIGHT};
-    const sf::Vector2f rightLineStart = {platform.getPosition().x + platform.getSize().width, platform.getPosition().y};
-    const sf::Vector2f rightLineEnd = {platform.getPosition().x + platform.getSize().width + 500, platform.getPosition().y + WINDOW_HEIGHT};
-
-    const float leftK = (leftLineEnd.y - leftLineStart.y) / (leftLineEnd.x - leftLineStart.x);
-    const float leftB = leftLineStart.y - leftK * leftLineStart.x;
-
-    const float rightK = (rightLineEnd.y - rightLineStart.y) / (rightLineEnd.x - rightLineStart.x);
-    const float rightB = rightLineStart.y - rightK * rightLineStart.x;
-
-    return getPosition().y + getSize().height / 2.0f > leftK * (getPosition().x + getSize().width / 2.0f) + leftB &&
-           getPosition().y + getSize().height / 2.0f > rightK * (getPosition().x - getSize().width / 2.0f) + rightB &&
-           getPosition().y + getSize().height / 2.0f > platform.getPosition().y;
+    return getPosition().y + getSize().height / 2.0f > platform.getPosition().y + PLATFORM_OFFSET_Y &&
+           getPosition().x + getSize().width / 2.0f > platform.getPosition().x + PLATFORM_OFFSET_X &&
+           getPosition().x - getSize().width / 2.0f < platform.getPosition().x + platform.getSize().width - PLATFORM_OFFSET_X &&
+           getPosition().y - getSize().height / 2.0f < platform.getPosition().y + PLATFORM_OFFSET_Y + platform.getSize().height;
 }
 
 void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
@@ -195,27 +174,21 @@ void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
             setVelocity({0, 0});
             setPosition({
                 getPosition().x,
-                platform.getPosition().y - getSize().height / 2.0f
+                platform.getPosition().y - getSize().height / 2.0f + 270
             });
             break;
-        }
-
-        if (collidedWithPlatformBottom(platform))
-        {
-            handleVehicleCrash();
         }
     }
 }
 
 bool Vehicle::collidedWithLandscape(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint) const
 {
-
     if (secondPoint.x == firstPoint.x)
     {
         return getPosition().x + getSize().width / 2.0f > firstPoint.x &&
-            getPosition().x - getSize().width / 2.0f < firstPoint.x &&
-            getPosition().y + getSize().height / 2.0f > std::min(firstPoint.y, secondPoint.y) &&
-            getPosition().y - getSize().height / 2.0f < std::max(firstPoint.y, secondPoint.y);
+               getPosition().x - getSize().width / 2.0f < firstPoint.x &&
+               getPosition().y + getSize().height / 2.0f > std::min(firstPoint.y, secondPoint.y) &&
+               getPosition().y - getSize().height / 2.0f < std::max(firstPoint.y, secondPoint.y);
     }
 
     const float k = (secondPoint.y - firstPoint.y) / (secondPoint.x - firstPoint.x);
@@ -227,8 +200,8 @@ bool Vehicle::collidedWithLandscape(const sf::Vector2f firstPoint, const sf::Vec
     const float vehicleLeftX = getPosition().x - getSize().width / 2.0f;
 
     return vehicleBottomY > k * vehicleCenterX + b &&
-        vehicleRightX > firstPoint.x &&
-        vehicleLeftX < secondPoint.x;
+           vehicleRightX > firstPoint.x &&
+           vehicleLeftX < secondPoint.x;
 }
 
 void Vehicle::updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points)
@@ -245,10 +218,10 @@ void Vehicle::updateCollidedWithLandscape(const std::vector<sf::Vector2f> &point
 bool Vehicle::collidedWithMeteorite(const Meteorite &meteorite) const
 {
     return !isOnPlatform &&
-        getPosition().y - getSize().height / 3 < meteorite.getPosition().y + meteorite.getRadius() &&
-        getPosition().x + getSize().width / 3 > meteorite.getPosition().x - meteorite.getRadius() &&
-        getPosition().y + getSize().height / 3 > meteorite.getPosition().y - meteorite.getRadius() &&
-        getPosition().x - getSize().width / 3 < meteorite.getPosition().x + meteorite.getRadius();
+           getPosition().y - getSize().height / 3 < meteorite.getPosition().y + meteorite.getRadius() &&
+           getPosition().x + getSize().width / 3 > meteorite.getPosition().x - meteorite.getRadius() &&
+           getPosition().y + getSize().height / 3 > meteorite.getPosition().y - meteorite.getRadius() &&
+           getPosition().x - getSize().width / 3 < meteorite.getPosition().x + meteorite.getRadius();
 }
 
 void Vehicle::updateCollidedWithMeteorite(std::vector<Meteorite> &meteorites)
@@ -267,18 +240,15 @@ void Vehicle::updateTilt()
     if (velocity.x > 0)
     {
         rotation += std::min(velocity.x * TIME_STEP, MAX_TILT_ANGLE - rotation);
-    }
-    else if (velocity.x < 0)
+    } else if (velocity.x < 0)
     {
         rotation += std::max(velocity.x * TIME_STEP, -MAX_TILT_ANGLE - rotation);
-    }
-    else
+    } else
     {
         if (rotation > 0)
         {
             rotation = std::max(rotation - RETURN_ANGLE_SPEED * TIME_STEP, 0.f);
-        }
-        else if (rotation < 0)
+        } else if (rotation < 0)
         {
             rotation = std::min(rotation + RETURN_ANGLE_SPEED * TIME_STEP, 0.f);
         }

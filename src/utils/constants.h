@@ -22,7 +22,9 @@ constexpr float HORIZONTAL_ACCELERATION = 1.0f;
 constexpr float MAX_VEHICLE_ACCELERATION = 5.f;
 
 constexpr Size VEHICLE_SIZE = {100.f, 100.f};
-constexpr Size PLATFORM_SIZE = {200.f, 35.f};
+constexpr Size PLATFORM_SIZE = {286.f, 500.f};
+constexpr float PLATFORM_OFFSET_X = 50.f;
+constexpr float PLATFORM_OFFSET_Y = 270.f;
 
 constexpr float LANDSCAPE_STEP = 100.f;
 

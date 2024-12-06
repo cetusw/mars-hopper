@@ -1,20 +1,17 @@
 #include "Screen.h"
-
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
-
+#include "../utils/utils.cpp"
 #include "../game/Game.h"
 #include "../utils/constants.h"
-
-extern void loadTexture(sf::Texture &texture, const std::string &filePath);
-extern void loadFont(sf::Font& font, const std::string &filePath);
 
 Screen::Screen() : selectedOption(0)
 {
     initBackground("../assets/menu-background.png");
 }
 
-void Screen::init(const std::string &titleContent, const std::vector<std::string> &menuOptions, const std::string &alignment, const sf::Color titleColor, const sf::Color contentColor)
+void Screen::init(const std::string &titleContent, const std::vector<std::string> &menuOptions, const std::string &alignment,
+                  const sf::Color titleColor, const sf::Color contentColor)
 {
     options.clear();
     loadFont(titleFont, BOLD_FONT);
@@ -27,8 +24,7 @@ void Screen::init(const std::string &titleContent, const std::vector<std::string
     if (alignment == "left")
     {
         title.setPosition(TITLE_POSITION_LEFT);
-    }
-    else if (alignment == "center")
+    } else if (alignment == "center")
     {
         title.setPosition(WINDOW_WIDTH / 2 - title.getGlobalBounds().width / 2, TITLE_POSITION_LEFT.y);
     }
@@ -55,17 +51,17 @@ void Screen::initSpecificScreen(const GameState &state)
     {
         case GameState::MainMenu:
             init("Mars Hopper", OPTIONS_MAIN_MENU, "left", sf::Color::White, sf::Color::White);
-        break;
+            break;
         case GameState::Settings:
             init("Settings", OPTIONS_SETTINGS, "left", sf::Color::White, sf::Color::White);
-        break;
+            break;
         case GameState::GameOver:
             init("You Lose", OPTIONS_GAME_OVER, "center", sf::Color::Red, sf::Color::White);
-        break;
+            break;
         case GameState::Pause:
             init("Pause", OPTIONS_PAUSE, "left", sf::Color::White, sf::Color::White);
-        break;
-        default:;
+            break;
+        default: ;
     }
 }
 
@@ -84,7 +80,7 @@ void Screen::draw(sf::RenderWindow &window)
     window.clear(sf::Color(0x00, 0x00, 0x00));
     window.draw(backgroundSprite);
     window.draw(title);
-    for (const auto &option : options)
+    for (const auto &option: options)
     {
         window.draw(option);
     }
@@ -98,8 +94,7 @@ void Screen::handleInput(sf::Event event)
         if (event.key.code == sf::Keyboard::Up)
         {
             selectedOption = (selectedOption - 1 + options.size()) % options.size();
-        }
-        else if (event.key.code == sf::Keyboard::Down)
+        } else if (event.key.code == sf::Keyboard::Down)
         {
             selectedOption = (selectedOption + 1) % options.size();
         }
@@ -115,14 +110,12 @@ void Screen::handleScreen(sf::RenderWindow &window, GameState &state)
         if (event.type == sf::Event::Closed)
         {
             state = GameState::Exit;
-        }
-        else if (event.type == sf::Event::KeyPressed)
+        } else if (event.type == sf::Event::KeyPressed)
         {
             if (event.key.code == sf::Keyboard::Enter)
             {
                 handleOptionList(state);
-            }
-            else
+            } else
             {
                 handleInput(event);
             }
@@ -137,16 +130,16 @@ void Screen::handleOptionList(GameState &state) const
     {
         case GameState::MainMenu:
             handleMainMenuOptionList(state);
-        break;
+            break;
         case GameState::Settings:
             handleSettingsOptionList(state);
-        break;
+            break;
         case GameState::GameOver:
             handleGameOverOptionList(state);
-        break;
+            break;
         case GameState::Pause:
             handlePauseOptionList(state);
-        default:;
+        default: ;
     }
 }
 
@@ -156,13 +149,13 @@ void Screen::handleMainMenuOptionList(GameState &state) const
     {
         case 0:
             state = GameState::Start;
-        break;
+            break;
         case 1:
             state = GameState::Settings;
-        break;
+            break;
         case 2:
             state = GameState::Exit;
-        break;
+            break;
         default: state = GameState::MainMenu;
     }
 }
@@ -173,10 +166,10 @@ void Screen::handleSettingsOptionList(GameState &state) const
     {
         case 0:
             state = GameState::Exit;
-        break;
+            break;
         case 1:
             state = GameState::MainMenu;
-        break;
+            break;
         default: state = GameState::Settings;
     }
 }
@@ -187,10 +180,10 @@ void Screen::handlePauseOptionList(GameState &state) const
     {
         case 0:
             state = GameState::Playing;
-        break;
+            break;
         case 1:
             state = GameState::MainMenu;
-        break;
+            break;
         default: state = GameState::Pause;
     }
 }
@@ -201,10 +194,10 @@ void Screen::handleGameOverOptionList(GameState &state) const
     {
         case 0:
             state = GameState::Start;
-        break;
+            break;
         case 1:
             state = GameState::MainMenu;
-        break;
+            break;
         default: state = GameState::Pause;
     }
 }

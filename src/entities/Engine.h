@@ -8,18 +8,29 @@
 
 #include "../utils/Size.h"
 
-class Engine {
+class Engine
+{
 public:
     Engine();
+
     void init(const std::string &filePath);
+
     void update();
+
     void updateCurrentFrame();
+
     void updateThrusterPosition(sf::Vector2f offset, const sf::Vector2f &vehiclePosition);
-    void draw(sf::RenderWindow& window) const;
+
+    void draw(sf::RenderWindow &window) const;
+
     void thrust();
+
     Size getSize() const;
+
     sf::Vector2f getPosition() const;
+
     void setPosition(sf::Vector2f position);
+
     void setRotation(float degrees);
 
     float rotation;
@@ -45,7 +56,6 @@ private:
     sf::Sound thrusterSound;
     bool isRunning = false;
 };
-
 
 
 #endif //THRUSTERANIMATION_H

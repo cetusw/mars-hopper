@@ -4,14 +4,11 @@
 #include <string>
 #include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Window/Window.hpp>
 
-#include "../utils/Size.h"
-
-class Landscape {
+class Landscape
+{
 public:
     Landscape();
-    // void init(float x, float y);
 
     void updateLandscape(float step, float minHeight, float maxHeight);
 
@@ -26,20 +23,10 @@ public:
     std::vector<sf::ConvexShape> landscapes;
     std::vector<sf::Vector2f> points;
 
-    // void moveForward();
-    // void updatePosition(const std::string &direction, const sf::Vector2f &velocity);
-
-    // sf::ConvexShape getLandscape();
     sf::Vector2f getPosition() const;
-    // Size getSize() const;
-    // void setPosition(float x, float y);
-
 
 private:
     sf::ConvexShape landscape;
-    // Size size;
 };
-
-
 
 #endif //LANDSCAPE_H

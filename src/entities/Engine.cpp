@@ -1,9 +1,6 @@
 #include "Engine.h"
-
+#include "../utils/utils.cpp"
 #include "../utils/constants.h"
-
-extern void loadTexture(sf::Texture &texture, const std::string &filePath);
-extern void loadSound(sf::SoundBuffer &buffer, const std::string &filePath);
 
 Engine::Engine() : rotation(0), size{500, 500}, frameColumn(0), frameRow(0), currentFrameIndex(0), elapsedTime(0), isAnimating(false)
 {
@@ -40,8 +37,7 @@ void Engine::thrust()
         isAnimating = true;
         currentFrameIndex = 0;
         flameSprite.setTextureRect(currentFrame);
-    }
-    else
+    } else
     {
         currentFrameIndex = 9;
         updateCurrentFrame();
