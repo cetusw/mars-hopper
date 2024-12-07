@@ -12,6 +12,8 @@ Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper",
 
 void Game::init()
 {
+    speedometer.init();
+    fuelIndicator.init();
     initBackground("../assets/game-background.png");
     vehicle.init("../assets/crew-dragon.png");
 
@@ -225,9 +227,6 @@ void Game::updateMeteoritePosition()
 
 void Game::update()
 {
-    vehicle.setPosition(
-        {vehicle.getPosition().x + vehicle.getVelocity().x * TIME_STEP, vehicle.getPosition().y + vehicle.getVelocity().y * TIME_STEP}
-    );
     addMeteorite();
     updateMeteoritePosition();
     updateMapPosition();
@@ -239,6 +238,8 @@ void Game::update()
     }
     vehicle.updatePosition();
     vehicle.updateCollidedWithPlatforms(platforms);
+    fuelIndicator.updateFuelIndicator(vehicle.fuel, vehicle.getPosition());
+    speedometer.updateSpeedometer(vehicle.getVelocity(), vehicle.getPosition());
     vehicle.updateCollidedWithLandscape(landscape.points);
     vehicle.updateCollidedWithMeteorite(meteorites);
     if (vehicle.isCrashed)
@@ -268,5 +269,7 @@ void Game::draw()
     {
         window.draw(currentMeteorite.getBody());
     }
+    window.draw(speedometer.speedText);
+    window.draw(fuelIndicator.fuelText);
     window.display();
 }

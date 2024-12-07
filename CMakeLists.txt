@@ -23,6 +23,10 @@ add_executable(mars-hopper main.cpp
         src/entities/Meteorite.h
         src/entities/Meteorite.cpp
         src/utils/utils.cpp
+        src/entities/Speedometer.h
+        src/entities/Speedometer.cpp
+        src/entities/FuelIndicator.h
+        src/entities/FuelIndicator.cpp
 )
 
 target_link_libraries(mars-hopper

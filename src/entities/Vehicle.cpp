@@ -33,17 +33,19 @@ void Vehicle::init(const std::string &filePath)
 
 void Vehicle::updatePosition()
 {
-    reduceVelocityX();
-    reduceVelocityY();
+    setPosition(
+        {getPosition().x + getVelocity().x * TIME_STEP, getPosition().y + getVelocity().y * TIME_STEP}
+    );
     reduceAccelerationX();
     reduceAccelerationY();
+    reduceVelocityX();
+    reduceVelocityY();
     updateTilt();
     updateThrusters();
 }
 
 void Vehicle::reduceVelocityX()
 {
-    velocity.x += acceleration.x;
     if (velocity.x > 0)
     {
         velocity.x -= HORIZONTAL_ACCELERATION;
@@ -59,11 +61,15 @@ void Vehicle::reduceVelocityX()
             velocity.x = 0;
         }
     }
+    velocity.x += acceleration.x;
 }
 
 void Vehicle::reduceVelocityY()
 {
-    velocity.y += FREE_FALL_ACCELERATION - acceleration.y;
+    if (!isOnPlatform)
+    {
+        velocity.y += FREE_FALL_ACCELERATION - acceleration.y;
+    }
 }
 
 void Vehicle::reduceAccelerationX()
@@ -169,12 +175,17 @@ void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
     {
         if (collidedWithPlatform(platform))
         {
+            if (std::hypot(velocity.x, velocity.y) > MAX_AllOWED_SPEED)
+            {
+                handleVehicleCrash();
+                break;
+            }
             fuel = 100.f;
             isOnPlatform = true;
             setVelocity({0, 0});
             setPosition({
                 getPosition().x,
-                platform.getPosition().y - getSize().height / 2.0f + 270
+                platform.getPosition().y - getSize().height / 2.0f + PLATFORM_OFFSET_Y
             });
             break;
         }
@@ -270,6 +281,7 @@ void Vehicle::updateThrusters()
 void Vehicle::handleVehicleCrash()
 {
     isCrashed = true;
+    fuel = 100.f;
     setRotation(0);
     setVelocity({0, 0});
     setAcceleration({0, 0});

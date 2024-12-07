@@ -59,6 +59,7 @@ public:
     bool isOnPlatform;
     Engine leftThruster;
     Engine rightThruster;
+    float fuel;
 
 private:
     void increaseDiagonalAcceleration(const std::string &direction);
@@ -80,7 +81,6 @@ private:
     sf::Vector2f position;
     float rotation;
     Size size;
-    float fuel;
 };
 
 #endif //VEHICLE_H

@@ -20,6 +20,7 @@ constexpr int GROUND_LEVEL = 900;
 constexpr float FREE_FALL_ACCELERATION = 3.7f;
 constexpr float HORIZONTAL_ACCELERATION = 1.0f;
 constexpr float MAX_VEHICLE_ACCELERATION = 5.f;
+constexpr float MAX_AllOWED_SPEED = 300.f;
 
 constexpr Size VEHICLE_SIZE = {100.f, 100.f};
 constexpr Size PLATFORM_SIZE = {286.f, 500.f};
