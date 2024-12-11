@@ -193,7 +193,7 @@ void Game::addMeteorite()
 {
     timeSinceLastMeteorite += TIME_STEP;
 
-    if (timeSinceLastMeteorite < getRandomNumber(1, 3))
+    if (timeSinceLastMeteorite < getRandomNumber(5, 10))
     {
         return;
     }

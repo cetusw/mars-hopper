@@ -74,6 +74,8 @@ private:
 
     void reduceAccelerationY();
 
+    void reduceFuel(float engineNumber);
+
     sf::Sprite body;
     sf::Texture texture;
     sf::Vector2f velocity;

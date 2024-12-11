@@ -102,6 +102,18 @@ void Vehicle::reduceAccelerationY()
     }
 }
 
+void Vehicle::reduceFuel(const float engineNumber)
+{
+    if (fuel > THRUSTER_FUEL_CONSUMPTION * engineNumber)
+    {
+        fuel -= THRUSTER_FUEL_CONSUMPTION * engineNumber;
+    }
+    else
+    {
+        fuel = 0;
+    }
+}
+
 void Vehicle::handleInput(const sf::Keyboard::Key key)
 {
     if (fuel <= 0)
@@ -113,7 +125,7 @@ void Vehicle::handleInput(const sf::Keyboard::Key key)
 
     if (key == sf::Keyboard::Up)
     {
-        fuel -= 10.0f;
+        reduceFuel(2);
         leftThruster.thrust();
         rightThruster.thrust();
         increaseVerticalAcceleration();
@@ -121,14 +133,14 @@ void Vehicle::handleInput(const sf::Keyboard::Key key)
 
     if (key == sf::Keyboard::Left)
     {
-        fuel -= 5.0f;
+        reduceFuel(1);
         increaseDiagonalAcceleration("left");
         leftThruster.thrust();
     }
 
     if (key == sf::Keyboard::Right)
     {
-        fuel -= 5.0f;
+        reduceFuel(1);
         increaseDiagonalAcceleration("right");
         rightThruster.thrust();
     }
