@@ -7,6 +7,7 @@
 #include "../entities/FuelIndicator.h"
 #include "../entities/Landscape.h"
 #include "../entities/Meteorite.h"
+#include "../entities/PassedPlatforms.h"
 #include "../entities/Screen.h"
 #include "../entities/Vehicle.h"
 #include "../entities/Platform.h"
@@ -27,6 +28,7 @@ public:
     std::vector<sf::Vector2f> points;
     Speedometer speedometer;
     FuelIndicator fuelIndicator;
+    PassedPlatforms passedPlatforms;
 
 private:
     void init();

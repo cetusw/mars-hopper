@@ -28,7 +28,7 @@ void Speedometer::updateSpeedometer(const sf::Vector2f speed, const sf::Vector2f
 
 void Speedometer::handleSpeeding(const float speed)
 {
-    if (speed > 300)
+    if (speed > MAX_AllOWED_SPEED)
     {
         speedText.setFillColor(sf::Color::Red);
     }

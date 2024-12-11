@@ -35,6 +35,8 @@ public:
 
     void handleVehicleCrash();
 
+    void increasePlatformNumber(int currentPlatformId);
+
     bool collidedWithLandscape(sf::Vector2f firstPoint, sf::Vector2f secondPoint) const;
 
     sf::Vector2f getPosition() const;
@@ -42,6 +44,8 @@ public:
     sf::Vector2f getVelocity() const;
 
     sf::Vector2f getAcceleration() const;
+
+    std::vector<int> getPassedPlatforms();
 
     Size getSize() const;
 
@@ -83,6 +87,7 @@ private:
     sf::Vector2f position;
     float rotation;
     Size size;
+    std::vector<int> passedPlatforms;
 };
 
 #endif //VEHICLE_H

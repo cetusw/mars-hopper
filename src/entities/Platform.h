@@ -23,9 +23,15 @@ public:
 
     sf::Sprite getBody();
 
+    int getId() const;
+
     void setPosition(float x, float y);
 
+    void setId();
+
 private:
+    int id;
+    static int lastId;
     sf::Sprite body;
     sf::Texture texture;
     Size size;

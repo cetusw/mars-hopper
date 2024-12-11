@@ -32,7 +32,7 @@ constexpr float LANDSCAPE_STEP = 100.f;
 const sf::Vector2f START_PLATFORM_POSITION = {100.f, 800.f};
 const sf::Vector2f FIRST_PLATFORM_POSITION = {600.f, 400.f};
 const sf::Vector2f SECOND_PLATFORM_POSITION = {1500.f, 800.f};
-const sf::Vector2f VEHICLE_START_POSITION = {(WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2) - 1000};
+const sf::Vector2f VEHICLE_START_POSITION = {(WINDOW_WIDTH / 2), -1000};
 
 constexpr float VEHICLE_DIAGONAL_TRUST_X = 20.f;
 constexpr float VEHICLE_DIAGONAL_TRUST_Y = 25.f;
@@ -59,6 +59,7 @@ const std::vector<std::string> OPTIONS_PAUSE = {"Restart", "Back to Main Menu"};
 
 const sf::Vector2f TITLE_POSITION_LEFT = {300.f, 200.f};
 
+const sf::Vector2f PASSED_PLATFORMS_POSITION = {50.f, WINDOW_HEIGHT - 150.f};
 
 
 #endif //CONSTANTS_H

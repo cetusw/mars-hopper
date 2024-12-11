@@ -10,32 +10,44 @@ Screen::Screen() : selectedOption(0)
     initBackground("../assets/menu-background.png");
 }
 
-void Screen::init(const std::string &titleContent, const std::vector<std::string> &menuOptions, const std::string &alignment,
-                  const sf::Color titleColor, const sf::Color contentColor)
+void Screen::init(const std::string &titleContent, const std::string &subtitleContent, const std::vector<std::string> &menuOptions,
+                  const std::string &alignment,
+                  const sf::Color titleColor, const sf::Color subtitleColor, const sf::Color contentColor)
 {
     options.clear();
     loadFont(titleFont, BOLD_FONT);
     loadFont(contentFont, BOLD_FONT);
 
-    title.setFont(titleFont);
-    title.setString(titleContent);
-    title.setCharacterSize(85);
-    title.setFillColor(titleColor);
+    initLine(title, titleContent, alignment, titleColor, 85, TITLE_POSITION_LEFT);
+    initLine(subtitle, subtitleContent, alignment, subtitleColor, 50, {TITLE_POSITION_LEFT.x, TITLE_POSITION_LEFT.y + 100});
+    initOptionList(menuOptions, contentColor);
+}
+
+void Screen::initLine(sf::Text &text, const std::string &titleContent, const std::string &alignment, const sf::Color color, const int &characterSize,
+                      const sf::Vector2f position) const
+{
+    text.setFont(titleFont);
+    text.setString(titleContent);
+    text.setCharacterSize(characterSize);
+    text.setFillColor(color);
     if (alignment == "left")
     {
-        title.setPosition(TITLE_POSITION_LEFT);
+        text.setPosition(position);
     } else if (alignment == "center")
     {
-        title.setPosition(WINDOW_WIDTH / 2 - title.getGlobalBounds().width / 2, TITLE_POSITION_LEFT.y);
+        text.setPosition(WINDOW_WIDTH / 2 - text.getGlobalBounds().width / 2, TITLE_POSITION_LEFT.y);
     }
+}
 
+void Screen::initOptionList(const std::vector<std::string> &menuOptions, const sf::Color color)
+{
     for (int i = 0; i < menuOptions.size(); ++i)
     {
         sf::Text option;
         option.setFont(contentFont);
         option.setString(menuOptions[i]);
         option.setCharacterSize(50);
-        option.setFillColor(contentColor);
+        option.setFillColor(color);
         option.setPosition(300, static_cast<float>(600 + i * 70));
         if (i == selectedOption)
         {
@@ -45,21 +57,22 @@ void Screen::init(const std::string &titleContent, const std::vector<std::string
     }
 }
 
-void Screen::initSpecificScreen(const GameState &state)
+void Screen::initSpecificScreen(const GameState &state, const std::string &score)
 {
     switch (state)
     {
         case GameState::MainMenu:
-            init("Mars Hopper", OPTIONS_MAIN_MENU, "left", sf::Color::White, sf::Color::White);
+            init("Mars Hopper", "Your best score: " + std::to_string(loadProgress()), OPTIONS_MAIN_MENU, "left", sf::Color::White, sf::Color::White,
+                 sf::Color::White);
             break;
         case GameState::Settings:
-            init("Settings", OPTIONS_SETTINGS, "left", sf::Color::White, sf::Color::White);
+            init("Settings", "", OPTIONS_SETTINGS, "left", sf::Color::White, sf::Color::White, sf::Color::White);
             break;
         case GameState::GameOver:
-            init("You Lose", OPTIONS_GAME_OVER, "center", sf::Color::Red, sf::Color::White);
+            init("You're score: " + score, "", OPTIONS_GAME_OVER, "center", sf::Color::Red, sf::Color::White, sf::Color::White);
             break;
         case GameState::Pause:
-            init("Pause", OPTIONS_PAUSE, "left", sf::Color::White, sf::Color::White);
+            init("Pause", "", OPTIONS_PAUSE, "left", sf::Color::White, sf::Color::White, sf::Color::White);
             break;
         default: ;
     }
@@ -80,6 +93,7 @@ void Screen::draw(sf::RenderWindow &window)
     window.clear(sf::Color(0x00, 0x00, 0x00));
     window.draw(backgroundSprite);
     window.draw(title);
+    window.draw(subtitle);
     for (const auto &option: options)
     {
         window.draw(option);
@@ -101,9 +115,9 @@ void Screen::handleInput(sf::Event event)
     }
 }
 
-void Screen::handleScreen(sf::RenderWindow &window, GameState &state)
+void Screen::handleScreen(sf::RenderWindow &window, GameState &state, const std::string &score)
 {
-    initSpecificScreen(state);
+    initSpecificScreen(state, score);
     sf::Event event;
     while (window.pollEvent(event))
     {

@@ -2,7 +2,9 @@
 #include "../utils/utils.cpp"
 #include "../utils/constants.h"
 
-Platform::Platform() : size{PLATFORM_SIZE}
+int Platform::lastId = 0;
+
+Platform::Platform() : id(0), size{PLATFORM_SIZE}
 {
 }
 
@@ -15,16 +17,19 @@ void Platform::init(const float x, const float y, const std::string &filePath)
         size.height / static_cast<float>(texture.getSize().y)
     );
     body.setPosition(x, y);
+
+    id = ++lastId;
 }
 
 void Platform::moveForward(std::vector<sf::Vector2f> &points)
 {
-    if (getPosition().x + getSize().width < -WINDOW_WIDTH - 500)
+    if (getPosition().x + getSize().width < -WINDOW_WIDTH)
     {
         setPosition(
             WINDOW_WIDTH + 500,
-            getPlatformPositionY(WINDOW_WIDTH + 500, points)
+            getPlatformPositionY(WINDOW_WIDTH, points)
         );
+        setId();
     }
 }
 
@@ -46,7 +51,6 @@ float Platform::getPlatformPositionY(const float x, std::vector<sf::Vector2f> &p
     {
         if (x + LANDSCAPE_STEP < point.x && point.x > 0)
         {
-            std::cout << point.x << std::endl;
             return point.y - 350;
         }
     }
@@ -67,7 +71,17 @@ sf::Sprite Platform::getBody()
     return body;
 }
 
+int Platform::getId() const
+{
+    return id;
+}
+
 void Platform::setPosition(const float x, const float y)
 {
     body.setPosition(x, y);
+}
+
+void Platform::setId()
+{
+    id = ++lastId;
 }

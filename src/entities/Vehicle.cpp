@@ -5,8 +5,8 @@
 #include "../game/Game.h"
 #include "../utils/constants.h"
 
-Vehicle::Vehicle() : isCrashed(false), isOnPlatform(false), velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION}, rotation(0),
-                     size{VEHICLE_SIZE}, fuel(100)
+Vehicle::Vehicle() : isCrashed(false), isOnPlatform(false), fuel(100), velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION},
+                     rotation(0), size{VEHICLE_SIZE}
 {
 }
 
@@ -29,6 +29,8 @@ void Vehicle::init(const std::string &filePath)
     leftThruster.setRotation(15.0f);
     rightThruster.init("../assets/flame.png");
     rightThruster.setRotation(-15.0f);
+
+    passedPlatforms.clear();
 }
 
 void Vehicle::updatePosition()
@@ -107,8 +109,7 @@ void Vehicle::reduceFuel(const float engineNumber)
     if (fuel > THRUSTER_FUEL_CONSUMPTION * engineNumber)
     {
         fuel -= THRUSTER_FUEL_CONSUMPTION * engineNumber;
-    }
-    else
+    } else
     {
         fuel = 0;
     }
@@ -192,6 +193,7 @@ void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
                 handleVehicleCrash();
                 break;
             }
+            increasePlatformNumber(platform.getId());
             fuel = 100.f;
             isOnPlatform = true;
             setVelocity({0, 0});
@@ -297,6 +299,18 @@ void Vehicle::handleVehicleCrash()
     setRotation(0);
     setVelocity({0, 0});
     setAcceleration({0, 0});
+    if (loadProgress() < passedPlatforms.size())
+    {
+        saveProgress(passedPlatforms.size());
+    }
+}
+
+void Vehicle::increasePlatformNumber(const int currentPlatformId)
+{
+    if (std::ranges::find(passedPlatforms, currentPlatformId) == passedPlatforms.end() && !isCrashed)
+    {
+        passedPlatforms.emplace_back(currentPlatformId);
+    }
 }
 
 sf::Vector2f Vehicle::getPosition() const
@@ -322,6 +336,11 @@ sf::Vector2f Vehicle::getVelocity() const
 sf::Vector2f Vehicle::getAcceleration() const
 {
     return acceleration;
+}
+
+std::vector<int> Vehicle::getPassedPlatforms()
+{
+    return passedPlatforms;
 }
 
 void Vehicle::setPosition(const sf::Vector2f position)

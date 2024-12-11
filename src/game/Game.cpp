@@ -7,11 +7,11 @@
 Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper", sf::Style::Default),
                gameState(GameState::MainMenu), timeSinceLastMeteorite(0.0f)
 {
-    init();
 }
 
 void Game::init()
 {
+    passedPlatforms.init();
     speedometer.init();
     fuelIndicator.init();
     initBackground("../assets/game-background.png");
@@ -26,8 +26,6 @@ void Game::init()
 
     platforms[0].init((WINDOW_WIDTH / 2) - (PLATFORM_SIZE.width / 2), platforms[0].getPlatformPositionY(WINDOW_WIDTH / 2, landscape.points),
                       "../assets/platform.png");
-
-    std::cout << platforms[0].getPosition().y << std::endl;
 
     float platformPositionX = 0;
     for (int i = 1; i < 5; i++)
@@ -84,7 +82,7 @@ void Game::run()
     {
         if (gameState == GameState::MainMenu || gameState == GameState::Settings || gameState == GameState::Pause || gameState == GameState::GameOver)
         {
-            menu.handleScreen(window, gameState);
+            menu.handleScreen(window, gameState, passedPlatforms.platformsText.getString());
         } else if (gameState == GameState::Start)
         {
             reset();
@@ -238,6 +236,7 @@ void Game::update()
     }
     vehicle.updatePosition();
     vehicle.updateCollidedWithPlatforms(platforms);
+    passedPlatforms.update(vehicle.getPassedPlatforms());
     fuelIndicator.updateFuelIndicator(vehicle.fuel, vehicle.getPosition());
     speedometer.updateSpeedometer(vehicle.getVelocity(), vehicle.getPosition());
     vehicle.updateCollidedWithLandscape(landscape.points);
@@ -271,5 +270,6 @@ void Game::draw()
     }
     window.draw(speedometer.speedText);
     window.draw(fuelIndicator.fuelText);
+    window.draw(passedPlatforms.platformsText);
     window.display();
 }

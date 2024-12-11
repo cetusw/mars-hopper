@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <fstream>
 
 inline float getRandomNumber(const float min, const float max)
 {
@@ -34,4 +35,26 @@ inline void loadTexture(sf::Texture &texture, const std::string &filePath)
     {
         std::cerr << "Не удалось загрузить текстуру" << std::endl;
     }
+}
+
+inline void saveProgress(const size_t &score) {
+    std::ofstream file("../progress.txt");
+    if (file.is_open()) {
+        file << score;
+        file.close();
+    } else {
+        std::cerr << "Не удалось открыть файл для записи" << std::endl;
+    }
+}
+
+inline int loadProgress() {
+    std::ifstream file("../progress.txt");
+    int score;
+    if (file.is_open()) {
+        file >> score;
+        file.close();
+    } else {
+        std::cerr << "Не удалось открыть файл для чтения" << std::endl;
+    }
+    return score;
 }

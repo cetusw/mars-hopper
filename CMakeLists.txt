@@ -27,6 +27,8 @@ add_executable(mars-hopper main.cpp
         src/entities/Speedometer.cpp
         src/entities/FuelIndicator.h
         src/entities/FuelIndicator.cpp
+        src/entities/PassedPlatforms.h
+        src/entities/PassedPlatforms.cpp
 )
 
 target_link_libraries(mars-hopper
