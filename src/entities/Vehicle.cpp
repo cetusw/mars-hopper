@@ -182,7 +182,7 @@ bool Vehicle::collidedWithPlatform(const Platform &platform) const
            getPosition().y - getSize().height / 2.0f < platform.getPosition().y + PLATFORM_OFFSET_Y + platform.getSize().height;
 }
 
-void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
+bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
 {
     for (Platform &platform: platforms)
     {
@@ -201,9 +201,10 @@ void Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
                 getPosition().x,
                 platform.getPosition().y - getSize().height / 2.0f + PLATFORM_OFFSET_Y
             });
-            break;
+            return true;
         }
     }
+    return false;
 }
 
 bool Vehicle::collidedWithLandscape(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint) const

@@ -21,7 +21,7 @@ public:
 
     bool collidedWithPlatform(const Platform &platform) const;
 
-    void updateCollidedWithPlatforms(std::vector<Platform> &platforms);
+    bool updateCollidedWithPlatforms(std::vector<Platform> &platforms);
 
     void updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points);
 

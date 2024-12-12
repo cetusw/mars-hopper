@@ -7,6 +7,7 @@
 
 constexpr float WINDOW_WIDTH = 1920.0f;
 constexpr float WINDOW_HEIGHT = 1080.0f;
+const sf::Vector2f WINDOW_CENTER = {WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f};
 constexpr float FREE_MOVE_BOX_LEFT = (WINDOW_WIDTH / 5) * 2;
 constexpr float FREE_MOVE_BOX_RIGHT = (WINDOW_WIDTH / 5) * 3;
 constexpr float FREE_MOVE_BOX_TOP = (WINDOW_HEIGHT / 5) * 2;
@@ -60,6 +61,7 @@ const std::vector<std::string> OPTIONS_PAUSE = {"Restart", "Back to Main Menu"};
 const sf::Vector2f TITLE_POSITION_LEFT = {300.f, 200.f};
 
 const sf::Vector2f PASSED_PLATFORMS_POSITION = {50.f, WINDOW_HEIGHT - 150.f};
+
 
 
 #endif //CONSTANTS_H

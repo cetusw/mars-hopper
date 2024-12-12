@@ -37,6 +37,10 @@ private:
 
     void initBackground(const std::string &filePath);
 
+    void updateBackgroundPosition();
+
+    void returnBackgroundToOrigin();
+
     void handlePlaying();
 
     void update();

@@ -71,9 +71,16 @@ void Game::initBackground(const std::string &filePath)
     loadTexture(backgroundTexture, filePath);
     backgroundSprite.setTexture(backgroundTexture);
     backgroundSprite.setScale(
-        WINDOW_WIDTH / backgroundSprite.getLocalBounds().width,
-        WINDOW_HEIGHT / backgroundSprite.getLocalBounds().height
+        WINDOW_WIDTH / backgroundSprite.getLocalBounds().width * 1.5f,
+        WINDOW_HEIGHT / backgroundSprite.getLocalBounds().height * 1.5f
     );
+    backgroundSprite.setOrigin({backgroundSprite.getLocalBounds().width / 2, backgroundSprite.getLocalBounds().height / 2});
+    backgroundSprite.setPosition({WINDOW_WIDTH / 2,  WINDOW_HEIGHT / 2});
+}
+
+void Game::updateBackgroundPosition()
+{
+    backgroundSprite.setPosition({backgroundSprite.getPosition().x, backgroundSprite.getPosition().y - vehicle.getVelocity().y * TIME_STEP / 10.f});
 }
 
 void Game::run()
@@ -177,6 +184,7 @@ void Game::updateMapPosition()
         updatePlatformsPosition("vertical", landscape.points);
         landscape.updatePosition("vertical", vehicle.getVelocity());
         updateMeteoritesPosition("vertical");
+        updateBackgroundPosition();
     }
     if (vehicle.getPosition().y > FREE_MOVE_BOX_BOTTOM)
     {
@@ -184,6 +192,7 @@ void Game::updateMapPosition()
         updatePlatformsPosition("vertical", landscape.points);
         landscape.updatePosition("vertical", vehicle.getVelocity());
         updateMeteoritesPosition("vertical");
+        updateBackgroundPosition();
     }
 }
 
