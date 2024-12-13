@@ -146,96 +146,44 @@ void Game::pollEvents()
     }
 }
 
-void Game::updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points)
-{
-    for (Platform &platform: platforms)
-    {
-        platform.updatePosition(direction, vehicle.getVelocity(), points);
-    }
-}
-
-void Game::updateMeteoritesPosition(const std::string &direction)
-{
-    for (Meteorite &meteorite: meteorites)
-    {
-        meteorite.updatePosition(direction, vehicle.getVelocity());
-    }
-}
-
 void Game::updateMapPosition()
 {
     if (vehicle.getPosition().x > FREE_MOVE_BOX_RIGHT)
     {
         vehicle.setPosition({FREE_MOVE_BOX_RIGHT, vehicle.getPosition().y});
-        updatePlatformsPosition("horizontal", landscape.points);
+        platform.updatePlatformsPosition("horizontal", landscape.points, platforms, vehicle.getVelocity());
         landscape.updatePosition("horizontal", vehicle.getVelocity());
-        updateMeteoritesPosition("horizontal");
+        meteorite.updateMeteoritesPositionRelativeToVehicle("horizontal", meteorites, vehicle.getVelocity());
     }
     if (vehicle.getPosition().x < FREE_MOVE_BOX_LEFT)
     {
         vehicle.setPosition({FREE_MOVE_BOX_LEFT, vehicle.getPosition().y});
-        updatePlatformsPosition("horizontal", landscape.points);
+        platform.updatePlatformsPosition("horizontal", landscape.points, platforms, vehicle.getVelocity());
         landscape.updatePosition("horizontal", vehicle.getVelocity());
-        updateMeteoritesPosition("horizontal");
+        meteorite.updateMeteoritesPositionRelativeToVehicle("horizontal", meteorites, vehicle.getVelocity());
     }
     if (vehicle.getPosition().y < FREE_MOVE_BOX_TOP)
     {
         vehicle.setPosition({vehicle.getPosition().x, FREE_MOVE_BOX_TOP});
-        updatePlatformsPosition("vertical", landscape.points);
+        platform.updatePlatformsPosition("vertical", landscape.points, platforms, vehicle.getVelocity());
         landscape.updatePosition("vertical", vehicle.getVelocity());
-        updateMeteoritesPosition("vertical");
+        meteorite.updateMeteoritesPositionRelativeToVehicle("vertical", meteorites, vehicle.getVelocity());
         updateBackgroundPosition();
     }
     if (vehicle.getPosition().y > FREE_MOVE_BOX_BOTTOM)
     {
         vehicle.setPosition({vehicle.getPosition().x, FREE_MOVE_BOX_BOTTOM});
-        updatePlatformsPosition("vertical", landscape.points);
+        platform.updatePlatformsPosition("vertical", landscape.points, platforms, vehicle.getVelocity());
         landscape.updatePosition("vertical", vehicle.getVelocity());
-        updateMeteoritesPosition("vertical");
+        meteorite.updateMeteoritesPositionRelativeToVehicle("vertical", meteorites, vehicle.getVelocity());
         updateBackgroundPosition();
-    }
-}
-
-void Game::addMeteorite()
-{
-    timeSinceLastMeteorite += TIME_STEP;
-
-    if (timeSinceLastMeteorite < getRandomNumber(5, 10))
-    {
-        return;
-    }
-
-    for (Meteorite &meteorite: meteorites)
-    {
-        timeSinceLastMeteorite = 0.0f;
-        if (!meteorite.isFalling)
-        {
-            meteorite.setPosition({getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800});
-            meteorite.setVelocity({-450, 450});
-            meteorite.isFalling = true;
-            break;
-        }
-    }
-}
-
-void Game::updateMeteoritePosition()
-{
-    for (Meteorite &meteorite: meteorites)
-    {
-        if (meteorite.isFalling)
-        {
-            meteorite.setPosition({
-                meteorite.getPosition().x + meteorite.getVelocity().x * TIME_STEP,
-                meteorite.getPosition().y + meteorite.getVelocity().y * TIME_STEP
-            });
-        }
     }
 }
 
 void Game::update()
 {
-    addMeteorite();
-    updateMeteoritePosition();
+    meteorite.addMeteorite(meteorites, timeSinceLastMeteorite);
+    meteorite.updateMeteoritePosition(meteorites);
     updateMapPosition();
     landscape.updateLandscape(LANDSCAPE_STEP, 800, 1000);
     for (Meteorite &meteorite: meteorites)

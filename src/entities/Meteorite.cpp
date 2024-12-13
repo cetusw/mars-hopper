@@ -15,6 +15,28 @@ void Meteorite::init()
     isFalling = false;
 }
 
+void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite)
+{
+    timeSinceLastMeteorite += TIME_STEP;
+
+    if (timeSinceLastMeteorite < getRandomNumber(5, 10))
+    {
+        return;
+    }
+
+    for (Meteorite &meteorite: meteorites)
+    {
+        timeSinceLastMeteorite = 0.0f;
+        if (!meteorite.isFalling)
+        {
+            meteorite.setPosition({getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800});
+            meteorite.setVelocity({-450, 450});
+            meteorite.isFalling = true;
+            break;
+        }
+    }
+}
+
 void Meteorite::handleMeteoriteOverflow()
 {
     setPosition({getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800});
@@ -30,6 +52,28 @@ void Meteorite::updatePosition(const std::string &direction, const sf::Vector2f 
     } else if (direction == "vertical")
     {
         setPosition({getPosition().x, getPosition().y - velocity.y * TIME_STEP});
+    }
+}
+
+void Meteorite::updateMeteoritePosition(std::vector<Meteorite> &meteorites)
+{
+    for (Meteorite &meteorite: meteorites)
+    {
+        if (meteorite.isFalling)
+        {
+            meteorite.setPosition({
+                meteorite.getPosition().x + meteorite.getVelocity().x * TIME_STEP,
+                meteorite.getPosition().y + meteorite.getVelocity().y * TIME_STEP
+            });
+        }
+    }
+}
+
+void Meteorite::updateMeteoritesPositionRelativeToVehicle(const std::string &direction, std::vector<Meteorite> &meteorites, const sf::Vector2f velocity)
+{
+    for (Meteorite &meteorite: meteorites)
+    {
+        meteorite.updatePosition(direction, velocity);
     }
 }
 

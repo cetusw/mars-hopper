@@ -15,6 +15,9 @@ public:
 
     void updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points);
 
+    void updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points, std::vector<Platform> &platforms,
+                                        sf::Vector2f velocity);
+
     float getPlatformPositionY(float x, std::vector<sf::Vector2f> &points);
 
     sf::Vector2f getPosition() const;

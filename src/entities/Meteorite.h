@@ -13,9 +13,15 @@ public:
 
     void init();
 
+    void addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite);
+
     void handleMeteoriteOverflow();
 
     void updatePosition(const std::string &direction, const sf::Vector2f &velocity);
+
+    void updateMeteoritePosition(std::vector<Meteorite> &meteorites);
+
+    void updateMeteoritesPositionRelativeToVehicle(const std::string &direction, std::vector<Meteorite> &meteorites, sf::Vector2f velocity);
 
     bool collidedWithPlatform(const Platform &platform) const;
 

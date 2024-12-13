@@ -45,6 +45,14 @@ void Platform::updatePosition(const std::string &direction, const sf::Vector2f &
     moveForward(points);
 }
 
+void Platform::updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points, std::vector<Platform> &platforms, const sf::Vector2f velocity)
+{
+    for (Platform &platform: platforms)
+    {
+        platform.updatePosition(direction, velocity, points);
+    }
+}
+
 float Platform::getPlatformPositionY(const float x, std::vector<sf::Vector2f> &points)
 {
     for (const sf::Vector2f point: points)

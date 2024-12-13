@@ -23,6 +23,8 @@ public:
 
     std::vector<Platform> platforms;
     Landscape landscape;
+    Platform platform;
+    Meteorite meteorite;
     std::vector<Meteorite> meteorites;
     Vehicle vehicle;
     std::vector<sf::Vector2f> points;
@@ -39,8 +41,6 @@ private:
 
     void updateBackgroundPosition();
 
-    void returnBackgroundToOrigin();
-
     void handlePlaying();
 
     void update();
@@ -50,14 +50,6 @@ private:
     void pollEvents();
 
     void updateMapPosition();
-
-    void addMeteorite();
-
-    void updateMeteoritePosition();
-
-    void updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points);
-
-    void updateMeteoritesPosition(const std::string &direction);
 
     sf::RenderWindow window;
     sf::Texture backgroundTexture;
