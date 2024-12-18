@@ -31,6 +31,8 @@ add_executable(mars-hopper main.cpp
         src/entities/PassedPlatforms.cpp
         src/entities/AchievementManager.h
         src/entities/AchievementManager.cpp
+        src/entities/MiniMap.h
+        src/entities/MiniMap.cpp
 )
 
 target_link_libraries(mars-hopper

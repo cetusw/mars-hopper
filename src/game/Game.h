@@ -8,6 +8,7 @@
 #include "../entities/FuelIndicator.h"
 #include "../entities/Landscape.h"
 #include "../entities/Meteorite.h"
+#include "../entities/MiniMap.h"
 #include "../entities/PassedPlatforms.h"
 #include "../entities/Screen.h"
 #include "../entities/Vehicle.h"
@@ -69,6 +70,7 @@ private:
     Screen menu;
     float timeSinceLastMeteorite;
     AchievementManager achievementManager;
+    MiniMap miniMap;
 };
 
 

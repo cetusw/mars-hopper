@@ -26,7 +26,7 @@ void Platform::moveForward(std::vector<sf::Vector2f> &points)
     if (getPosition().x + getSize().width < -WINDOW_WIDTH)
     {
         setPosition(
-            WINDOW_WIDTH + 500,
+            WINDOW_WIDTH + WINDOW_EXPAND,
             getPlatformPositionY(WINDOW_WIDTH, points)
         );
         setId();

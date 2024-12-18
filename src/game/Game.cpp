@@ -11,6 +11,7 @@ Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper",
 
 void Game::init()
 {
+    miniMap.initMiniMap();
     achievementManager.initAchievementManager();
     achievementManager.initNotification();
     passedPlatforms.init();
@@ -224,6 +225,7 @@ void Game::update()
         gameState = GameState::GameOver;
     }
     achievementManager.updateNotification();
+    miniMap.updateMiniMap(vehicle);
 }
 
 void Game::draw()
@@ -249,5 +251,6 @@ void Game::draw()
     window.draw(fuelIndicator.fuelText);
     window.draw(passedPlatforms.platformsText);
     achievementManager.drawAchievementNotification(window);
+    miniMap.drawMiniMap(window, vehicle, platforms, landscape, meteorites);
     window.display();
 }
