@@ -2,7 +2,6 @@
 #define CONSTANTS_H
 
 #include "Size.h"
-#include "../entities/Vehicle.h"
 #include <string>
 
 constexpr float WINDOW_WIDTH = 1920.0f;
@@ -27,6 +26,7 @@ constexpr Size VEHICLE_SIZE = {100.f, 100.f};
 constexpr Size PLATFORM_SIZE = {286.f, 500.f};
 constexpr float PLATFORM_OFFSET_X = 50.f;
 constexpr float PLATFORM_OFFSET_Y = 270.f;
+constexpr float PLATFORM_OFFSET_Y_FOR_INSERT = 350.f;
 
 constexpr float LANDSCAPE_STEP = 100.f;
 
@@ -42,18 +42,25 @@ constexpr float VEHICLE_VERTICAL_TRUST = 30.f;
 constexpr float MAX_TILT_ANGLE = 15.f;
 constexpr float RETURN_ANGLE_SPEED = 25.f;
 
+constexpr Size ENGINE_SIZE = {500, 500};
 constexpr float THRUSTER_OFFSET_X = VEHICLE_SIZE.width / 4.0f;
 constexpr float THRUSTER_OFFSET_Y = VEHICLE_SIZE.height / 1.7f;
 constexpr float THRUSTER_ANGLE = 195.f;
 constexpr float THRUSTER_FUEL_CONSUMPTION = 5.0f;
+const std::string FLAME_IMAGE = "../assets/flame.png";
+const std::string ENGINE_SOUND = "../assets/sounds/engine.wav";
 
 constexpr float METEORITE_RADIUS = 50.0f;
 constexpr int METEORITES_AMOUNT = 3;
+const sf::Vector2f METEORITE_VELOCITY = {-450, 450};
 
 const std::string BOLD_FONT = "../assets/fonts/SpaceMono-Bold.ttf";
 const std::string REGULAR_FONT = "../assets/fonts/SpaceMono-Regular.ttf";
 
-const std::vector<std::string> OPTIONS_MAIN_MENU = {"Start", "Settings", "Exit"};
+constexpr float TITLE_FONT_SIZE = 85.0f;
+constexpr float SUBTITLE_FONT_SIZE = 50.0f;
+
+const std::vector<std::string> OPTIONS_MAIN_MENU = {"Start", "Settings", "Achievements", "Exit"};
 const std::vector<std::string> OPTIONS_SETTINGS = {"Volume", "Back"};
 const std::vector<std::string> OPTIONS_GAME_OVER = {"Restart", "Back to Main Menu"};
 const std::vector<std::string> OPTIONS_PAUSE = {"Restart", "Back to Main Menu"};
@@ -62,6 +69,19 @@ const sf::Vector2f TITLE_POSITION_LEFT = {300.f, 200.f};
 
 const sf::Vector2f PASSED_PLATFORMS_POSITION = {50.f, WINDOW_HEIGHT - 150.f};
 
+const sf::Vector2f ACHIEVEMENT_SIZE = {600, 150};
+const sf::Vector2f ACHIEVEMENT_START_POSITION = {WINDOW_WIDTH + ACHIEVEMENT_SIZE.x / 2, ACHIEVEMENT_SIZE.y};
+const sf::Vector2f ACHIEVEMENT_END_POSITION = {WINDOW_WIDTH - ACHIEVEMENT_SIZE.x / 2, ACHIEVEMENT_SIZE.y};
+constexpr float ACHIEVEMENT_SHOW_TIME = 5.0f;
+constexpr float ACHIEVEMENT_ANIMATION_SPEED = 20.0f;
+constexpr float ACHIEVEMENT_FONT_SIZE = 50.0f;
+constexpr float ACHIEVEMENT_ANIMATION_ACCELERATION = 1.005f;
 
+constexpr float FUEL_INDICATOR_FONT_SIZE = 30.0f;
+constexpr float MIN_FUEL_AMOUNT = 30.0f;
+
+const std::string ACHIEVEMENTS_FILE = "../achievements.txt";
+
+const std::string MENU_BACKGROUND_IMAGE = "../assets/menu-background.png";
 
 #endif //CONSTANTS_H

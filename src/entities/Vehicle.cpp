@@ -25,9 +25,9 @@ void Vehicle::init(const std::string &filePath)
     body.setPosition(VEHICLE_START_POSITION);
     body.setRotation(0);
 
-    leftThruster.init("../assets/flame.png");
+    leftThruster.init(FLAME_IMAGE);
     leftThruster.setRotation(15.0f);
-    rightThruster.init("../assets/flame.png");
+    rightThruster.init(FLAME_IMAGE);
     rightThruster.setRotation(-15.0f);
 
     passedPlatforms.clear();
@@ -182,7 +182,7 @@ bool Vehicle::collidedWithPlatform(const Platform &platform) const
            getPosition().y - getSize().height / 2.0f < platform.getPosition().y + PLATFORM_OFFSET_Y + platform.getSize().height;
 }
 
-bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
+bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms, AchievementManager &achievementManager)
 {
     for (Platform &platform: platforms)
     {
@@ -193,7 +193,7 @@ bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
                 handleVehicleCrash();
                 break;
             }
-            increasePlatformNumber(platform.getId());
+            increasePlatformNumber(platform.getId(), achievementManager);
             fuel = 100.f;
             isOnPlatform = true;
             setVelocity({0, 0});
@@ -306,11 +306,14 @@ void Vehicle::handleVehicleCrash()
     }
 }
 
-void Vehicle::increasePlatformNumber(const int currentPlatformId)
+void Vehicle::increasePlatformNumber(const int currentPlatformId, AchievementManager &achievementManager)
 {
     if (std::ranges::find(passedPlatforms, currentPlatformId) == passedPlatforms.end() && !isCrashed)
     {
         passedPlatforms.emplace_back(currentPlatformId);
+    } else if (currentPlatformId != passedPlatforms.back() && !isCrashed)
+    {
+        achievementManager.unlock("Back?");
     }
 }
 

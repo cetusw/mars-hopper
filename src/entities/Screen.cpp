@@ -7,7 +7,7 @@
 
 Screen::Screen() : selectedOption(0)
 {
-    initBackground("../assets/menu-background.png");
+    initBackground(MENU_BACKGROUND_IMAGE);
 }
 
 void Screen::init(const std::string &titleContent, const std::string &subtitleContent, const std::vector<std::string> &menuOptions,
@@ -18,8 +18,8 @@ void Screen::init(const std::string &titleContent, const std::string &subtitleCo
     loadFont(titleFont, BOLD_FONT);
     loadFont(contentFont, BOLD_FONT);
 
-    initLine(title, titleContent, alignment, titleColor, 85, TITLE_POSITION_LEFT);
-    initLine(subtitle, subtitleContent, alignment, subtitleColor, 50, {TITLE_POSITION_LEFT.x, TITLE_POSITION_LEFT.y + 100});
+    initLine(title, titleContent, alignment, titleColor, TITLE_FONT_SIZE, TITLE_POSITION_LEFT);
+    initLine(subtitle, subtitleContent, alignment, subtitleColor, SUBTITLE_FONT_SIZE, {TITLE_POSITION_LEFT.x, TITLE_POSITION_LEFT.y + 100});
     initOptionList(menuOptions, contentColor);
 }
 
@@ -46,7 +46,7 @@ void Screen::initOptionList(const std::vector<std::string> &menuOptions, const s
         sf::Text option;
         option.setFont(contentFont);
         option.setString(menuOptions[i]);
-        option.setCharacterSize(50);
+        option.setCharacterSize(SUBTITLE_FONT_SIZE);
         option.setFillColor(color);
         option.setPosition(300, static_cast<float>(600 + i * 70));
         if (i == selectedOption)
@@ -69,11 +69,13 @@ void Screen::initSpecificScreen(const GameState &state, const std::string &score
             init("Settings", "", OPTIONS_SETTINGS, "left", sf::Color::White, sf::Color::White, sf::Color::White);
             break;
         case GameState::GameOver:
-            init("You're score: " + score, "", OPTIONS_GAME_OVER, "center", sf::Color::Red, sf::Color::White, sf::Color::White);
+            init(score, "", OPTIONS_GAME_OVER, "center", sf::Color::Red, sf::Color::White, sf::Color::White);
             break;
         case GameState::Pause:
             init("Pause", "", OPTIONS_PAUSE, "left", sf::Color::White, sf::Color::White, sf::Color::White);
             break;
+        case GameState::Achievements:
+            init("Achievements", "", getAchievementsList(), "left", sf::Color::White, sf::Color::White, sf::Color::White);
         default: ;
     }
 }
@@ -138,7 +140,7 @@ void Screen::handleScreen(sf::RenderWindow &window, GameState &state, const std:
     draw(window);
 }
 
-void Screen::handleOptionList(GameState &state) const
+void Screen::handleOptionList(GameState &state)
 {
     switch (state)
     {
@@ -151,72 +153,119 @@ void Screen::handleOptionList(GameState &state) const
         case GameState::GameOver:
             handleGameOverOptionList(state);
             break;
+        case GameState::Achievements:
+            handleAchievementsList(state);
+            break;
         case GameState::Pause:
             handlePauseOptionList(state);
         default: ;
     }
 }
 
-void Screen::handleMainMenuOptionList(GameState &state) const
+void Screen::handleMainMenuOptionList(GameState &state)
 {
     switch (selectedOption)
     {
         case 0:
             state = GameState::Start;
+            selectedOption = 0;
             break;
         case 1:
             state = GameState::Settings;
+            selectedOption = 0;
             break;
         case 2:
+            state = GameState::Achievements;
+            selectedOption = 0;
+            break;
+        case 3:
             state = GameState::Exit;
+            selectedOption = 0;
             break;
         default: state = GameState::MainMenu;
     }
 }
 
-void Screen::handleSettingsOptionList(GameState &state) const
+void Screen::handleSettingsOptionList(GameState &state)
 {
     switch (selectedOption)
     {
         case 0:
             state = GameState::Exit;
+            selectedOption = 0;
             break;
         case 1:
             state = GameState::MainMenu;
+            selectedOption = 0;
             break;
         default: state = GameState::Settings;
     }
 }
 
-void Screen::handlePauseOptionList(GameState &state) const
+void Screen::handlePauseOptionList(GameState &state)
 {
     switch (selectedOption)
     {
         case 0:
             state = GameState::Playing;
+            selectedOption = 0;
             break;
         case 1:
             state = GameState::MainMenu;
+            selectedOption = 0;
             break;
         default: state = GameState::Pause;
     }
 }
 
-void Screen::handleGameOverOptionList(GameState &state) const
+void Screen::handleGameOverOptionList(GameState &state)
 {
     switch (selectedOption)
     {
         case 0:
             state = GameState::Start;
+            selectedOption = 0;
             break;
         case 1:
             state = GameState::MainMenu;
+            selectedOption = 0;
             break;
         default: state = GameState::Pause;
+    }
+}
+
+void Screen::handleAchievementsList(GameState &state)
+{
+    if (selectedOption == options.size() - 1)
+    {
+        state = GameState::MainMenu;
+        selectedOption = 0;
     }
 }
 
 int Screen::getSelectedOption() const
 {
     return selectedOption;
+}
+
+std::vector<std::string> Screen::getAchievementsList()
+{
+    std::vector<std::string> achievements;
+    std::ifstream inFile = loadFileForRead(ACHIEVEMENTS_FILE);
+
+    std::string line;
+
+    while (std::getline(inFile, line))
+    {
+        achievements.emplace_back(line);
+    }
+
+    if (!achievements.empty())
+    {
+        achievements.emplace_back("Back");
+        return achievements;
+    }
+    achievements.emplace_back("It seems you haven't received any achievements yet");
+    achievements.emplace_back("Back");
+    return achievements;
 }

@@ -11,19 +11,31 @@ Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper",
 
 void Game::init()
 {
+    achievementManager.initAchievementManager();
+    achievementManager.initNotification();
     passedPlatforms.init();
     speedometer.init();
     fuelIndicator.init();
     initBackground("../assets/game-background.png");
     vehicle.init("../assets/crew-dragon.png");
+    initLandscape();
+    initPlatforms();
+    initMeteorites();
+    initSound();
+}
 
+void Game::initLandscape()
+{
     landscape.updateLandscape(LANDSCAPE_STEP, 800, 1000);
 
     for (int i = 0; i < 5; i++)
     {
         platforms.emplace_back();
     }
+}
 
+void Game::initPlatforms()
+{
     platforms[0].init((WINDOW_WIDTH / 2) - (PLATFORM_SIZE.width / 2), platforms[0].getPlatformPositionY(WINDOW_WIDTH / 2, landscape.points),
                       "../assets/platform.png");
 
@@ -38,7 +50,10 @@ void Game::init()
             "../assets/platform.png"
         );
     }
+}
 
+void Game::initMeteorites()
+{
     for (int i = 0; i < METEORITES_AMOUNT; i++)
     {
         meteorites.emplace_back();
@@ -48,7 +63,10 @@ void Game::init()
     {
         meteorites[i].init();
     }
+}
 
+void Game::initSound()
+{
     loadSound(gameBuffer, "../assets/sounds/game-sound.wav");
     gameSound.setBuffer(gameBuffer);
     if (gameSound.getStatus() != sf::Sound::Playing)
@@ -75,7 +93,7 @@ void Game::initBackground(const std::string &filePath)
         WINDOW_HEIGHT / backgroundSprite.getLocalBounds().height * 1.5f
     );
     backgroundSprite.setOrigin({backgroundSprite.getLocalBounds().width / 2, backgroundSprite.getLocalBounds().height / 2});
-    backgroundSprite.setPosition({WINDOW_WIDTH / 2,  WINDOW_HEIGHT / 2});
+    backgroundSprite.setPosition({WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2});
 }
 
 void Game::updateBackgroundPosition()
@@ -87,7 +105,8 @@ void Game::run()
 {
     while (window.isOpen())
     {
-        if (gameState == GameState::MainMenu || gameState == GameState::Settings || gameState == GameState::Pause || gameState == GameState::GameOver)
+        if (gameState == GameState::MainMenu || gameState == GameState::Settings || gameState == GameState::Pause || gameState == GameState::GameOver
+            || gameState == GameState::Achievements)
         {
             menu.handleScreen(window, gameState, passedPlatforms.platformsText.getString());
         } else if (gameState == GameState::Start)
@@ -106,6 +125,7 @@ void Game::run()
 
 void Game::handlePlaying()
 {
+    achievementManager.unlock("First time?");
     float timeSinceLastUpdate = 0.0f;
     sf::Clock clock;
     while (window.isOpen() && (gameState == GameState::Playing || gameState == GameState::Start))
@@ -192,7 +212,7 @@ void Game::update()
         meteorite.updateCollidedWithPlatforms(platforms);
     }
     vehicle.updatePosition();
-    vehicle.updateCollidedWithPlatforms(platforms);
+    vehicle.updateCollidedWithPlatforms(platforms, achievementManager);
     passedPlatforms.update(vehicle.getPassedPlatforms());
     fuelIndicator.updateFuelIndicator(vehicle.fuel, vehicle.getPosition());
     speedometer.updateSpeedometer(vehicle.getVelocity(), vehicle.getPosition());
@@ -203,20 +223,20 @@ void Game::update()
         vehicle.isCrashed = false;
         gameState = GameState::GameOver;
     }
+    achievementManager.updateNotification();
 }
 
 void Game::draw()
 {
     window.clear(sf::Color(0x00, 0x00, 0x00));
-
     window.draw(backgroundSprite);
-    window.draw(vehicle.getBody());
-    vehicle.rightThruster.draw(window);
-    vehicle.leftThruster.draw(window);
     for (Platform &currentPlatform: platforms)
     {
         window.draw(currentPlatform.getBody());
     }
+    window.draw(vehicle.getBody());
+    vehicle.rightThruster.draw(window);
+    vehicle.leftThruster.draw(window);
     for (sf::ConvexShape &landscape: landscape.landscapes)
     {
         window.draw(landscape);
@@ -228,5 +248,6 @@ void Game::draw()
     window.draw(speedometer.speedText);
     window.draw(fuelIndicator.fuelText);
     window.draw(passedPlatforms.platformsText);
+    achievementManager.drawAchievementNotification(window);
     window.display();
 }

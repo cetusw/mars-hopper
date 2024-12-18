@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+
+#include "AchievementManager.h"
 #include "Platform.h"
 #include "Engine.h"
 #include "Meteorite.h"
@@ -21,7 +23,7 @@ public:
 
     bool collidedWithPlatform(const Platform &platform) const;
 
-    bool updateCollidedWithPlatforms(std::vector<Platform> &platforms);
+    bool updateCollidedWithPlatforms(std::vector<Platform> &platforms, AchievementManager &achievementManager);
 
     void updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points);
 
@@ -35,7 +37,7 @@ public:
 
     void handleVehicleCrash();
 
-    void increasePlatformNumber(int currentPlatformId);
+    void increasePlatformNumber(int currentPlatformId, AchievementManager &achievementManager);
 
     bool collidedWithLandscape(sf::Vector2f firstPoint, sf::Vector2f secondPoint) const;
 

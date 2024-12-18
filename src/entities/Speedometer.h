@@ -1,11 +1,11 @@
 #ifndef SPEEDOMETER_H
 #define SPEEDOMETER_H
 #include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
 
-class Speedometer {
+class Speedometer
+{
 public:
     Speedometer();
 
@@ -20,7 +20,6 @@ public:
 private:
     sf::Font font;
 };
-
 
 
 #endif //SPEEDOMETER_H

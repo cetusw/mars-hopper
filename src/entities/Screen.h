@@ -18,27 +18,31 @@ public:
 
     void handleScreen(sf::RenderWindow &window, GameState &state, const std::string &score);
 
-    void handleOptionList(GameState &state) const;
+    void handleOptionList(GameState &state);
 
-    void handleMainMenuOptionList(GameState &state) const;
+    void handleMainMenuOptionList(GameState &state);
 
-    void handleSettingsOptionList(GameState &state) const;
+    void handleSettingsOptionList(GameState &state);
 
-    void handlePauseOptionList(GameState &state) const;
+    void handlePauseOptionList(GameState &state);
 
-    void handleGameOverOptionList(GameState &state) const;
+    void handleGameOverOptionList(GameState &state);
+
+    void handleAchievementsList(GameState &state);
 
     int getSelectedOption() const;
 
+    static std::vector<std::string> getAchievementsList();
+
 private:
-    void init(const std::string &titleContent, const std::string &subtitleContent, const std::vector<std::string> &menuOptions, const std::string &alignment,
+    void init(const std::string &titleContent, const std::string &subtitleContent, const std::vector<std::string> &menuOptions,
+              const std::string &alignment,
               sf::Color titleColor, sf::Color subtitleColor, sf::Color contentColor);
 
-    void initLine(sf::Text &text, const std::string &titleContent, const std::string &alignment, sf::Color color, const int &characterSize, sf::Vector2f position) const;
+    void initLine(sf::Text &text, const std::string &titleContent, const std::string &alignment, sf::Color color, const int &characterSize,
+                  sf::Vector2f position) const;
 
     void initOptionList(const std::vector<std::string> &menuOptions, sf::Color color);
-
-    void initTitle(const std::string &titleContent, const std::string &alignment, sf::Color color);
 
     void initSpecificScreen(const GameState &state, const std::string &score);
 

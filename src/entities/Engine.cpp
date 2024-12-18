@@ -2,7 +2,7 @@
 #include "../utils/utils.cpp"
 #include "../utils/constants.h"
 
-Engine::Engine() : rotation(0), size{500, 500}, frameColumn(0), frameRow(0), currentFrameIndex(0), elapsedTime(0), isAnimating(false)
+Engine::Engine() : rotation(0), size(ENGINE_SIZE), frameColumn(0), frameRow(0), currentFrameIndex(0), elapsedTime(0), isAnimating(false)
 {
 }
 
@@ -22,7 +22,7 @@ void Engine::init(const std::string &filePath)
         static_cast<float>(frameHeight) / 2.f
     );
 
-    loadSound(thrusterBuffer, "../assets/sounds/engine.wav");
+    loadSound(thrusterBuffer, ENGINE_SOUND);
     thrusterSound.setBuffer(thrusterBuffer);
 }
 

@@ -11,7 +11,7 @@ void FuelIndicator::init()
 {
     loadFont(font, BOLD_FONT);
     fuelText.setFont(font);
-    fuelText.setCharacterSize(30);
+    fuelText.setCharacterSize(FUEL_INDICATOR_FONT_SIZE);
     fuelText.setFillColor(sf::Color::Black);
 }
 
@@ -24,9 +24,9 @@ void FuelIndicator::updateFuelIndicator(const float fuel, const sf::Vector2f pos
     fuelText.setString(stream.str());
 }
 
-void FuelIndicator::handleFuelEnding(const float speed)
+void FuelIndicator::handleFuelEnding(const float fuelAmount)
 {
-    if (speed <= 30.0f)
+    if (fuelAmount <= MIN_FUEL_AMOUNT)
     {
         fuelText.setFillColor(sf::Color::Red);
     }

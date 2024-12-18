@@ -59,7 +59,7 @@ float Platform::getPlatformPositionY(const float x, std::vector<sf::Vector2f> &p
     {
         if (x + LANDSCAPE_STEP < point.x && point.x > 0)
         {
-            return point.y - 350;
+            return point.y - PLATFORM_OFFSET_Y_FOR_INSERT;
         }
     }
 }

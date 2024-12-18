@@ -30,7 +30,7 @@ void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinc
         if (!meteorite.isFalling)
         {
             meteorite.setPosition({getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800});
-            meteorite.setVelocity({-450, 450});
+            meteorite.setVelocity(METEORITE_VELOCITY);
             meteorite.isFalling = true;
             break;
         }

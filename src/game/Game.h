@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "../entities/AchievementManager.h"
 #include "../entities/FuelIndicator.h"
 #include "../entities/Landscape.h"
 #include "../entities/Meteorite.h"
@@ -35,6 +36,14 @@ public:
 private:
     void init();
 
+    void initLandscape();
+
+    void initPlatforms();
+
+    void initMeteorites();
+
+    void initSound();
+
     void reset();
 
     void initBackground(const std::string &filePath);
@@ -59,7 +68,7 @@ private:
     sf::Sound gameSound;
     Screen menu;
     float timeSinceLastMeteorite;
-
+    AchievementManager achievementManager;
 };
 
 

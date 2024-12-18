@@ -121,6 +121,12 @@ build CMakeFiles/mars-hopper.dir/src/entities/PassedPlatforms.cpp.o: CXX_COMPILE
   OBJECT_DIR = CMakeFiles/mars-hopper.dir
   OBJECT_FILE_DIR = CMakeFiles/mars-hopper.dir/src/entities
 
+build CMakeFiles/mars-hopper.dir/src/entities/AchievementManager.cpp.o: CXX_COMPILER__mars-hopper_unscanned_Debug /home/yogurt/Documents/projects/design-workshop/mars-hopper/src/entities/AchievementManager.cpp || cmake_object_order_depends_target_mars-hopper
+  DEP_FILE = CMakeFiles/mars-hopper.dir/src/entities/AchievementManager.cpp.o.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/mars-hopper.dir
+  OBJECT_FILE_DIR = CMakeFiles/mars-hopper.dir/src/entities
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target mars-hopper
@@ -129,7 +135,7 @@ build CMakeFiles/mars-hopper.dir/src/entities/PassedPlatforms.cpp.o: CXX_COMPILE
 #############################################
 # Link the executable mars-hopper
 
-build mars-hopper: CXX_EXECUTABLE_LINKER__mars-hopper_Debug CMakeFiles/mars-hopper.dir/main.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Platform.cpp.o CMakeFiles/mars-hopper.dir/src/game/Game.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Vehicle.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Landscape.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Screen.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Engine.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Meteorite.cpp.o CMakeFiles/mars-hopper.dir/src/utils/utils.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Speedometer.cpp.o CMakeFiles/mars-hopper.dir/src/entities/FuelIndicator.cpp.o CMakeFiles/mars-hopper.dir/src/entities/PassedPlatforms.cpp.o | /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
+build mars-hopper: CXX_EXECUTABLE_LINKER__mars-hopper_Debug CMakeFiles/mars-hopper.dir/main.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Platform.cpp.o CMakeFiles/mars-hopper.dir/src/game/Game.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Vehicle.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Landscape.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Screen.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Engine.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Meteorite.cpp.o CMakeFiles/mars-hopper.dir/src/utils/utils.cpp.o CMakeFiles/mars-hopper.dir/src/entities/Speedometer.cpp.o CMakeFiles/mars-hopper.dir/src/entities/FuelIndicator.cpp.o CMakeFiles/mars-hopper.dir/src/entities/PassedPlatforms.cpp.o CMakeFiles/mars-hopper.dir/src/entities/AchievementManager.cpp.o | /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1  /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1  /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1  /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
   OBJECT_DIR = CMakeFiles/mars-hopper.dir

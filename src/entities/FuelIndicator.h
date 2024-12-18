@@ -12,7 +12,7 @@ public:
 
     void updateFuelIndicator(float fuel, sf::Vector2f position);
 
-    void handleFuelEnding(float speed);
+    void handleFuelEnding(float fuelAmount);
 
     sf::Text fuelText;
 

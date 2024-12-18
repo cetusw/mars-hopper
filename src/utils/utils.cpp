@@ -37,24 +37,52 @@ inline void loadTexture(sf::Texture &texture, const std::string &filePath)
     }
 }
 
-inline void saveProgress(const size_t &score) {
+inline void saveProgress(const size_t &score)
+{
     std::ofstream file("../progress.txt");
-    if (file.is_open()) {
+    if (file.is_open())
+    {
         file << score;
         file.close();
-    } else {
+    } else
+    {
         std::cerr << "Не удалось открыть файл для записи" << std::endl;
     }
 }
 
-inline int loadProgress() {
+inline int loadProgress()
+{
     std::ifstream file("../progress.txt");
     int score;
-    if (file.is_open()) {
+    if (file.is_open())
+    {
         file >> score;
         file.close();
-    } else {
+    } else
+    {
         std::cerr << "Не удалось открыть файл для чтения" << std::endl;
     }
     return score;
+}
+
+inline std::ifstream loadFileForRead(const std::string &filePath)
+{
+    std::ifstream inFile(filePath);
+    if (!inFile)
+    {
+        std::cerr << "Ошибка открытия файла!" << std::endl;
+    }
+
+    return inFile;
+}
+
+inline std::ofstream loadFileForAppend(const std::string &filePath)
+{
+    std::ofstream outFile(filePath, std::ios::app);
+    if (!outFile)
+    {
+        std::cerr << "Ошибка открытия файла!" << std::endl;
+    }
+
+    return outFile;
 }

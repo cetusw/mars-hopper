@@ -9,6 +9,7 @@ enum class GameState
     GameOver,
     Settings,
     Pause,
+    Achievements,
     Exit
 };
 
