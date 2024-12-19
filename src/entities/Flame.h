@@ -1,5 +1,5 @@
-#ifndef THRUSTERANIMATION_H
-#define THRUSTERANIMATION_H
+#ifndef FLAME_H
+#define FLAME_H
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -8,24 +8,22 @@
 
 #include "../utils/Size.h"
 
-class Engine
+class Flame
 {
 public:
-    Engine();
+    Flame();
 
-    void init(const std::string &filePath);
+    void init(const std::string &filePath, Size size);
 
-    void update();
+    void update(int startFrame, int endFrame);
 
     void updateCurrentFrame();
 
-    void updateThrusterPosition(sf::Vector2f offset, const sf::Vector2f &vehiclePosition);
+    void updateEnginePosition(sf::Vector2f offset, const sf::Vector2f &vehiclePosition);
 
     void draw(sf::RenderWindow &window) const;
 
-    void thrust();
-
-    Size getSize() const;
+    void onEngine();
 
     sf::Vector2f getPosition() const;
 
@@ -34,12 +32,12 @@ public:
     void setRotation(float degrees);
 
     float rotation;
+    bool isAnimating;
 
 private:
     sf::Sprite flameSprite;
     sf::Texture flameTexture;
     sf::IntRect currentFrame;
-    Size size;
     int frameWidth = 128;
     int frameHeight = 126;
     int frameColumns = 6;
@@ -50,12 +48,11 @@ private:
     int currentFrameIndex;
     float frameDuration = 0.03f;
     float elapsedTime;
-    bool isAnimating;
-    std::string thrusterState;
-    sf::SoundBuffer thrusterBuffer;
-    sf::Sound thrusterSound;
+    std::string engineState;
+    sf::SoundBuffer engineBuffer;
+    sf::Sound engineSound;
     bool isRunning = false;
 };
 
 
-#endif //THRUSTERANIMATION_H
+#endif //FLAME_H

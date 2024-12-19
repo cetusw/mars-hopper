@@ -1,12 +1,12 @@
-#include "Engine.h"
+#include "Flame.h"
 #include "../utils/utils.cpp"
 #include "../utils/constants.h"
 
-Engine::Engine() : rotation(0), size(ENGINE_SIZE), frameColumn(0), frameRow(0), currentFrameIndex(0), elapsedTime(0), isAnimating(false)
+Flame::Flame() : rotation(0), frameColumn(0), frameRow(0), currentFrameIndex(0), elapsedTime(0), isAnimating(false)
 {
 }
 
-void Engine::init(const std::string &filePath)
+void Flame::init(const std::string &filePath, const Size size)
 {
     loadTexture(flameTexture, filePath);
     flameSprite.setTexture(flameTexture);
@@ -22,15 +22,15 @@ void Engine::init(const std::string &filePath)
         static_cast<float>(frameHeight) / 2.f
     );
 
-    loadSound(thrusterBuffer, ENGINE_SOUND);
-    thrusterSound.setBuffer(thrusterBuffer);
+    loadSound(engineBuffer, ENGINE_SOUND);
+    engineSound.setBuffer(engineBuffer);
 }
 
-void Engine::thrust()
+void Flame::onEngine()
 {
-    if (thrusterSound.getStatus() != sf::Sound::Playing)
+    if (engineSound.getStatus() != sf::Sound::Playing)
     {
-        thrusterSound.play();
+        engineSound.play();
     }
     if (!isAnimating)
     {
@@ -45,11 +45,11 @@ void Engine::thrust()
     }
 }
 
-void Engine::update()
+void Flame::update(const int startFrame, const int endFrame)
 {
     if (!isAnimating)
     {
-        thrusterSound.stop();
+        engineSound.stop();
         return;
     }
 
@@ -60,9 +60,10 @@ void Engine::update()
         elapsedTime -= frameDuration;
 
         currentFrameIndex += 1;
-        if (currentFrameIndex > frameCount)
+        std::cout << currentFrameIndex << std::endl;
+        if (currentFrameIndex > endFrame)
         {
-            currentFrameIndex = 0;
+            currentFrameIndex = startFrame;
             isAnimating = false;
         }
 
@@ -72,7 +73,7 @@ void Engine::update()
     }
 }
 
-void Engine::updateCurrentFrame()
+void Flame::updateCurrentFrame()
 {
     frameColumn = currentFrameIndex % frameColumns;
     frameRow = currentFrameIndex / frameColumns;
@@ -81,36 +82,31 @@ void Engine::updateCurrentFrame()
     currentFrame.top = frameRow * frameHeight;
 }
 
-void Engine::updateThrusterPosition(const sf::Vector2f offset, const sf::Vector2f &vehiclePosition)
+void Flame::updateEnginePosition(const sf::Vector2f offset, const sf::Vector2f &vehiclePosition)
 {
-    sf::Transform thrusterTransform;
-    thrusterTransform.rotate(rotation, vehiclePosition);
-    const sf::Vector2f thrusterPosition = thrusterTransform.transformPoint(vehiclePosition + offset);
-    setPosition(thrusterPosition);
+    sf::Transform engineTransform;
+    engineTransform.rotate(rotation, vehiclePosition);
+    const sf::Vector2f enginePosition = engineTransform.transformPoint(vehiclePosition + offset);
+    setPosition(enginePosition);
     setRotation(rotation);
 }
 
-Size Engine::getSize() const
-{
-    return size;
-}
-
-sf::Vector2f Engine::getPosition() const
+sf::Vector2f Flame::getPosition() const
 {
     return flameSprite.getPosition();
 }
 
-void Engine::setPosition(const sf::Vector2f position)
+void Flame::setPosition(const sf::Vector2f position)
 {
     flameSprite.setPosition(position);
 }
 
-void Engine::setRotation(const float degrees)
+void Flame::setRotation(const float degrees)
 {
     flameSprite.setRotation(degrees);
 }
 
-void Engine::draw(sf::RenderWindow &window) const
+void Flame::draw(sf::RenderWindow &window) const
 {
     window.draw(flameSprite);
 }

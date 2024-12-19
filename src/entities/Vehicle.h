@@ -6,7 +6,7 @@
 
 #include "AchievementManager.h"
 #include "Platform.h"
-#include "Engine.h"
+#include "Flame.h"
 #include "Meteorite.h"
 #include "../utils/Size.h"
 
@@ -33,7 +33,7 @@ public:
 
     void updateTilt();
 
-    void updateThrusters();
+    void updateEngines();
 
     void handleVehicleCrash();
 
@@ -63,8 +63,8 @@ public:
 
     bool isCrashed;
     bool isOnPlatform;
-    Engine leftThruster;
-    Engine rightThruster;
+    Flame leftEngine;
+    Flame rightEngine;
     float fuel;
 
 private:

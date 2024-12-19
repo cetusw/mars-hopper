@@ -13,6 +13,7 @@ void Meteorite::init()
     body.setPosition(getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800);
     body.setFillColor(sf::Color::Black);
     isFalling = false;
+    flame.init(FLAME_IMAGE, METEORITE_FLAME_SIZE);
 }
 
 void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite)
@@ -65,6 +66,7 @@ void Meteorite::updateMeteoritePosition(std::vector<Meteorite> &meteorites)
                 meteorite.getPosition().x + meteorite.getVelocity().x * TIME_STEP,
                 meteorite.getPosition().y + meteorite.getVelocity().y * TIME_STEP
             });
+            updateFlame(meteorite);
         }
     }
 }
@@ -130,6 +132,13 @@ void Meteorite::updateCollidedWithLandscape(const std::vector<sf::Vector2f> &poi
     }
 }
 
+void Meteorite::updateFlame(Meteorite &meteorite)
+{
+    meteorite.flame.isAnimating = true;
+    meteorite.flame.update(9, 20);
+    meteorite.flame.setRotation(METEORITE_ANGEL);
+}
+
 sf::CircleShape Meteorite::getBody()
 {
     return body;
@@ -153,6 +162,7 @@ sf::Vector2f Meteorite::getPosition() const
 void Meteorite::setPosition(const sf::Vector2f position)
 {
     body.setPosition(position);
+    flame.setPosition({position.x + METEORITE_FLAME_OFFSET, position.y - METEORITE_FLAME_OFFSET});
 }
 
 void Meteorite::setVelocity(const sf::Vector2f newVelocity)

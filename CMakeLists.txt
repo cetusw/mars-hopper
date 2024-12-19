@@ -17,8 +17,8 @@ add_executable(mars-hopper main.cpp
         src/entities/Screen.h
         src/entities/Screen.cpp
         src/utils/GameState.h
-        src/entities/Engine.h
-        src/entities/Engine.cpp
+        src/entities/Flame.h
+        src/entities/Flame.cpp
         src/utils/constants.h
         src/entities/Meteorite.h
         src/entities/Meteorite.cpp

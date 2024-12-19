@@ -44,16 +44,21 @@ constexpr float MAX_TILT_ANGLE = 15.f;
 constexpr float RETURN_ANGLE_SPEED = 25.f;
 
 constexpr Size ENGINE_SIZE = {500, 500};
-constexpr float THRUSTER_OFFSET_X = VEHICLE_SIZE.width / 4.0f;
-constexpr float THRUSTER_OFFSET_Y = VEHICLE_SIZE.height / 1.7f;
-constexpr float THRUSTER_ANGLE = 195.f;
-constexpr float THRUSTER_FUEL_CONSUMPTION = 5.0f;
+constexpr float ENGINE_OFFSET_X = VEHICLE_SIZE.width / 4.0f;
+constexpr float ENGINE_OFFSET_Y = VEHICLE_SIZE.height / 1.7f;
+constexpr float ENGINE_ANGLE = 195.f;
+constexpr float ENGINE_FUEL_CONSUMPTION = 5.0f;
 const std::string FLAME_IMAGE = "../assets/flame.png";
+constexpr int ENGINE_FLAME_END_FRAME = 30;
+constexpr int ENGINE_FLAME_START_FRAME = 0;
 const std::string ENGINE_SOUND = "../assets/sounds/engine.wav";
 
 constexpr float METEORITE_RADIUS = 50.0f;
 constexpr int METEORITES_AMOUNT = 3;
 const sf::Vector2f METEORITE_VELOCITY = {-450, 450};
+constexpr float METEORITE_ANGEL = 45.0f;
+constexpr Size METEORITE_FLAME_SIZE = {3000, 3000};
+constexpr float METEORITE_FLAME_OFFSET = 150.0f;
 
 const std::string BOLD_FONT = "../assets/fonts/SpaceMono-Bold.ttf";
 const std::string REGULAR_FONT = "../assets/fonts/SpaceMono-Regular.ttf";

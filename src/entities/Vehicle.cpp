@@ -25,10 +25,10 @@ void Vehicle::init(const std::string &filePath)
     body.setPosition(VEHICLE_START_POSITION);
     body.setRotation(0);
 
-    leftThruster.init(FLAME_IMAGE);
-    leftThruster.setRotation(15.0f);
-    rightThruster.init(FLAME_IMAGE);
-    rightThruster.setRotation(-15.0f);
+    leftEngine.init(FLAME_IMAGE, ENGINE_SIZE);
+    leftEngine.setRotation(15.0f);
+    rightEngine.init(FLAME_IMAGE, ENGINE_SIZE);
+    rightEngine.setRotation(-15.0f);
 
     passedPlatforms.clear();
 }
@@ -43,7 +43,7 @@ void Vehicle::updatePosition()
     reduceVelocityX();
     reduceVelocityY();
     updateTilt();
-    updateThrusters();
+    updateEngines();
 }
 
 void Vehicle::reduceVelocityX()
@@ -106,9 +106,9 @@ void Vehicle::reduceAccelerationY()
 
 void Vehicle::reduceFuel(const float engineNumber)
 {
-    if (fuel > THRUSTER_FUEL_CONSUMPTION * engineNumber)
+    if (fuel > ENGINE_FUEL_CONSUMPTION * engineNumber)
     {
-        fuel -= THRUSTER_FUEL_CONSUMPTION * engineNumber;
+        fuel -= ENGINE_FUEL_CONSUMPTION * engineNumber;
     } else
     {
         fuel = 0;
@@ -127,8 +127,8 @@ void Vehicle::handleInput(const sf::Keyboard::Key key)
     if (key == sf::Keyboard::Up)
     {
         reduceFuel(2);
-        leftThruster.thrust();
-        rightThruster.thrust();
+        leftEngine.onEngine();
+        rightEngine.onEngine();
         increaseVerticalAcceleration();
     }
 
@@ -136,14 +136,14 @@ void Vehicle::handleInput(const sf::Keyboard::Key key)
     {
         reduceFuel(1);
         increaseDiagonalAcceleration("left");
-        leftThruster.thrust();
+        leftEngine.onEngine();
     }
 
     if (key == sf::Keyboard::Right)
     {
         reduceFuel(1);
         increaseDiagonalAcceleration("right");
-        rightThruster.thrust();
+        rightEngine.onEngine();
     }
 }
 
@@ -283,14 +283,14 @@ void Vehicle::updateTilt()
     body.setRotation(rotation);
 }
 
-void Vehicle::updateThrusters()
+void Vehicle::updateEngines()
 {
-    leftThruster.update();
-    rightThruster.update();
-    leftThruster.rotation = rotation + THRUSTER_ANGLE;
-    rightThruster.rotation = rotation - THRUSTER_ANGLE;
-    leftThruster.updateThrusterPosition({THRUSTER_OFFSET_X, -THRUSTER_OFFSET_Y}, getPosition());
-    rightThruster.updateThrusterPosition({-THRUSTER_OFFSET_X, -THRUSTER_OFFSET_Y}, getPosition());
+    leftEngine.update(ENGINE_FLAME_START_FRAME, ENGINE_FLAME_END_FRAME);
+    rightEngine.update(ENGINE_FLAME_START_FRAME, ENGINE_FLAME_END_FRAME);
+    leftEngine.rotation = rotation + ENGINE_ANGLE;
+    rightEngine.rotation = rotation - ENGINE_ANGLE;
+    leftEngine.updateEnginePosition({ENGINE_OFFSET_X, -ENGINE_OFFSET_Y}, getPosition());
+    rightEngine.updateEnginePosition({-ENGINE_OFFSET_X, -ENGINE_OFFSET_Y}, getPosition());
 }
 
 void Vehicle::handleVehicleCrash()

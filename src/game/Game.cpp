@@ -237,20 +237,21 @@ void Game::draw()
         window.draw(currentPlatform.getBody());
     }
     window.draw(vehicle.getBody());
-    vehicle.rightThruster.draw(window);
-    vehicle.leftThruster.draw(window);
+    vehicle.rightEngine.draw(window);
+    vehicle.leftEngine.draw(window);
     for (sf::ConvexShape &landscape: landscape.landscapes)
     {
         window.draw(landscape);
-    }
-    for (Meteorite &currentMeteorite: meteorites)
-    {
-        window.draw(currentMeteorite.getBody());
     }
     window.draw(speedometer.speedText);
     window.draw(fuelIndicator.fuelText);
     window.draw(passedPlatforms.platformsText);
     achievementManager.drawAchievementNotification(window);
     miniMap.drawMiniMap(window, vehicle, platforms, landscape, meteorites);
+    for (Meteorite &currentMeteorite: meteorites)
+    {
+        window.draw(currentMeteorite.getBody());
+        currentMeteorite.flame.draw(window);
+    }
     window.display();
 }

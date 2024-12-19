@@ -3,6 +3,8 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <string>
+
+#include "Flame.h"
 #include "Platform.h"
 
 
@@ -31,6 +33,8 @@ public:
 
     void updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points);
 
+    static void updateFlame(Meteorite &meteorite);
+
     sf::CircleShape getBody();
 
     sf::Vector2f getVelocity() const;
@@ -44,6 +48,7 @@ public:
     void setVelocity(sf::Vector2f newVelocity);
 
     bool isFalling;
+    Flame flame;
 
 private:
     sf::CircleShape body;
