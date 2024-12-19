@@ -32,6 +32,7 @@ void MiniMap::drawMiniMap(sf::RenderWindow &window, Vehicle &vehicle, std::vecto
     for (Meteorite &currentMeteorite : meteorites)
     {
         window.draw(currentMeteorite.getBody());
+        currentMeteorite.flame.draw(window);
     }
     for (sf::ConvexShape &currentLandscape : landscape.landscapes)
     {

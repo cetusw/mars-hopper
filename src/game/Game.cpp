@@ -11,6 +11,7 @@ Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper",
 
 void Game::init()
 {
+    safetyFactor.init();
     miniMap.initMiniMap();
     achievementManager.initAchievementManager();
     achievementManager.initNotification();
@@ -226,6 +227,7 @@ void Game::update()
     }
     achievementManager.updateNotification();
     miniMap.updateMiniMap(vehicle);
+    safetyFactor.update(vehicle);
 }
 
 void Game::draw()
@@ -237,21 +239,22 @@ void Game::draw()
         window.draw(currentPlatform.getBody());
     }
     window.draw(vehicle.getBody());
+    window.draw(safetyFactor.getBody());
     vehicle.rightEngine.draw(window);
     vehicle.leftEngine.draw(window);
     for (sf::ConvexShape &landscape: landscape.landscapes)
     {
         window.draw(landscape);
     }
-    window.draw(speedometer.speedText);
-    window.draw(fuelIndicator.fuelText);
-    window.draw(passedPlatforms.platformsText);
-    achievementManager.drawAchievementNotification(window);
-    miniMap.drawMiniMap(window, vehicle, platforms, landscape, meteorites);
     for (Meteorite &currentMeteorite: meteorites)
     {
         window.draw(currentMeteorite.getBody());
         currentMeteorite.flame.draw(window);
     }
+    window.draw(speedometer.speedText);
+    window.draw(fuelIndicator.fuelText);
+    window.draw(passedPlatforms.platformsText);
+    achievementManager.drawAchievementNotification(window);
+    miniMap.drawMiniMap(window, vehicle, platforms, landscape, meteorites);
     window.display();
 }

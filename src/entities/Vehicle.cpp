@@ -5,7 +5,8 @@
 #include "../game/Game.h"
 #include "../utils/constants.h"
 
-Vehicle::Vehicle() : isCrashed(false), isOnPlatform(false), fuel(100), velocity{0, 0}, acceleration{0, 0}, position{VEHICLE_START_POSITION},
+Vehicle::Vehicle() : isCrashed(false), isOnPlatform(false), fuel(100), amountOfSafetyFactor(3), velocity{0, 0}, acceleration{0, 0},
+                     position{VEHICLE_START_POSITION},
                      rotation(0), size{VEHICLE_SIZE}
 {
 }
@@ -190,7 +191,10 @@ bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms, Achi
         {
             if (std::hypot(velocity.x, velocity.y) > MAX_AllOWED_SPEED)
             {
-                handleVehicleCrash();
+                handleVehicleDamage();
+            }
+            if (isCrashed)
+            {
                 break;
             }
             increasePlatformNumber(platform.getId(), achievementManager);
@@ -256,7 +260,13 @@ void Vehicle::updateCollidedWithMeteorite(std::vector<Meteorite> &meteorites)
     {
         if (collidedWithMeteorite(meteorite))
         {
-            handleVehicleCrash();
+            setVelocity({getVelocity().x + meteorite.getVelocity().x / 2, getVelocity().y + meteorite.getVelocity().y / 2});
+            handleVehicleDamage();
+            meteorite.handleMeteoriteOverflow();
+        }
+        if (isCrashed)
+        {
+            break;
         }
     }
 }
@@ -293,10 +303,20 @@ void Vehicle::updateEngines()
     rightEngine.updateEnginePosition({-ENGINE_OFFSET_X, -ENGINE_OFFSET_Y}, getPosition());
 }
 
+void Vehicle::handleVehicleDamage()
+{
+    amountOfSafetyFactor -= 1;
+    if (amountOfSafetyFactor == 0)
+    {
+        handleVehicleCrash();
+    }
+}
+
 void Vehicle::handleVehicleCrash()
 {
     isCrashed = true;
     fuel = 100.f;
+    amountOfSafetyFactor = 3;
     setRotation(0);
     setVelocity({0, 0});
     setAcceleration({0, 0});
@@ -345,6 +365,11 @@ sf::Vector2f Vehicle::getAcceleration() const
 std::vector<int> Vehicle::getPassedPlatforms()
 {
     return passedPlatforms;
+}
+
+float Vehicle::getRotation() const
+{
+    return rotation;
 }
 
 void Vehicle::setPosition(const sf::Vector2f position)

@@ -55,7 +55,8 @@ const std::string ENGINE_SOUND = "../assets/sounds/engine.wav";
 
 constexpr float METEORITE_RADIUS = 50.0f;
 constexpr int METEORITES_AMOUNT = 3;
-const sf::Vector2f METEORITE_VELOCITY = {-450, 450};
+const sf::Vector2f METEORITE_RIGHT_VELOCITY = {-450, 450};
+const sf::Vector2f METEORITE_LEFT_VELOCITY = {450, 450};
 constexpr float METEORITE_ANGEL = 45.0f;
 constexpr Size METEORITE_FLAME_SIZE = {3000, 3000};
 constexpr float METEORITE_FLAME_OFFSET = 150.0f;
@@ -91,5 +92,8 @@ const std::string ACHIEVEMENTS_FILE = "../achievements.txt";
 const std::string MENU_BACKGROUND_IMAGE = "../assets/menu-background.png";
 
 constexpr float MINIMAP_SCALE = 0.2f;
+
+const sf::Vector2f SAFETY_FACTOR_SIZE = {30, 10};
+constexpr float SAFETY_FACTOR_OFFSET_Y = 15.0f;
 
 #endif //CONSTANTS_H

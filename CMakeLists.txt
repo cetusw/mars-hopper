@@ -33,6 +33,8 @@ add_executable(mars-hopper main.cpp
         src/entities/AchievementManager.cpp
         src/entities/MiniMap.h
         src/entities/MiniMap.cpp
+        src/entities/SafetyFactor.h
+        src/entities/SafetyFactor.cpp
 )
 
 target_link_libraries(mars-hopper

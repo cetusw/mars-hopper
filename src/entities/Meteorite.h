@@ -45,10 +45,13 @@ public:
 
     void setPosition(sf::Vector2f position);
 
+    void setFlamePosition(sf::Vector2f position, float direction);
+
     void setVelocity(sf::Vector2f newVelocity);
 
     bool isFalling;
     Flame flame;
+    float direction;
 
 private:
     sf::CircleShape body;

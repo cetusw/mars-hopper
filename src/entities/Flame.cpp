@@ -60,7 +60,6 @@ void Flame::update(const int startFrame, const int endFrame)
         elapsedTime -= frameDuration;
 
         currentFrameIndex += 1;
-        std::cout << currentFrameIndex << std::endl;
         if (currentFrameIndex > endFrame)
         {
             currentFrameIndex = startFrame;

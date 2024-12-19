@@ -2,7 +2,7 @@
 #include "../utils/constants.h"
 #include "../utils/utils.cpp"
 
-Meteorite::Meteorite(): isFalling(false), radius(METEORITE_RADIUS), velocity({0, 0})
+Meteorite::Meteorite(): isFalling(false), direction(0), radius(METEORITE_RADIUS), velocity({0, 0})
 {
 }
 
@@ -20,7 +20,7 @@ void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinc
 {
     timeSinceLastMeteorite += TIME_STEP;
 
-    if (timeSinceLastMeteorite < getRandomNumber(5, 10))
+    if (timeSinceLastMeteorite < getRandomNumber(1, 3))
     {
         return;
     }
@@ -31,7 +31,8 @@ void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinc
         if (!meteorite.isFalling)
         {
             meteorite.setPosition({getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800});
-            meteorite.setVelocity(METEORITE_VELOCITY);
+            meteorite.setVelocity(METEORITE_RIGHT_VELOCITY);
+            meteorite.flame.setRotation(METEORITE_ANGEL);
             meteorite.isFalling = true;
             break;
         }
@@ -136,7 +137,6 @@ void Meteorite::updateFlame(Meteorite &meteorite)
 {
     meteorite.flame.isAnimating = true;
     meteorite.flame.update(9, 20);
-    meteorite.flame.setRotation(METEORITE_ANGEL);
 }
 
 sf::CircleShape Meteorite::getBody()

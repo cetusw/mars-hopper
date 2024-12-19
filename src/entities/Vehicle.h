@@ -35,6 +35,8 @@ public:
 
     void updateEngines();
 
+    void handleVehicleDamage();
+
     void handleVehicleCrash();
 
     void increasePlatformNumber(int currentPlatformId, AchievementManager &achievementManager);
@@ -48,6 +50,8 @@ public:
     sf::Vector2f getAcceleration() const;
 
     std::vector<int> getPassedPlatforms();
+
+    float getRotation() const;
 
     Size getSize() const;
 
@@ -66,6 +70,7 @@ public:
     Flame leftEngine;
     Flame rightEngine;
     float fuel;
+    int amountOfSafetyFactor;
 
 private:
     void increaseDiagonalAcceleration(const std::string &direction);
