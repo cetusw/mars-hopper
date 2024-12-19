@@ -26,9 +26,9 @@ void Vehicle::init(const std::string &filePath)
     body.setPosition(VEHICLE_START_POSITION);
     body.setRotation(0);
 
-    leftEngine.init(FLAME_IMAGE, ENGINE_SIZE);
+    leftEngine.init(FLAME_IMAGE, ENGINE_SIZE, {FRAME_WIDTH / 2, FRAME_HEIGHT / 2});
     leftEngine.setRotation(15.0f);
-    rightEngine.init(FLAME_IMAGE, ENGINE_SIZE);
+    rightEngine.init(FLAME_IMAGE, ENGINE_SIZE, {FRAME_WIDTH / 2, FRAME_HEIGHT / 2});
     rightEngine.setRotation(-15.0f);
 
     passedPlatforms.clear();
@@ -187,26 +187,26 @@ bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms, Achi
 {
     for (Platform &platform: platforms)
     {
-        if (collidedWithPlatform(platform))
+        if (!collidedWithPlatform(platform))
         {
-            if (std::hypot(velocity.x, velocity.y) > MAX_AllOWED_SPEED)
-            {
-                handleVehicleDamage();
-            }
-            if (isCrashed)
+            continue;
+        }
+        if (std::hypot(velocity.x, velocity.y) > MAX_AllOWED_SPEED)
+        {
+            if (isVehicleCrashed())
             {
                 break;
             }
-            increasePlatformNumber(platform.getId(), achievementManager);
-            fuel = 100.f;
-            isOnPlatform = true;
-            setVelocity({0, 0});
-            setPosition({
-                getPosition().x,
-                platform.getPosition().y - getSize().height / 2.0f + PLATFORM_OFFSET_Y
-            });
-            return true;
         }
+        increasePlatformNumber(platform.getId(), achievementManager);
+        fuel = 100.f;
+        isOnPlatform = true;
+        setVelocity({0, 0});
+        setPosition({
+            getPosition().x,
+            platform.getPosition().y - getSize().height / 2.0f + PLATFORM_OFFSET_Y
+        });
+        return true;
     }
     return false;
 }
@@ -261,12 +261,11 @@ void Vehicle::updateCollidedWithMeteorite(std::vector<Meteorite> &meteorites)
         if (collidedWithMeteorite(meteorite))
         {
             setVelocity({getVelocity().x + meteorite.getVelocity().x / 2, getVelocity().y + meteorite.getVelocity().y / 2});
-            handleVehicleDamage();
             meteorite.handleMeteoriteOverflow();
-        }
-        if (isCrashed)
-        {
-            break;
+            if (isVehicleCrashed())
+            {
+                break;
+            }
         }
     }
 }
@@ -303,13 +302,15 @@ void Vehicle::updateEngines()
     rightEngine.updateEnginePosition({-ENGINE_OFFSET_X, -ENGINE_OFFSET_Y}, getPosition());
 }
 
-void Vehicle::handleVehicleDamage()
+bool Vehicle::isVehicleCrashed()
 {
     amountOfSafetyFactor -= 1;
     if (amountOfSafetyFactor == 0)
     {
         handleVehicleCrash();
+        return true;
     }
+    return false;
 }
 
 void Vehicle::handleVehicleCrash()

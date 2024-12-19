@@ -35,7 +35,7 @@ public:
 
     void updateEngines();
 
-    void handleVehicleDamage();
+    bool isVehicleCrashed();
 
     void handleVehicleCrash();
 

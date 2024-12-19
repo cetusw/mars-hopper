@@ -96,4 +96,7 @@ constexpr float MINIMAP_SCALE = 0.2f;
 const sf::Vector2f SAFETY_FACTOR_SIZE = {30, 10};
 constexpr float SAFETY_FACTOR_OFFSET_Y = 15.0f;
 
+constexpr float FRAME_WIDTH = 128;
+constexpr float FRAME_HEIGHT = 126;
+
 #endif //CONSTANTS_H

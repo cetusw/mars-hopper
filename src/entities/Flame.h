@@ -7,13 +7,14 @@
 #include <SFML/Audio.hpp>
 
 #include "../utils/Size.h"
+#include "../utils/constants.h"
 
 class Flame
 {
 public:
     Flame();
 
-    void init(const std::string &filePath, Size size);
+    void init(const std::string &filePath, Size size, sf::Vector2f origin);
 
     void update(int startFrame, int endFrame);
 
@@ -27,6 +28,8 @@ public:
 
     sf::Vector2f getPosition() const;
 
+    sf::Sprite getBody();
+
     void setPosition(sf::Vector2f position);
 
     void setRotation(float degrees);
@@ -38,8 +41,8 @@ private:
     sf::Sprite flameSprite;
     sf::Texture flameTexture;
     sf::IntRect currentFrame;
-    int frameWidth = 128;
-    int frameHeight = 126;
+    int frameWidth = FRAME_WIDTH;
+    int frameHeight = FRAME_HEIGHT;
     int frameColumns = 6;
     int frameRows = 5;
     int frameCount = frameRows * frameColumns;

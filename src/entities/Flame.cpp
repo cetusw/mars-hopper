@@ -6,7 +6,7 @@ Flame::Flame() : rotation(0), frameColumn(0), frameRow(0), currentFrameIndex(0),
 {
 }
 
-void Flame::init(const std::string &filePath, const Size size)
+void Flame::init(const std::string &filePath, const Size size, sf::Vector2f origin)
 {
     loadTexture(flameTexture, filePath);
     flameSprite.setTexture(flameTexture);
@@ -17,10 +17,7 @@ void Flame::init(const std::string &filePath, const Size size)
     currentFrame = sf::IntRect(0, 0, frameWidth, frameHeight);
     flameSprite.setTextureRect(currentFrame);
 
-    flameSprite.setOrigin(
-        static_cast<float>(frameWidth) / 2.f,
-        static_cast<float>(frameHeight) / 2.f
-    );
+    flameSprite.setOrigin(origin);
 
     loadSound(engineBuffer, ENGINE_SOUND);
     engineSound.setBuffer(engineBuffer);
@@ -90,9 +87,19 @@ void Flame::updateEnginePosition(const sf::Vector2f offset, const sf::Vector2f &
     setRotation(rotation);
 }
 
+void Flame::draw(sf::RenderWindow &window) const
+{
+    window.draw(flameSprite);
+}
+
 sf::Vector2f Flame::getPosition() const
 {
     return flameSprite.getPosition();
+}
+
+sf::Sprite Flame::getBody()
+{
+    return flameSprite;
 }
 
 void Flame::setPosition(const sf::Vector2f position)
@@ -103,9 +110,4 @@ void Flame::setPosition(const sf::Vector2f position)
 void Flame::setRotation(const float degrees)
 {
     flameSprite.setRotation(degrees);
-}
-
-void Flame::draw(sf::RenderWindow &window) const
-{
-    window.draw(flameSprite);
 }

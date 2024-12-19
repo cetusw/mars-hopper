@@ -13,7 +13,7 @@ void Meteorite::init()
     body.setPosition(getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800);
     body.setFillColor(sf::Color::Black);
     isFalling = false;
-    flame.init(FLAME_IMAGE, METEORITE_FLAME_SIZE);
+    flame.init(FLAME_IMAGE, METEORITE_FLAME_SIZE, {FRAME_WIDTH / 2, FRAME_HEIGHT - 20});
 }
 
 void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite)
@@ -25,14 +25,32 @@ void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinc
         return;
     }
 
+    sf::Vector2f startPosition;
+    sf::Vector2f meteoriteVelocity;
+    float direction;
+
     for (Meteorite &meteorite: meteorites)
     {
+        if (getRandomNumber(0, 1) <= 0.5f)
+        {
+            startPosition = {getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800};
+            meteoriteVelocity = METEORITE_RIGHT_VELOCITY;
+            direction = 1;
+        }
+        else
+        {
+            startPosition = {getRandomNumber(0, WINDOW_WIDTH), -800};\
+            meteoriteVelocity = METEORITE_LEFT_VELOCITY;
+            direction = -1;
+        }
+
         timeSinceLastMeteorite = 0.0f;
         if (!meteorite.isFalling)
         {
-            meteorite.setPosition({getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800});
-            meteorite.setVelocity(METEORITE_RIGHT_VELOCITY);
-            meteorite.flame.setRotation(METEORITE_ANGEL);
+            meteorite.setPosition(startPosition);
+            meteorite.setVelocity(meteoriteVelocity);
+            flame.getBody().setOrigin(meteorite.getPosition());
+            meteorite.flame.setRotation(METEORITE_ANGEL * direction);
             meteorite.isFalling = true;
             break;
         }
@@ -162,7 +180,7 @@ sf::Vector2f Meteorite::getPosition() const
 void Meteorite::setPosition(const sf::Vector2f position)
 {
     body.setPosition(position);
-    flame.setPosition({position.x + METEORITE_FLAME_OFFSET, position.y - METEORITE_FLAME_OFFSET});
+    flame.setPosition({position.x, position.y});
 }
 
 void Meteorite::setVelocity(const sf::Vector2f newVelocity)
