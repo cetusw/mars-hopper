@@ -316,11 +316,7 @@ bool Vehicle::isVehicleCrashed()
 void Vehicle::handleVehicleCrash()
 {
     isCrashed = true;
-    fuel = 100.f;
-    amountOfSafetyFactor = 3;
-    setRotation(0);
-    setVelocity({0, 0});
-    setAcceleration({0, 0});
+    reset();
     if (loadProgress() < passedPlatforms.size())
     {
         saveProgress(passedPlatforms.size());
@@ -336,6 +332,18 @@ void Vehicle::increasePlatformNumber(const int currentPlatformId, AchievementMan
     {
         achievementManager.unlock("Back?");
     }
+}
+
+void Vehicle::reset()
+{
+    fuel = 100.f;
+    amountOfSafetyFactor = 3;
+    isOnPlatform = false;
+    leftEngine.isAnimating = false;
+    rightEngine.isAnimating = false;
+    setRotation(0);
+    setVelocity({0, 0});
+    setAcceleration({0, 0});
 }
 
 sf::Vector2f Vehicle::getPosition() const

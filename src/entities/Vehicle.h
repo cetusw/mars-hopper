@@ -41,6 +41,8 @@ public:
 
     void increasePlatformNumber(int currentPlatformId, AchievementManager &achievementManager);
 
+    void reset();
+
     bool collidedWithLandscape(sf::Vector2f firstPoint, sf::Vector2f secondPoint) const;
 
     sf::Vector2f getPosition() const;

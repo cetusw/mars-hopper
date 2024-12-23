@@ -80,6 +80,7 @@ void Game::initSound()
 
 void Game::reset()
 {
+    vehicle.reset();
     platforms.clear();
     landscape.points.clear();
     meteorites.clear();

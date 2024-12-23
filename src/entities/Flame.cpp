@@ -2,11 +2,11 @@
 #include "../utils/utils.cpp"
 #include "../utils/constants.h"
 
-Flame::Flame() : rotation(0), frameColumn(0), frameRow(0), currentFrameIndex(0), elapsedTime(0), isAnimating(false)
+Flame::Flame() : rotation(0), isAnimating(false), frameColumn(0), frameRow(0), currentFrameIndex(0), elapsedTime(0)
 {
 }
 
-void Flame::init(const std::string &filePath, const Size size, sf::Vector2f origin)
+void Flame::init(const std::string &filePath, const Size size, const sf::Vector2f origin)
 {
     loadTexture(flameTexture, filePath);
     flameSprite.setTexture(flameTexture);
