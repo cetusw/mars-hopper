@@ -9,7 +9,7 @@
 class MiniMap {
 public:
     MiniMap();
-    void initMiniMap();
+    void init();
 
     void updateMiniMap(const Vehicle &vehicle);
 

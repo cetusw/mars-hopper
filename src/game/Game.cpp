@@ -12,7 +12,7 @@ Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper",
 void Game::init()
 {
     safetyFactor.init();
-    miniMap.initMiniMap();
+    miniMap.init();
     achievementManager.initAchievementManager();
     achievementManager.initNotification();
     passedPlatforms.init();
@@ -38,19 +38,20 @@ void Game::initLandscape()
 
 void Game::initPlatforms()
 {
-    platforms[0].init((WINDOW_WIDTH / 2) - (PLATFORM_SIZE.width / 2), platforms[0].getPlatformPositionY(WINDOW_WIDTH / 2, landscape.points),
-                      "../assets/platform.png");
+    platforms[0].init({
+        WINDOW_WIDTH / 2,
+        platforms[0].getPlatformPositionY(WINDOW_WIDTH / 2, landscape.points)
+    });
 
     float platformPositionX = 0;
     for (int i = 1; i < 5; i++)
     {
         platformPositionX = getRandomNumber(static_cast<float>(i + 1) * (WINDOW_WIDTH / 2),
                                             static_cast<float>(i + 2) * ((WINDOW_WIDTH / 2) - PLATFORM_SIZE.width));
-        platforms[i].init(
+        platforms[i].init({
             platformPositionX,
-            platforms[i].getPlatformPositionY(platformPositionX, landscape.points),
-            "../assets/platform.png"
-        );
+            platforms[i].getPlatformPositionY(platformPositionX, landscape.points)
+        });
     }
 }
 
@@ -235,10 +236,6 @@ void Game::draw()
 {
     window.clear(sf::Color(0x00, 0x00, 0x00));
     window.draw(backgroundSprite);
-    for (Platform &currentPlatform: platforms)
-    {
-        window.draw(currentPlatform.getBody());
-    }
     window.draw(vehicle.getBody());
     window.draw(safetyFactor.getBody());
     vehicle.rightEngine.draw(window);
@@ -257,5 +254,17 @@ void Game::draw()
     window.draw(passedPlatforms.platformsText);
     achievementManager.drawAchievementNotification(window);
     miniMap.drawMiniMap(window, vehicle, platforms, landscape, meteorites);
+    for (Platform &currentPlatform: platforms)
+    {
+        window.draw(currentPlatform.getBody());
+        if (currentPlatform.getRepairStatus())
+        {
+            window.draw(currentPlatform.getRepair());
+        }
+        if (currentPlatform.getRepairKitStatus())
+        {
+            window.draw(currentPlatform.getRepairKit());
+        }
+    }
     window.display();
 }

@@ -25,9 +25,9 @@ constexpr float MAX_AllOWED_SPEED = 250.f;
 
 constexpr Size VEHICLE_SIZE = {100.f, 100.f};
 constexpr Size PLATFORM_SIZE = {286.f, 500.f};
-constexpr float PLATFORM_OFFSET_X = 50.f;
-constexpr float PLATFORM_OFFSET_Y = 270.f;
-constexpr float PLATFORM_OFFSET_Y_FOR_INSERT = 350.f;
+constexpr float PLATFORM_OFFSET_X = 65.f;
+constexpr float PLATFORM_OFFSET_Y = 24.f;
+constexpr float PLATFORM_OFFSET_Y_FOR_INSERT = 104.f;
 
 constexpr float LANDSCAPE_STEP = 100.f;
 
@@ -98,5 +98,15 @@ constexpr float SAFETY_FACTOR_OFFSET_Y = 15.0f;
 
 constexpr float FRAME_WIDTH = 128;
 constexpr float FRAME_HEIGHT = 126;
+
+const std::string REPAIR_TEXTURE_PATH = "../assets/repair.png";
+constexpr Size REPAIR_SIZE = {40, 40};
+constexpr float REPAIR_OFFSET = 45.f;
+
+const std::string REPAIR_KIT_TEXTURE_PATH = "../assets/repair-kit.png";
+constexpr Size REPAIR_KIT_SIZE  = {40, 40};
+constexpr int REPAIR_KITS_AMOUNT = 3;
+
+const std::string PLATFORM_TEXTURE_PATH = "../assets/platform.png";
 
 #endif //CONSTANTS_H

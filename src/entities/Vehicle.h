@@ -97,6 +97,7 @@ private:
     float rotation;
     Size size;
     std::vector<int> passedPlatforms;
+    bool isRepairable;
 };
 
 #endif //VEHICLE_H

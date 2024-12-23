@@ -7,7 +7,7 @@
 
 Vehicle::Vehicle() : isCrashed(false), isOnPlatform(false), fuel(100), amountOfSafetyFactor(3), velocity{0, 0}, acceleration{0, 0},
                      position{VEHICLE_START_POSITION},
-                     rotation(0), size{VEHICLE_SIZE}
+                     rotation(0), size{VEHICLE_SIZE}, isRepairable(false)
 {
 }
 
@@ -177,10 +177,11 @@ void Vehicle::increaseVerticalAcceleration()
 
 bool Vehicle::collidedWithPlatform(const Platform &platform) const
 {
+    std::cout << platform.getPosition().x << std::endl;
     return getPosition().y + getSize().height / 2.0f > platform.getPosition().y + PLATFORM_OFFSET_Y &&
-           getPosition().x + getSize().width / 2.0f > platform.getPosition().x + PLATFORM_OFFSET_X &&
-           getPosition().x - getSize().width / 2.0f < platform.getPosition().x + platform.getSize().width - PLATFORM_OFFSET_X &&
-           getPosition().y - getSize().height / 2.0f < platform.getPosition().y + PLATFORM_OFFSET_Y + platform.getSize().height;
+           getPosition().x + getSize().width / 2.0f > platform.getPosition().x - PLATFORM_OFFSET_X &&
+           getPosition().x - getSize().width / 2.0f < platform.getPosition().x + PLATFORM_OFFSET_X &&
+           getPosition().y - getSize().height / 2.0f < platform.getPosition().y + PLATFORM_OFFSET_Y;
 }
 
 bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms, AchievementManager &achievementManager)
@@ -199,6 +200,15 @@ bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms, Achi
             }
         }
         increasePlatformNumber(platform.getId(), achievementManager);
+        if (platform.getRepairStatus() && isRepairable)
+        {
+            amountOfSafetyFactor = 3;
+            isRepairable = false;
+        }
+        if (platform.getRepairKitStatus())
+        {
+            isRepairable = true;
+        }
         fuel = 100.f;
         isOnPlatform = true;
         setVelocity({0, 0});

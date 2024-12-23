@@ -4,31 +4,46 @@
 
 int Platform::lastId = 0;
 
-Platform::Platform() : id(0), size{PLATFORM_SIZE}
+Platform::Platform() : id(0), platformSize{PLATFORM_SIZE}, isRepair(false), repairSize{REPAIR_SIZE}, repairKitSize{REPAIR_KIT_SIZE},
+                       isRepairKit(false)
 {
 }
 
-void Platform::init(const float x, const float y, const std::string &filePath)
+void Platform::init(const sf::Vector2f position)
 {
-    loadTexture(texture, filePath);
-    body.setTexture(texture);
-    body.setScale(
+    initEntity(position, platformSize, platformSprite, platformTexture, PLATFORM_TEXTURE_PATH);
+    initEntity(position, repairSize, repairSprite, repairTexture, REPAIR_TEXTURE_PATH);
+    initEntity(position, repairKitSize, repairKitSprite, repairKitTexture, REPAIR_KIT_TEXTURE_PATH);
+    setRepairKitStatus();
+    setRepairStatus();
+    id = ++lastId;
+}
+
+void Platform::initEntity(const sf::Vector2f position, const Size size, sf::Sprite &sprite, sf::Texture &texture, const std::string &texturePath)
+{
+    loadTexture(texture, texturePath);
+    sprite.setTexture(texture);
+    sprite.setScale(
         size.width / static_cast<float>(texture.getSize().x),
         size.height / static_cast<float>(texture.getSize().y)
     );
-    body.setPosition(x, y);
-
-    id = ++lastId;
+    sprite.setOrigin(
+        static_cast<float>(texture.getSize().x) / 2.0f,
+        static_cast<float>(texture.getSize().y) / 2.0f
+    );
+    sprite.setPosition(position);
 }
 
 void Platform::moveForward(std::vector<sf::Vector2f> &points)
 {
     if (getPosition().x + getSize().width < -WINDOW_WIDTH)
     {
-        setPosition(
+        setPosition({
             WINDOW_WIDTH + WINDOW_EXPAND,
             getPlatformPositionY(WINDOW_WIDTH, points)
-        );
+        });
+        setRepairKitStatus();
+        setRepairStatus();
         setId();
     }
 }
@@ -37,10 +52,10 @@ void Platform::updatePosition(const std::string &direction, const sf::Vector2f &
 {
     if (direction == "horizontal")
     {
-        setPosition(getPosition().x - velocity.x * TIME_STEP, getPosition().y);
+        setPosition({getPosition().x - velocity.x * TIME_STEP, getPosition().y});
     } else if (direction == "vertical")
     {
-        setPosition(getPosition().x, getPosition().y - velocity.y * TIME_STEP);
+        setPosition({getPosition().x, getPosition().y - velocity.y * TIME_STEP});
     }
     moveForward(points);
 }
@@ -66,17 +81,27 @@ float Platform::getPlatformPositionY(const float x, std::vector<sf::Vector2f> &p
 
 sf::Vector2f Platform::getPosition() const
 {
-    return body.getPosition();
+    return platformSprite.getPosition();
 }
 
 Size Platform::getSize() const
 {
-    return size;
+    return platformSize;
 }
 
 sf::Sprite Platform::getBody()
 {
-    return body;
+    return platformSprite;
+}
+
+bool Platform::getRepairStatus() const
+{
+    return isRepair;
+}
+
+bool Platform::getRepairKitStatus() const
+{
+    return isRepairKit;
 }
 
 int Platform::getId() const
@@ -84,9 +109,40 @@ int Platform::getId() const
     return id;
 }
 
-void Platform::setPosition(const float x, const float y)
+sf::Sprite Platform::getRepair()
 {
-    body.setPosition(x, y);
+    return repairSprite;
+}
+
+
+sf::Sprite Platform::getRepairKit()
+{
+    return repairKitSprite;
+}
+
+void Platform::setPosition(const sf::Vector2f &position)
+{
+    platformSprite.setPosition(position);
+    repairSprite.setPosition({position.x, position.y + REPAIR_OFFSET});
+    repairKitSprite.setPosition(position);
+}
+
+void Platform::setRepairStatus()
+{
+    isRepair = false;
+    if (getRandomNumber(0, 1) > 0.8f)
+    {
+        isRepair = true;
+    }
+}
+
+void Platform::setRepairKitStatus()
+{
+    isRepairKit = false;
+    if (getRandomNumber(0, 1) > 0.4f && !isRepair)
+    {
+        isRepairKit = true;
+    }
 }
 
 void Platform::setId()

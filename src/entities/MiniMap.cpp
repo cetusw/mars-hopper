@@ -7,7 +7,7 @@
 MiniMap::MiniMap()
 = default;
 
-void MiniMap::initMiniMap()
+void MiniMap::init()
 {
     minimapView.setSize(WINDOW_WIDTH * 1.5f, WINDOW_HEIGHT);
     minimapView.setViewport(sf::FloatRect(0.0f, 0.0f, MINIMAP_SCALE * 1.5f, MINIMAP_SCALE));

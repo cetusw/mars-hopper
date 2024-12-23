@@ -2,6 +2,7 @@
 #define PLATFORM_H
 
 #include <SFML/Graphics.hpp>
+
 #include "../utils/Size.h"
 
 class Platform
@@ -9,7 +10,9 @@ class Platform
 public:
     Platform();
 
-    void init(float x, float y, const std::string &filePath);
+    void init(sf::Vector2f position);
+
+    void initEntity(sf::Vector2f position, Size size, sf::Sprite &sprite, sf::Texture &texture, const std::string &texturePath);
 
     void moveForward(std::vector<sf::Vector2f> &points);
 
@@ -26,18 +29,38 @@ public:
 
     sf::Sprite getBody();
 
+    bool getRepairStatus() const;
+
+    bool getRepairKitStatus() const;
+
     int getId() const;
 
-    void setPosition(float x, float y);
+    sf::Sprite getRepair();
+
+    sf::Sprite getRepairKit();
+
+    void setPosition(const sf::Vector2f &position);
+
+    void setRepairStatus();
+
+    void setRepairKitStatus();
 
     void setId();
 
 private:
     int id;
     static int lastId;
-    sf::Sprite body;
-    sf::Texture texture;
-    Size size;
+    sf::Sprite platformSprite;
+    sf::Texture platformTexture;
+    Size platformSize;
+    bool isRepair;
+    sf::Sprite repairSprite;
+    sf::Texture repairTexture;
+    Size repairSize;
+    sf::Sprite repairKitSprite;
+    sf::Texture repairKitTexture;
+    Size repairKitSize;
+    bool isRepairKit;
 };
 
 #endif //PLATFORM_H

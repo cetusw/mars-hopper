@@ -44,6 +44,8 @@ private:
 
     void initMeteorites();
 
+    void initRepairKits();
+
     void initSound();
 
     void reset();
