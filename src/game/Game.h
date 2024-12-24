@@ -13,6 +13,7 @@
 #include "../entities/Screen.h"
 #include "../entities/Vehicle.h"
 #include "../entities/Platform.h"
+#include "../entities/RepairKitIndicator.h"
 #include "../entities/SafetyFactor.h"
 #include "../entities/Speedometer.h"
 #include "../utils/GameState.h"
@@ -58,6 +59,10 @@ private:
 
     void update();
 
+    void updateMeteorite();
+
+    void updateVehicle();
+
     void draw();
 
     void pollEvents();
@@ -75,6 +80,7 @@ private:
     AchievementManager achievementManager;
     MiniMap miniMap;
     SafetyFactor safetyFactor;
+    RepairKitIndicator repairKitIndicator;
 };
 
 

@@ -25,6 +25,10 @@ public:
 
     bool updateCollidedWithPlatforms(std::vector<Platform> &platforms, AchievementManager &achievementManager);
 
+    void handleTouchdown(const Platform &platform);
+
+    void handleRepair(Platform &platform);
+
     void updateCollidedWithLandscape(const std::vector<sf::Vector2f> &points);
 
     bool collidedWithMeteorite(const Meteorite &meteorite) const;
@@ -54,6 +58,8 @@ public:
     std::vector<int> getPassedPlatforms();
 
     float getRotation() const;
+
+    bool getRepairability() const;
 
     Size getSize() const;
 

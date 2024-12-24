@@ -109,4 +109,9 @@ constexpr int REPAIR_KITS_AMOUNT = 3;
 
 const std::string PLATFORM_TEXTURE_PATH = "../assets/platform.png";
 
+constexpr Size REPAIR_KIT_INDICATOR_SIZE = {200, 200};
+
+constexpr int MAX_SAFETY_FACTOR_AMOUNT = 3;
+constexpr float MAX_FUEL_AMOUNT = 100.0f;
+
 #endif //CONSTANTS_H

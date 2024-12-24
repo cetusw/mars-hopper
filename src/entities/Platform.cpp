@@ -5,6 +5,7 @@
 int Platform::lastId = 0;
 
 Platform::Platform() : id(0), platformSize{PLATFORM_SIZE}, isRepair(false), repairSize{REPAIR_SIZE}, repairKitSize{REPAIR_KIT_SIZE},
+                       repairKitOffset(0),
                        isRepairKit(false)
 {
 }
@@ -13,9 +14,10 @@ void Platform::init(const sf::Vector2f position)
 {
     initEntity(position, platformSize, platformSprite, platformTexture, PLATFORM_TEXTURE_PATH);
     initEntity(position, repairSize, repairSprite, repairTexture, REPAIR_TEXTURE_PATH);
-    initEntity(position, repairKitSize, repairKitSprite, repairKitTexture, REPAIR_KIT_TEXTURE_PATH);
-    setRepairKitStatus();
+    repairKitOffset = getRandomNumber(-PLATFORM_SIZE.width / 2 + REPAIR_KIT_SIZE.width, PLATFORM_SIZE.width / 2 - REPAIR_KIT_SIZE.width);
+    initEntity({position.x + repairKitOffset, position.y}, repairKitSize, repairKitSprite, repairKitTexture, REPAIR_KIT_TEXTURE_PATH);
     setRepairStatus();
+    setRepairKitStatus();
     id = ++lastId;
 }
 
@@ -42,8 +44,8 @@ void Platform::moveForward(std::vector<sf::Vector2f> &points)
             WINDOW_WIDTH + WINDOW_EXPAND,
             getPlatformPositionY(WINDOW_WIDTH, points)
         });
-        setRepairKitStatus();
         setRepairStatus();
+        setRepairKitStatus();
         setId();
     }
 }
@@ -60,7 +62,8 @@ void Platform::updatePosition(const std::string &direction, const sf::Vector2f &
     moveForward(points);
 }
 
-void Platform::updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points, std::vector<Platform> &platforms, const sf::Vector2f velocity)
+void Platform::updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points, std::vector<Platform> &platforms,
+                                       const sf::Vector2f velocity)
 {
     for (Platform &platform: platforms)
     {
@@ -124,7 +127,7 @@ void Platform::setPosition(const sf::Vector2f &position)
 {
     platformSprite.setPosition(position);
     repairSprite.setPosition({position.x, position.y + REPAIR_OFFSET});
-    repairKitSprite.setPosition(position);
+    repairKitSprite.setPosition({position.x + repairKitOffset, position.y});
 }
 
 void Platform::setRepairStatus()
@@ -143,6 +146,11 @@ void Platform::setRepairKitStatus()
     {
         isRepairKit = true;
     }
+}
+
+void Platform::setRepairKit(const bool state)
+{
+    isRepairKit = state;
 }
 
 void Platform::setId()

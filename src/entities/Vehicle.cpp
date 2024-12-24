@@ -122,9 +122,7 @@ void Vehicle::handleInput(const sf::Keyboard::Key key)
     {
         return;
     }
-
     isOnPlatform = false;
-
     if (key == sf::Keyboard::Up)
     {
         reduceFuel(2);
@@ -132,14 +130,12 @@ void Vehicle::handleInput(const sf::Keyboard::Key key)
         rightEngine.onEngine();
         increaseVerticalAcceleration();
     }
-
     if (key == sf::Keyboard::Left)
     {
         reduceFuel(1);
         increaseDiagonalAcceleration("left");
         leftEngine.onEngine();
     }
-
     if (key == sf::Keyboard::Right)
     {
         reduceFuel(1);
@@ -177,7 +173,6 @@ void Vehicle::increaseVerticalAcceleration()
 
 bool Vehicle::collidedWithPlatform(const Platform &platform) const
 {
-    std::cout << platform.getPosition().x << std::endl;
     return getPosition().y + getSize().height / 2.0f > platform.getPosition().y + PLATFORM_OFFSET_Y &&
            getPosition().x + getSize().width / 2.0f > platform.getPosition().x - PLATFORM_OFFSET_X &&
            getPosition().x - getSize().width / 2.0f < platform.getPosition().x + PLATFORM_OFFSET_X &&
@@ -200,25 +195,36 @@ bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms, Achi
             }
         }
         increasePlatformNumber(platform.getId(), achievementManager);
-        if (platform.getRepairStatus() && isRepairable)
-        {
-            amountOfSafetyFactor = 3;
-            isRepairable = false;
-        }
-        if (platform.getRepairKitStatus())
-        {
-            isRepairable = true;
-        }
-        fuel = 100.f;
-        isOnPlatform = true;
-        setVelocity({0, 0});
-        setPosition({
-            getPosition().x,
-            platform.getPosition().y - getSize().height / 2.0f + PLATFORM_OFFSET_Y
-        });
+        handleRepair(platform);
+        handleTouchdown(platform);
         return true;
     }
     return false;
+}
+
+void Vehicle::handleTouchdown(const Platform &platform)
+{
+    fuel = MAX_FUEL_AMOUNT;
+    isOnPlatform = true;
+    setVelocity({0, 0});
+    setPosition({
+        getPosition().x,
+        platform.getPosition().y - getSize().height / 2.0f + PLATFORM_OFFSET_Y
+    });
+}
+
+void Vehicle::handleRepair(Platform &platform)
+{
+    if (platform.getRepairStatus() && isRepairable && amountOfSafetyFactor != MAX_SAFETY_FACTOR_AMOUNT)
+    {
+        amountOfSafetyFactor = MAX_SAFETY_FACTOR_AMOUNT;
+        isRepairable = false;
+    }
+    if (platform.getRepairKitStatus() && !isRepairable)
+    {
+        isRepairable = true;
+        platform.setRepairKit(false);
+    }
 }
 
 bool Vehicle::collidedWithLandscape(const sf::Vector2f firstPoint, const sf::Vector2f secondPoint) const
@@ -346,11 +352,12 @@ void Vehicle::increasePlatformNumber(const int currentPlatformId, AchievementMan
 
 void Vehicle::reset()
 {
-    fuel = 100.f;
-    amountOfSafetyFactor = 3;
+    fuel = MAX_FUEL_AMOUNT;
+    amountOfSafetyFactor = MAX_SAFETY_FACTOR_AMOUNT;
     isOnPlatform = false;
     leftEngine.isAnimating = false;
     rightEngine.isAnimating = false;
+    isRepairable = false;
     setRotation(0);
     setVelocity({0, 0});
     setAcceleration({0, 0});
@@ -389,6 +396,11 @@ std::vector<int> Vehicle::getPassedPlatforms()
 float Vehicle::getRotation() const
 {
     return rotation;
+}
+
+bool Vehicle::getRepairability() const
+{
+    return isRepairable;
 }
 
 void Vehicle::setPosition(const sf::Vector2f position)

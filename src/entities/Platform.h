@@ -12,14 +12,14 @@ public:
 
     void init(sf::Vector2f position);
 
-    void initEntity(sf::Vector2f position, Size size, sf::Sprite &sprite, sf::Texture &texture, const std::string &texturePath);
+    static void initEntity(sf::Vector2f position, Size size, sf::Sprite &sprite, sf::Texture &texture, const std::string &texturePath);
 
     void moveForward(std::vector<sf::Vector2f> &points);
 
     void updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points);
 
     void updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points, std::vector<Platform> &platforms,
-                                        sf::Vector2f velocity);
+                                 sf::Vector2f velocity);
 
     float getPlatformPositionY(float x, std::vector<sf::Vector2f> &points);
 
@@ -45,6 +45,8 @@ public:
 
     void setRepairKitStatus();
 
+    void setRepairKit(bool state);
+
     void setId();
 
 private:
@@ -60,6 +62,7 @@ private:
     sf::Sprite repairKitSprite;
     sf::Texture repairKitTexture;
     Size repairKitSize;
+    float repairKitOffset;
     bool isRepairKit;
 };
 

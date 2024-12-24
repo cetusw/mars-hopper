@@ -11,6 +11,7 @@ Game::Game() : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Mars Hopper",
 
 void Game::init()
 {
+    repairKitIndicator.init();
     safetyFactor.init();
     miniMap.init();
     achievementManager.initAchievementManager();
@@ -206,20 +207,40 @@ void Game::updateMapPosition()
 
 void Game::update()
 {
+    updateMeteorite();
+    updateMapPosition();
+    updateVehicle();
+    landscape.updateLandscape(LANDSCAPE_STEP, 800, 1000);
+    passedPlatforms.update(vehicle.getPassedPlatforms());
+    fuelIndicator.updateFuelIndicator(vehicle.fuel, vehicle.getPosition());
+    speedometer.updateSpeedometer(vehicle.getVelocity(), vehicle.getPosition());
+    achievementManager.updateNotification();
+    miniMap.updateMiniMap(vehicle);
+    safetyFactor.update(vehicle);
+}
+
+void Game::updateMeteorite()
+{
     meteorite.addMeteorite(meteorites, timeSinceLastMeteorite);
     meteorite.updateMeteoritePosition(meteorites);
-    updateMapPosition();
-    landscape.updateLandscape(LANDSCAPE_STEP, 800, 1000);
     for (Meteorite &meteorite: meteorites)
     {
         meteorite.updateCollidedWithLandscape(landscape.points);
         meteorite.updateCollidedWithPlatforms(platforms);
     }
+}
+
+void Game::updateVehicle()
+{
     vehicle.updatePosition();
     vehicle.updateCollidedWithPlatforms(platforms, achievementManager);
-    passedPlatforms.update(vehicle.getPassedPlatforms());
-    fuelIndicator.updateFuelIndicator(vehicle.fuel, vehicle.getPosition());
-    speedometer.updateSpeedometer(vehicle.getVelocity(), vehicle.getPosition());
+    if (vehicle.getRepairability())
+    {
+        repairKitIndicator.setDrawability(true);
+    } else
+    {
+        repairKitIndicator.setDrawability(false);
+    }
     vehicle.updateCollidedWithLandscape(landscape.points);
     vehicle.updateCollidedWithMeteorite(meteorites);
     if (vehicle.isCrashed)
@@ -227,15 +248,24 @@ void Game::update()
         vehicle.isCrashed = false;
         gameState = GameState::GameOver;
     }
-    achievementManager.updateNotification();
-    miniMap.updateMiniMap(vehicle);
-    safetyFactor.update(vehicle);
 }
 
 void Game::draw()
 {
     window.clear(sf::Color(0x00, 0x00, 0x00));
     window.draw(backgroundSprite);
+    for (Platform &currentPlatform: platforms)
+    {
+        window.draw(currentPlatform.getBody());
+        if (currentPlatform.getRepairStatus())
+        {
+            window.draw(currentPlatform.getRepair());
+        }
+        if (currentPlatform.getRepairKitStatus())
+        {
+            window.draw(currentPlatform.getRepairKit());
+        }
+    }
     window.draw(vehicle.getBody());
     window.draw(safetyFactor.getBody());
     vehicle.rightEngine.draw(window);
@@ -254,17 +284,9 @@ void Game::draw()
     window.draw(passedPlatforms.platformsText);
     achievementManager.drawAchievementNotification(window);
     miniMap.drawMiniMap(window, vehicle, platforms, landscape, meteorites);
-    for (Platform &currentPlatform: platforms)
+    if (repairKitIndicator.getDrawability())
     {
-        window.draw(currentPlatform.getBody());
-        if (currentPlatform.getRepairStatus())
-        {
-            window.draw(currentPlatform.getRepair());
-        }
-        if (currentPlatform.getRepairKitStatus())
-        {
-            window.draw(currentPlatform.getRepairKit());
-        }
+        window.draw(repairKitIndicator.getSprite());
     }
     window.display();
 }

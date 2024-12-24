@@ -35,6 +35,8 @@ add_executable(mars-hopper main.cpp
         src/entities/MiniMap.cpp
         src/entities/SafetyFactor.h
         src/entities/SafetyFactor.cpp
+        src/entities/RepairKitIndicator.h
+        src/entities/RepairKitIndicator.cpp
 )
 
 target_link_libraries(mars-hopper
