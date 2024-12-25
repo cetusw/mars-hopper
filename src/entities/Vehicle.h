@@ -17,6 +17,8 @@ public:
 
     void init(const std::string &filePath);
 
+    void playVehicleCrashSound();
+
     void updatePosition();
 
     void handleInput(sf::Keyboard::Key key);
@@ -104,6 +106,8 @@ private:
     Size size;
     std::vector<int> passedPlatforms;
     bool isRepairable;
+    sf::SoundBuffer vehicleBuffer;
+    sf::Sound vehicleSound;
 };
 
 #endif //VEHICLE_H

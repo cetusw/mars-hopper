@@ -14,6 +14,17 @@ void Meteorite::init()
     body.setFillColor(sf::Color::Black);
     isFalling = false;
     flame.init(FLAME_IMAGE, METEORITE_FLAME_SIZE, {FRAME_WIDTH / 2, FRAME_HEIGHT - 20});
+
+    loadSound(meteoriteBuffer, "../assets/sounds/meteorite-crash.wav");
+    meteoriteSound.setBuffer(meteoriteBuffer);
+}
+
+void Meteorite::handleMeteoriteCrash()
+{
+    if (meteoriteSound.getStatus() != sf::Sound::Playing)
+    {
+        meteoriteSound.play();
+    }
 }
 
 void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite)
@@ -113,6 +124,7 @@ void Meteorite::updateCollidedWithPlatforms(std::vector<Platform> &platforms)
         if (collidedWithPlatform(platform))
         {
             handleMeteoriteOverflow();
+            handleMeteoriteCrash();
         }
     }
 }
@@ -147,6 +159,7 @@ void Meteorite::updateCollidedWithLandscape(const std::vector<sf::Vector2f> &poi
         if (collidedWithLandscape(points[i], points[i + 1]))
         {
             handleMeteoriteOverflow();
+            handleMeteoriteCrash();
         }
     }
 }

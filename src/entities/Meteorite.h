@@ -15,6 +15,8 @@ public:
 
     void init();
 
+    void handleMeteoriteCrash();
+
     void addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite);
 
     void handleMeteoriteOverflow();
@@ -58,6 +60,8 @@ private:
     float radius;
     sf::Vector2f position;
     sf::Vector2f velocity;
+    sf::SoundBuffer meteoriteBuffer;
+    sf::Sound meteoriteSound;
 };
 
 

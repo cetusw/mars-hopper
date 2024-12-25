@@ -32,6 +32,17 @@ void Vehicle::init(const std::string &filePath)
     rightEngine.setRotation(-15.0f);
 
     passedPlatforms.clear();
+
+    loadSound(vehicleBuffer, "../assets/sounds/meteorite-crash.wav");
+    vehicleSound.setBuffer(vehicleBuffer);
+}
+
+void Vehicle::playVehicleCrashSound()
+{
+    if (vehicleSound.getStatus() != sf::Sound::Playing)
+    {
+        vehicleSound.play();
+    }
 }
 
 void Vehicle::updatePosition()
@@ -332,6 +343,7 @@ bool Vehicle::isVehicleCrashed()
 void Vehicle::handleVehicleCrash()
 {
     isCrashed = true;
+    playVehicleCrashSound();
     reset();
     if (loadProgress() < passedPlatforms.size())
     {
