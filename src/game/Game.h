@@ -16,6 +16,7 @@
 #include "../entities/RepairKitIndicator.h"
 #include "../entities/SafetyFactor.h"
 #include "../entities/Speedometer.h"
+#include "../utils/GameDifficulty.h"
 #include "../utils/GameState.h"
 
 class Game
@@ -73,6 +74,7 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
     GameState gameState;
+    GameDifficulty gameDifficulty;
     sf::SoundBuffer gameBuffer;
     sf::Sound gameSound;
     Screen menu;

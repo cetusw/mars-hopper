@@ -5,7 +5,7 @@
 #include <string>
 
 constexpr float WINDOW_WIDTH = 1920.0f;
-constexpr float WINDOW_HEIGHT = 1080.0f;
+constexpr float WINDOW_HEIGHT = 1200.0f;
 constexpr float WINDOW_EXPAND = 700.0f;
 const sf::Vector2f WINDOW_CENTER = {WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f};
 constexpr float FREE_MOVE_BOX_LEFT = (WINDOW_WIDTH / 5) * 2;
@@ -26,10 +26,16 @@ constexpr float MAX_AllOWED_SPEED = 250.f;
 constexpr Size VEHICLE_SIZE = {100.f, 100.f};
 constexpr Size PLATFORM_SIZE = {286.f, 500.f};
 constexpr float PLATFORM_OFFSET_X = 65.f;
-constexpr float PLATFORM_OFFSET_Y = 24.f;
-constexpr float PLATFORM_OFFSET_Y_FOR_INSERT = 104.f;
+constexpr float PLATFORM_OFFSET_Y = 78.f;
+constexpr float PLATFORM_OFFSET_Y_FOR_INSERT = 80.f;
 
 constexpr float LANDSCAPE_STEP = 100.f;
+constexpr float LANDSCAPE_LEVEL_OFFSET = 20.f;
+constexpr float LANDSCAPE_STEEP_PHASE_LEVEL_OFFSET = 100.f;
+constexpr int LANDSCAPE_STEEP_PHASE_LENGTH = 10;
+constexpr float LANDSCAPE_MIN_HEIGHT = 800.f;
+constexpr float LANDSCAPE_MAX_HEIGHT = 1000.f;
+constexpr float LANDSCAPE_OVERFLOW_LENGTH = 10000.f;
 
 const sf::Vector2f START_PLATFORM_POSITION = {100.f, 800.f};
 const sf::Vector2f FIRST_PLATFORM_POSITION = {600.f, 400.f};
@@ -54,7 +60,7 @@ constexpr int ENGINE_FLAME_START_FRAME = 0;
 const std::string ENGINE_SOUND = "../assets/sounds/engine.wav";
 
 constexpr float METEORITE_RADIUS = 50.0f;
-constexpr int METEORITES_AMOUNT = 3;
+constexpr int METEORITES_AMOUNT = 10;
 const sf::Vector2f METEORITE_RIGHT_VELOCITY = {-450, 450};
 const sf::Vector2f METEORITE_LEFT_VELOCITY = {450, 450};
 constexpr float METEORITE_ANGEL = 45.0f;
@@ -68,9 +74,10 @@ constexpr float TITLE_FONT_SIZE = 85.0f;
 constexpr float SUBTITLE_FONT_SIZE = 50.0f;
 
 const std::vector<std::string> OPTIONS_MAIN_MENU = {"Start", "Settings", "Achievements", "Exit"};
-const std::vector<std::string> OPTIONS_SETTINGS = {"Volume", "Back"};
+const std::vector<std::string> OPTIONS_SETTINGS = {"Difficulty", "Back"};
 const std::vector<std::string> OPTIONS_GAME_OVER = {"Restart", "Back to Main Menu"};
 const std::vector<std::string> OPTIONS_PAUSE = {"Restart", "Back to Main Menu"};
+const std::vector<std::string> OPTIONS_DIFFICULTY = {"Easy", "Normal", "Hard", "Back"};
 
 const sf::Vector2f TITLE_POSITION_LEFT = {300.f, 200.f};
 
@@ -101,11 +108,12 @@ constexpr float FRAME_HEIGHT = 126;
 
 const std::string REPAIR_TEXTURE_PATH = "../assets/repair.png";
 constexpr Size REPAIR_SIZE = {40, 40};
-constexpr float REPAIR_OFFSET = 45.f;
+constexpr float REPAIR_OFFSET = 60.f;
 
 const std::string REPAIR_KIT_TEXTURE_PATH = "../assets/repair-kit.png";
 constexpr Size REPAIR_KIT_SIZE  = {40, 40};
 constexpr int REPAIR_KITS_AMOUNT = 3;
+constexpr float REPAIR_KIT_OFFSET = 108.0f;
 
 const std::string PLATFORM_TEXTURE_PATH = "../assets/platform.png";
 

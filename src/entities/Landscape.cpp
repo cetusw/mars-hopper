@@ -6,40 +6,70 @@ Landscape::Landscape() : landscape(sf::TriangleStrip)
 {
 }
 
-void Landscape::updateLandscape(const float step, const float minHeight, const float maxHeight)
+void Landscape::updateLandscape()
 {
-    while (!points.empty() && points[0].x < -10000)
+    bool steepPhase = false;
+    int steepPhaseLength = 0;
+    clearLandscapePoints();
+
+    if (getRandomNumber(0, 1) > 0.2)
     {
-        points.erase(points.begin());
-        points.erase(points.begin());
+        steepPhase = true;
     }
 
-    while (points.empty() || points.back().x < WINDOW_WIDTH + 10000)
+    while (points.empty() || points.back().x < WINDOW_WIDTH + LANDSCAPE_OVERFLOW_LENGTH)
     {
         sf::Vector2f point;
-        if (points.empty())
-        {
-            point.x = -10000;
-            point.y = getRandomNumber(minHeight, maxHeight);
-        } else
-        {
-            point.x = points.back().x + step;
-            point.y = points.back().y + getRandomNumber(-20, 20);
-        }
-
-        if (point.y < minHeight)
-        {
-            point.y = minHeight;
-        }
-        if (point.y > maxHeight)
-        {
-            point.y = maxHeight;
-        }
-
+        calculateLandscapePoints(point, steepPhase, steepPhaseLength);
+        checkLandscapePointsHeight(point);
         points.emplace_back(point.x, point.y);
     }
 
     createLandscape(landscapes);
+}
+
+void Landscape::clearLandscapePoints()
+{
+    while (!points.empty() && points[0].x < -LANDSCAPE_OVERFLOW_LENGTH)
+    {
+        points.erase(points.begin());
+        points.erase(points.begin());
+    }
+}
+
+void Landscape::calculateLandscapePoints(sf::Vector2f &point, bool &steepPhase, int &steepPhaseLength) const
+{
+    if (points.empty())
+    {
+        point.x = -10000;
+        point.y = getRandomNumber(LANDSCAPE_MIN_HEIGHT, LANDSCAPE_MAX_HEIGHT);
+        return;
+    }
+    if (steepPhase && steepPhaseLength <= LANDSCAPE_STEEP_PHASE_LENGTH)
+    {
+        steepPhaseLength++;
+        point.x = points.back().x + LANDSCAPE_STEP;
+        point.y = points.back().y + getRandomNumber(-LANDSCAPE_STEEP_PHASE_LEVEL_OFFSET, LANDSCAPE_STEEP_PHASE_LEVEL_OFFSET);
+    }
+    else
+    {
+        steepPhase = false;
+        steepPhaseLength = 0;
+        point.x = points.back().x + LANDSCAPE_STEP;
+        point.y = points.back().y + getRandomNumber(-LANDSCAPE_LEVEL_OFFSET, LANDSCAPE_LEVEL_OFFSET);
+    }
+}
+
+void Landscape::checkLandscapePointsHeight(sf::Vector2f &point)
+{
+    if (point.y < LANDSCAPE_MIN_HEIGHT)
+    {
+        point.y = LANDSCAPE_MIN_HEIGHT;
+    }
+    if (point.y > LANDSCAPE_MAX_HEIGHT)
+    {
+        point.y = LANDSCAPE_MAX_HEIGHT;
+    }
 }
 
 void Landscape::createLandscape(std::vector<sf::ConvexShape> &arrayOfLandscapes)
@@ -76,14 +106,6 @@ void Landscape::updatePosition(const std::string &direction, const sf::Vector2f 
         {
             point = {point.x, point.y - velocity.y * TIME_STEP};
         }
-    }
-}
-
-void Landscape::drawLandscapes(std::vector<sf::ConvexShape> &arrayOfLandscapes, sf::RenderWindow &window)
-{
-    for (sf::ConvexShape &landscape: arrayOfLandscapes)
-    {
-        window.draw(landscape);
     }
 }
 

@@ -10,7 +10,8 @@ enum class GameState
     Settings,
     Pause,
     Achievements,
-    Exit
+    Difficulty,
+    Exit,
 };
 
 #endif //GAMESTATE_H

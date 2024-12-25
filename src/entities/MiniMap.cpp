@@ -18,7 +18,7 @@ void MiniMap::updateMiniMap(const Vehicle &vehicle)
     minimapView.setCenter(vehicle.getPosition());
 }
 
-void MiniMap::drawMiniMap(sf::RenderWindow &window, Vehicle &vehicle, std::vector<Platform> &platforms, Landscape &landscape, std::vector<Meteorite> meteorites)
+void MiniMap::drawMiniMap(sf::RenderWindow &window, Vehicle &vehicle, std::vector<Platform> &platforms, Landscape &landscape, std::vector<Meteorite> meteorites) const
 {
     const sf::View defaultView = window.getView();
     drawMinimapBorder(window);
@@ -29,8 +29,12 @@ void MiniMap::drawMiniMap(sf::RenderWindow &window, Vehicle &vehicle, std::vecto
     {
         window.draw(currentPlatform.getBody());
     }
-    for (Meteorite &currentMeteorite : meteorites)
+    for (Meteorite &currentMeteorite: meteorites)
     {
+        if (!currentMeteorite.isFalling)
+        {
+            continue;
+        }
         window.draw(currentMeteorite.getBody());
         currentMeteorite.flame.draw(window);
     }

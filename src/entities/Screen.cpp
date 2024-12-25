@@ -76,6 +76,9 @@ void Screen::initSpecificScreen(const GameState &state, const std::string &score
             break;
         case GameState::Achievements:
             init("Achievements", "", getAchievementsList(), "left", sf::Color::White, sf::Color::White, sf::Color::White);
+            break;
+        case GameState::Difficulty:
+            init("Difficulty", "", OPTIONS_DIFFICULTY, "left", sf::Color::White, sf::Color::White, sf::Color::White);
         default: ;
     }
 }
@@ -117,7 +120,7 @@ void Screen::handleInput(sf::Event event)
     }
 }
 
-void Screen::handleScreen(sf::RenderWindow &window, GameState &state, const std::string &score)
+void Screen::handleScreen(sf::RenderWindow &window, GameState &state, GameDifficulty &difficulty, const std::string &score)
 {
     initSpecificScreen(state, score);
     sf::Event event;
@@ -130,7 +133,7 @@ void Screen::handleScreen(sf::RenderWindow &window, GameState &state, const std:
         {
             if (event.key.code == sf::Keyboard::Enter)
             {
-                handleOptionList(state);
+                handleOptionList(state, difficulty);
             } else
             {
                 handleInput(event);
@@ -140,7 +143,7 @@ void Screen::handleScreen(sf::RenderWindow &window, GameState &state, const std:
     draw(window);
 }
 
-void Screen::handleOptionList(GameState &state)
+void Screen::handleOptionList(GameState &state, GameDifficulty &difficulty)
 {
     switch (state)
     {
@@ -158,6 +161,10 @@ void Screen::handleOptionList(GameState &state)
             break;
         case GameState::Pause:
             handlePauseOptionList(state);
+            break;
+        case GameState::Difficulty:
+            handleDifficultyList(state, difficulty);
+            break;
         default: ;
     }
 }
@@ -191,7 +198,7 @@ void Screen::handleSettingsOptionList(GameState &state)
     switch (selectedOption)
     {
         case 0:
-            state = GameState::Exit;
+            state = GameState::Difficulty;
             selectedOption = 0;
             break;
         case 1:
@@ -240,6 +247,33 @@ void Screen::handleAchievementsList(GameState &state)
     {
         state = GameState::MainMenu;
         selectedOption = 0;
+    }
+}
+
+void Screen::handleDifficultyList(GameState &state, GameDifficulty &difficulty)
+{
+    switch (selectedOption)
+    {
+        case 0:
+            state = GameState::MainMenu;
+            difficulty = GameDifficulty::Easy;
+            selectedOption = 0;
+            break;
+        case 1:
+            state = GameState::MainMenu;
+            difficulty = GameDifficulty::Normal;
+            selectedOption = 0;
+            break;
+        case 2:
+            state = GameState::MainMenu;
+            difficulty = GameDifficulty::Hard;
+            selectedOption = 0;
+            break;
+        case 3:
+            state = GameState::Settings;
+            selectedOption = 0;
+            break;
+        default: state = GameState::MainMenu;
     }
 }
 

@@ -4,22 +4,25 @@
 #include <SFML/Graphics.hpp>
 
 #include "../utils/Size.h"
+#include "../utils/GameDifficulty.h"
 
 class Platform
 {
 public:
     Platform();
 
-    void init(sf::Vector2f position);
+    void init(sf::Vector2f position, const GameDifficulty &difficulty);
 
     static void initEntity(sf::Vector2f position, Size size, sf::Sprite &sprite, sf::Texture &texture, const std::string &texturePath);
 
-    void moveForward(std::vector<sf::Vector2f> &points);
+    void moveForward(std::vector<sf::Vector2f> &points, const GameDifficulty &difficulty);
 
-    void updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points);
+    void updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points, const GameDifficulty &difficulty);
 
     void updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points, std::vector<Platform> &platforms,
-                                 sf::Vector2f velocity);
+                                 sf::Vector2f velocity, const GameDifficulty &difficulty);
+
+    static void handleDifficulty(const GameDifficulty &difficulty, float &probability);
 
     float getPlatformPositionY(float x, std::vector<sf::Vector2f> &points);
 
@@ -41,9 +44,9 @@ public:
 
     void setPosition(const sf::Vector2f &position);
 
-    void setRepairStatus();
+    void setRepairStatus(const GameDifficulty &difficulty);
 
-    void setRepairKitStatus();
+    void setRepairKitStatus(const GameDifficulty &difficulty);
 
     void setRepairKit(bool state);
 

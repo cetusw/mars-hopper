@@ -1,5 +1,8 @@
 #include "Meteorite.h"
+
+#include "Vehicle.h"
 #include "../utils/constants.h"
+#include "../utils/GameDifficulty.h"
 #include "../utils/utils.cpp"
 
 Meteorite::Meteorite(): isFalling(false), direction(0), radius(METEORITE_RADIUS), velocity({0, 0})
@@ -27,33 +30,24 @@ void Meteorite::handleMeteoriteCrash()
     }
 }
 
-void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite)
+void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite, const GameDifficulty &difficulty)
 {
+    float minAddTime;
+    float maxAddTime;
+    handleDifficulty(difficulty, minAddTime, maxAddTime);
     timeSinceLastMeteorite += TIME_STEP;
 
-    if (timeSinceLastMeteorite < getRandomNumber(1, 3))
+    if (timeSinceLastMeteorite < getRandomNumber(minAddTime, maxAddTime))
     {
         return;
     }
 
     sf::Vector2f startPosition;
     sf::Vector2f meteoriteVelocity;
-    float direction;
 
     for (Meteorite &meteorite: meteorites)
     {
-        if (getRandomNumber(0, 1) <= 0.5f)
-        {
-            startPosition = {getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800};
-            meteoriteVelocity = METEORITE_RIGHT_VELOCITY;
-            direction = 1;
-        }
-        else
-        {
-            startPosition = {getRandomNumber(0, WINDOW_WIDTH), -800};\
-            meteoriteVelocity = METEORITE_LEFT_VELOCITY;
-            direction = -1;
-        }
+        calculateMeteoritePositionAndVelocity(startPosition, meteoriteVelocity);
 
         timeSinceLastMeteorite = 0.0f;
         if (!meteorite.isFalling)
@@ -65,6 +59,41 @@ void Meteorite::addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinc
             meteorite.isFalling = true;
             break;
         }
+    }
+}
+
+void Meteorite::calculateMeteoritePositionAndVelocity(sf::Vector2f &startPosition, sf::Vector2f &meteoriteVelocity)
+{
+    if (getRandomNumber(0, 1) <= 0.5f)
+    {
+        startPosition = {getRandomNumber(WINDOW_WIDTH + 1000, WINDOW_WIDTH + 2000), -800};
+        meteoriteVelocity = METEORITE_RIGHT_VELOCITY;
+        direction = 1;
+    } else
+    {
+        startPosition = {getRandomNumber(0, WINDOW_WIDTH), -800};
+        meteoriteVelocity = METEORITE_LEFT_VELOCITY;
+        direction = -1;
+    }
+}
+
+void Meteorite::handleDifficulty(const GameDifficulty &difficulty, float &minAddTime, float &maxAddTime)
+{
+    switch (difficulty)
+    {
+        case GameDifficulty::Easy:
+            minAddTime = 3;
+            maxAddTime = 8;
+            break;
+        case GameDifficulty::Normal:
+            minAddTime = 1;
+            maxAddTime = 5;
+            break;
+        case GameDifficulty::Hard:
+            minAddTime = 0.3;
+            maxAddTime = 0.5;
+            break;
+        default:;
     }
 }
 
@@ -101,7 +130,8 @@ void Meteorite::updateMeteoritePosition(std::vector<Meteorite> &meteorites)
     }
 }
 
-void Meteorite::updateMeteoritesPositionRelativeToVehicle(const std::string &direction, std::vector<Meteorite> &meteorites, const sf::Vector2f velocity)
+void Meteorite::updateMeteoritesPositionRelativeToVehicle(const std::string &direction, std::vector<Meteorite> &meteorites,
+                                                          const sf::Vector2f velocity)
 {
     for (Meteorite &meteorite: meteorites)
     {
@@ -111,10 +141,10 @@ void Meteorite::updateMeteoritesPositionRelativeToVehicle(const std::string &dir
 
 bool Meteorite::collidedWithPlatform(const Platform &platform) const
 {
-    return getPosition().y + getRadius() > platform.getPosition().y + PLATFORM_OFFSET_Y &&
+    return getPosition().y + getRadius() > platform.getPosition().y - PLATFORM_OFFSET_Y &&
            getPosition().x + getRadius() > platform.getPosition().x + PLATFORM_OFFSET_X &&
            getPosition().x - getRadius() < platform.getPosition().x + platform.getSize().width - PLATFORM_OFFSET_X &&
-           getPosition().y - getRadius() < platform.getPosition().y + PLATFORM_OFFSET_Y + platform.getSize().height;
+           getPosition().y - getRadius() < platform.getPosition().y - PLATFORM_OFFSET_Y + platform.getSize().height;
 }
 
 void Meteorite::updateCollidedWithPlatforms(std::vector<Platform> &platforms)

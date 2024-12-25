@@ -184,10 +184,10 @@ void Vehicle::increaseVerticalAcceleration()
 
 bool Vehicle::collidedWithPlatform(const Platform &platform) const
 {
-    return getPosition().y + getSize().height / 2.0f > platform.getPosition().y + PLATFORM_OFFSET_Y &&
+    return getPosition().y + getSize().height / 2.0f > platform.getPosition().y - PLATFORM_OFFSET_Y &&
            getPosition().x + getSize().width / 2.0f > platform.getPosition().x - PLATFORM_OFFSET_X &&
            getPosition().x - getSize().width / 2.0f < platform.getPosition().x + PLATFORM_OFFSET_X &&
-           getPosition().y - getSize().height / 2.0f < platform.getPosition().y + PLATFORM_OFFSET_Y;
+           getPosition().y - getSize().height / 2.0f < platform.getPosition().y - PLATFORM_OFFSET_Y;
 }
 
 bool Vehicle::updateCollidedWithPlatforms(std::vector<Platform> &platforms, AchievementManager &achievementManager)
@@ -220,7 +220,7 @@ void Vehicle::handleTouchdown(const Platform &platform)
     setVelocity({0, 0});
     setPosition({
         getPosition().x,
-        platform.getPosition().y - getSize().height / 2.0f + PLATFORM_OFFSET_Y
+        platform.getPosition().y - getSize().height / 2.0f - PLATFORM_OFFSET_Y
     });
 }
 

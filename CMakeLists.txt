@@ -37,6 +37,7 @@ add_executable(mars-hopper main.cpp
         src/entities/SafetyFactor.cpp
         src/entities/RepairKitIndicator.h
         src/entities/RepairKitIndicator.cpp
+        src/utils/GameDifficulty.h
 )
 
 target_link_libraries(mars-hopper

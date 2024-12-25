@@ -1,6 +1,7 @@
 #include "Platform.h"
 #include "../utils/utils.cpp"
 #include "../utils/constants.h"
+#include "../utils/GameDifficulty.h"
 
 int Platform::lastId = 0;
 
@@ -10,14 +11,14 @@ Platform::Platform() : id(0), platformSize{PLATFORM_SIZE}, isRepair(false), repa
 {
 }
 
-void Platform::init(const sf::Vector2f position)
+void Platform::init(const sf::Vector2f position, const GameDifficulty &difficulty)
 {
     initEntity(position, platformSize, platformSprite, platformTexture, PLATFORM_TEXTURE_PATH);
     initEntity(position, repairSize, repairSprite, repairTexture, REPAIR_TEXTURE_PATH);
     repairKitOffset = getRandomNumber(-PLATFORM_SIZE.width / 2 + REPAIR_KIT_SIZE.width, PLATFORM_SIZE.width / 2 - REPAIR_KIT_SIZE.width);
     initEntity({position.x + repairKitOffset, position.y}, repairKitSize, repairKitSprite, repairKitTexture, REPAIR_KIT_TEXTURE_PATH);
-    setRepairStatus();
-    setRepairKitStatus();
+    setRepairStatus(difficulty);
+    setRepairKitStatus(difficulty);
     id = ++lastId;
 }
 
@@ -36,7 +37,7 @@ void Platform::initEntity(const sf::Vector2f position, const Size size, sf::Spri
     sprite.setPosition(position);
 }
 
-void Platform::moveForward(std::vector<sf::Vector2f> &points)
+void Platform::moveForward(std::vector<sf::Vector2f> &points, const GameDifficulty &difficulty)
 {
     if (getPosition().x + getSize().width < -WINDOW_WIDTH)
     {
@@ -44,13 +45,13 @@ void Platform::moveForward(std::vector<sf::Vector2f> &points)
             WINDOW_WIDTH + WINDOW_EXPAND,
             getPlatformPositionY(WINDOW_WIDTH, points)
         });
-        setRepairStatus();
-        setRepairKitStatus();
+        setRepairStatus(difficulty);
+        setRepairKitStatus(difficulty);
         setId();
     }
 }
 
-void Platform::updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points)
+void Platform::updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points, const GameDifficulty &difficulty)
 {
     if (direction == "horizontal")
     {
@@ -59,15 +60,32 @@ void Platform::updatePosition(const std::string &direction, const sf::Vector2f &
     {
         setPosition({getPosition().x, getPosition().y - velocity.y * TIME_STEP});
     }
-    moveForward(points);
+    moveForward(points, difficulty);
 }
 
 void Platform::updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points, std::vector<Platform> &platforms,
-                                       const sf::Vector2f velocity)
+                                       const sf::Vector2f velocity, const GameDifficulty &difficulty)
 {
     for (Platform &platform: platforms)
     {
-        platform.updatePosition(direction, velocity, points);
+        platform.updatePosition(direction, velocity, points, difficulty);
+    }
+}
+
+void Platform::handleDifficulty(const GameDifficulty &difficulty, float &probability)
+{
+    switch (difficulty)
+    {
+        case GameDifficulty::Easy:
+            probability = 0.4f;
+        break;
+        case GameDifficulty::Normal:
+            probability = 0.6f;
+        break;
+        case GameDifficulty::Hard:
+            probability = 0.8f;
+        break;
+        default:;
     }
 }
 
@@ -126,23 +144,27 @@ sf::Sprite Platform::getRepairKit()
 void Platform::setPosition(const sf::Vector2f &position)
 {
     platformSprite.setPosition(position);
-    repairSprite.setPosition({position.x, position.y + REPAIR_OFFSET});
-    repairKitSprite.setPosition({position.x + repairKitOffset, position.y});
+    repairSprite.setPosition({position.x, position.y - REPAIR_OFFSET});
+    repairKitSprite.setPosition({position.x + repairKitOffset, position.y - REPAIR_KIT_OFFSET});
 }
 
-void Platform::setRepairStatus()
+void Platform::setRepairStatus(const GameDifficulty &difficulty)
 {
+    float probability;
+    handleDifficulty(difficulty, probability);
     isRepair = false;
-    if (getRandomNumber(0, 1) > 0.8f)
+    if (getRandomNumber(0, 1) > probability)
     {
         isRepair = true;
     }
 }
 
-void Platform::setRepairKitStatus()
+void Platform::setRepairKitStatus(const GameDifficulty &difficulty)
 {
+    float probability;
+    handleDifficulty(difficulty, probability);
     isRepairKit = false;
-    if (getRandomNumber(0, 1) > 0.4f && !isRepair)
+    if (getRandomNumber(0, 1) > probability && !isRepair)
     {
         isRepairKit = true;
     }

@@ -6,6 +6,7 @@
 
 #include "Flame.h"
 #include "Platform.h"
+#include "../utils/GameDifficulty.h"
 
 
 class Meteorite
@@ -17,7 +18,11 @@ public:
 
     void handleMeteoriteCrash();
 
-    void addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite);
+    void addMeteorite(std::vector<Meteorite> &meteorites, float &timeSinceLastMeteorite, const GameDifficulty &difficulty);
+
+    void calculateMeteoritePositionAndVelocity(sf::Vector2f &startPosition, sf::Vector2f &meteoriteVelocity);
+
+    static void handleDifficulty(const GameDifficulty &difficulty, float &minAddTime, float &maxAddTime);
 
     void handleMeteoriteOverflow();
 

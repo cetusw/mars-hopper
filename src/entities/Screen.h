@@ -5,6 +5,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+
+#include "../utils/GameDifficulty.h"
 #include "../utils/GameState.h"
 
 class Screen
@@ -16,9 +18,9 @@ public:
 
     void handleInput(sf::Event event);
 
-    void handleScreen(sf::RenderWindow &window, GameState &state, const std::string &score);
+    void handleScreen(::sf::RenderWindow &window, GameState &state, GameDifficulty &difficulty, const std::string &score);
 
-    void handleOptionList(GameState &state);
+    void handleOptionList(GameState &state, GameDifficulty &difficulty);
 
     void handleMainMenuOptionList(GameState &state);
 
@@ -29,6 +31,8 @@ public:
     void handleGameOverOptionList(GameState &state);
 
     void handleAchievementsList(GameState &state);
+
+    void handleDifficultyList(GameState &state, GameDifficulty &difficulty);
 
     int getSelectedOption() const;
 
