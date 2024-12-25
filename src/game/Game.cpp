@@ -24,7 +24,6 @@ void Game::init()
     initLandscape();
     initPlatforms();
     initMeteorites();
-    initSound();
 }
 
 void Game::initLandscape()
@@ -108,6 +107,7 @@ void Game::updateBackgroundPosition()
 
 void Game::run()
 {
+    initSound();
     while (window.isOpen())
     {
         if (gameState == GameState::MainMenu || gameState == GameState::Settings || gameState == GameState::Pause || gameState == GameState::GameOver
