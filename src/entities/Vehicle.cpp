@@ -355,6 +355,8 @@ void Vehicle::reset()
     fuel = MAX_FUEL_AMOUNT;
     amountOfSafetyFactor = MAX_SAFETY_FACTOR_AMOUNT;
     isOnPlatform = false;
+    leftEngine.stopEngineSound();
+    rightEngine.stopEngineSound();
     leftEngine.isAnimating = false;
     rightEngine.isAnimating = false;
     isRepairable = false;

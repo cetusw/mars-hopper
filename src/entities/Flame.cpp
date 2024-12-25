@@ -92,6 +92,11 @@ void Flame::draw(sf::RenderWindow &window) const
     window.draw(flameSprite);
 }
 
+void Flame::stopEngineSound()
+{
+    engineSound.stop();
+}
+
 sf::Vector2f Flame::getPosition() const
 {
     return flameSprite.getPosition();

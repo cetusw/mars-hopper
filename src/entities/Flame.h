@@ -24,6 +24,8 @@ public:
 
     void draw(sf::RenderWindow &window) const;
 
+    void stopEngineSound();
+
     void onEngine();
 
     sf::Vector2f getPosition() const;
