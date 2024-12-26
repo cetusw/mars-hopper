@@ -24,7 +24,7 @@ public:
 
     void handleMainMenuOptionList(GameState &state);
 
-    void handleSettingsOptionList(GameState &state);
+    void handleSettingsOptionList(GameState &state, const GameDifficulty &difficulty);
 
     void handlePauseOptionList(GameState &state);
 

@@ -17,7 +17,8 @@ public:
 
     void moveForward(std::vector<sf::Vector2f> &points, const GameDifficulty &difficulty);
 
-    void updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points, const GameDifficulty &difficulty);
+    void updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points,
+                        const GameDifficulty &difficulty);
 
     void updatePlatformsPosition(const std::string &direction, std::vector<sf::Vector2f> &points, std::vector<Platform> &platforms,
                                  sf::Vector2f velocity, const GameDifficulty &difficulty);

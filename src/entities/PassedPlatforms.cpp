@@ -18,5 +18,5 @@ void PassedPlatforms::init()
 void PassedPlatforms::update(const std::vector<int> &passedPlatforms)
 {
     const std::string newPlatformsNumber = std::to_string(passedPlatforms.size());
-    platformsText.setString("Passed platforms: " +  newPlatformsNumber);
+    platformsText.setString("Passed platforms: " + newPlatformsNumber);
 }

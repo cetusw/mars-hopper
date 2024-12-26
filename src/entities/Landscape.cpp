@@ -50,8 +50,7 @@ void Landscape::calculateLandscapePoints(sf::Vector2f &point, bool &steepPhase, 
         steepPhaseLength++;
         point.x = points.back().x + LANDSCAPE_STEP;
         point.y = points.back().y + getRandomNumber(-LANDSCAPE_STEEP_PHASE_LEVEL_OFFSET, LANDSCAPE_STEEP_PHASE_LEVEL_OFFSET);
-    }
-    else
+    } else
     {
         steepPhase = false;
         steepPhaseLength = 0;

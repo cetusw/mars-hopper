@@ -31,8 +31,7 @@ void Speedometer::handleSpeeding(const float speed)
     if (speed > MAX_AllOWED_SPEED)
     {
         speedText.setFillColor(sf::Color::Red);
-    }
-    else
+    } else
     {
         speedText.setFillColor(sf::Color::Black);
     }

@@ -93,7 +93,7 @@ void Meteorite::handleDifficulty(const GameDifficulty &difficulty, float &minAdd
             minAddTime = 0.3;
             maxAddTime = 0.5;
             break;
-        default:;
+        default: ;
     }
 }
 

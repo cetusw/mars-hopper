@@ -6,22 +6,23 @@
 #include "Vehicle.h"
 
 
-class MiniMap {
+class MiniMap
+{
 public:
     MiniMap();
+
     void init();
 
     void updateMiniMap(const Vehicle &vehicle);
 
-    void drawMiniMap(sf::RenderWindow &window, Vehicle &vehicle, std::vector<Platform> &platforms, Landscape &landscape, std::vector<Meteorite> meteorites) const;
+    void drawMiniMap(sf::RenderWindow &window, Vehicle &vehicle, std::vector<Platform> &platforms, Landscape &landscape,
+                     std::vector<Meteorite> meteorites) const;
 
     static void drawMinimapBorder(sf::RenderWindow &window);
 
 private:
     sf::View minimapView;
-
 };
-
 
 
 #endif //MINIMAP_H

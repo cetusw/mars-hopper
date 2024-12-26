@@ -5,7 +5,8 @@
 #include "Vehicle.h"
 
 
-class SafetyFactor {
+class SafetyFactor
+{
 public:
     SafetyFactor();
 
@@ -20,7 +21,6 @@ public:
 private:
     sf::RectangleShape safetyFactor;
 };
-
 
 
 #endif //SAFETYFACTOR_H

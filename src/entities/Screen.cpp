@@ -151,7 +151,7 @@ void Screen::handleOptionList(GameState &state, GameDifficulty &difficulty)
             handleMainMenuOptionList(state);
             break;
         case GameState::Settings:
-            handleSettingsOptionList(state);
+            handleSettingsOptionList(state, difficulty);
             break;
         case GameState::GameOver:
             handleGameOverOptionList(state);
@@ -193,13 +193,22 @@ void Screen::handleMainMenuOptionList(GameState &state)
     }
 }
 
-void Screen::handleSettingsOptionList(GameState &state)
+void Screen::handleSettingsOptionList(GameState &state, const GameDifficulty &difficulty)
 {
     switch (selectedOption)
     {
         case 0:
             state = GameState::Difficulty;
-            selectedOption = 0;
+            if (difficulty == GameDifficulty::Easy)
+            {
+                selectedOption = 0;
+            } else if (difficulty == GameDifficulty::Normal)
+            {
+                selectedOption = 1;
+            } else if (difficulty == GameDifficulty::Hard)
+            {
+                selectedOption = 2;
+            }
             break;
         case 1:
             state = GameState::MainMenu;

@@ -69,7 +69,7 @@ void AchievementManager::updateNotification()
 
 bool AchievementManager::isAchievementUnlocked(const std::string &achievement)
 {
-    for (std::string &unlockedAchievement : unlockedAchievements)
+    for (std::string &unlockedAchievement: unlockedAchievements)
     {
         if (unlockedAchievement == achievement)
         {
@@ -88,10 +88,10 @@ void AchievementManager::drawAchievementNotification(sf::RenderWindow &window)
     animationSpeed *= ACHIEVEMENT_ANIMATION_ACCELERATION;
     if (notificationBackground.getPosition().x > WINDOW_WIDTH - notificationBackground.getSize().x / 2)
     {
-        notificationBackground.setPosition(notificationBackground.getPosition().x - animationSpeed * TIME_STEP, notificationBackground.getPosition().y);
+        notificationBackground.setPosition(notificationBackground.getPosition().x - animationSpeed * TIME_STEP,
+                                           notificationBackground.getPosition().y);
         achievementText.setPosition(achievementText.getPosition().x - animationSpeed * TIME_STEP, notificationBackground.getPosition().y);
-    }
-    else
+    } else
     {
         notificationBackground.setPosition(ACHIEVEMENT_END_POSITION);
         achievementText.setPosition(ACHIEVEMENT_END_POSITION);

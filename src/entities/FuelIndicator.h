@@ -4,7 +4,8 @@
 #include <SFML/System/Vector2.hpp>
 
 
-class FuelIndicator {
+class FuelIndicator
+{
 public:
     FuelIndicator();
 
@@ -19,7 +20,6 @@ public:
 private:
     sf::Font font;
 };
-
 
 
 #endif //FUELINDICATOR_H

@@ -15,7 +15,6 @@ void SafetyFactor::init()
 
 void SafetyFactor::update(const Vehicle &vehicle)
 {
-
     updateSafetyFactorPosition({0, SAFETY_FACTOR_OFFSET_Y}, vehicle.getRotation(), vehicle.getPosition());
     switch (vehicle.amountOfSafetyFactor)
     {

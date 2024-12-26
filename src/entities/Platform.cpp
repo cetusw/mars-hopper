@@ -51,7 +51,8 @@ void Platform::moveForward(std::vector<sf::Vector2f> &points, const GameDifficul
     }
 }
 
-void Platform::updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points, const GameDifficulty &difficulty)
+void Platform::updatePosition(const std::string &direction, const sf::Vector2f &velocity, std::vector<sf::Vector2f> &points,
+                              const GameDifficulty &difficulty)
 {
     if (direction == "horizontal")
     {
@@ -78,14 +79,14 @@ void Platform::handleDifficulty(const GameDifficulty &difficulty, float &probabi
     {
         case GameDifficulty::Easy:
             probability = 0.4f;
-        break;
+            break;
         case GameDifficulty::Normal:
             probability = 0.6f;
-        break;
+            break;
         case GameDifficulty::Hard:
             probability = 0.8f;
-        break;
-        default:;
+            break;
+        default: ;
     }
 }
 

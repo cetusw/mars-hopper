@@ -29,8 +29,7 @@ void FuelIndicator::handleFuelEnding(const float fuelAmount)
     if (fuelAmount <= MIN_FUEL_AMOUNT)
     {
         fuelText.setFillColor(sf::Color::Red);
-    }
-    else
+    } else
     {
         fuelText.setFillColor(sf::Color::Black);
     }

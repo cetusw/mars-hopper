@@ -111,7 +111,7 @@ constexpr Size REPAIR_SIZE = {40, 40};
 constexpr float REPAIR_OFFSET = 60.f;
 
 const std::string REPAIR_KIT_TEXTURE_PATH = "../assets/repair-kit.png";
-constexpr Size REPAIR_KIT_SIZE  = {40, 40};
+constexpr Size REPAIR_KIT_SIZE = {40, 40};
 constexpr int REPAIR_KITS_AMOUNT = 3;
 constexpr float REPAIR_KIT_OFFSET = 108.0f;
 
