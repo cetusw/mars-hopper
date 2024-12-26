@@ -353,12 +353,23 @@ void Vehicle::handleVehicleCrash()
 
 void Vehicle::increasePlatformNumber(const int currentPlatformId, AchievementManager &achievementManager)
 {
-    if (std::ranges::find(passedPlatforms, currentPlatformId) == passedPlatforms.end() && !isCrashed)
+    if (isCrashed)
     {
+        return;
+    }
+    if (std::ranges::find(passedPlatforms, currentPlatformId) == passedPlatforms.end())
+    {
+        if (passedPlatforms.size() != 0 && currentPlatformId - passedPlatforms.back() > 1)
+        {
+            achievementManager.unlock("Skip over!");
+        }
         passedPlatforms.emplace_back(currentPlatformId);
-    } else if (currentPlatformId != passedPlatforms.back() && !isCrashed)
+    } else if (currentPlatformId != passedPlatforms.back())
     {
         achievementManager.unlock("Back?");
+    } else if (currentPlatformId == passedPlatforms.back())
+    {
+        achievementManager.unlock("Are you making time?");
     }
 }
 

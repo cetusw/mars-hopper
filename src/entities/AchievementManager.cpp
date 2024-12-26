@@ -48,6 +48,7 @@ void AchievementManager::unlock(const std::string &achievement)
     achievementText.setString(achievement);
     achievementText.setOrigin(achievementText.getGlobalBounds().width / 2, achievementText.getGlobalBounds().height / 2);
     achievementText.setPosition(notificationBackground.getPosition().x, notificationBackground.getPosition().y);
+    unlockedAchievements.emplace_back(achievement);
     outFile << achievement << std::endl;
 }
 
