@@ -76,7 +76,7 @@ constexpr float SUBTITLE_FONT_SIZE = 50.0f;
 const std::vector<std::string> OPTIONS_MAIN_MENU = {"Start", "Settings", "Achievements", "Exit"};
 const std::vector<std::string> OPTIONS_SETTINGS = {"Difficulty", "Back"};
 const std::vector<std::string> OPTIONS_GAME_OVER = {"Restart", "Back to Main Menu"};
-const std::vector<std::string> OPTIONS_PAUSE = {"Restart", "Back to Main Menu"};
+const std::vector<std::string> OPTIONS_PAUSE = {"Back to game", "Restart", "Back to Main Menu"};
 const std::vector<std::string> OPTIONS_DIFFICULTY = {"Easy", "Normal", "Hard", "Back"};
 
 const sf::Vector2f TITLE_POSITION_LEFT = {300.f, 200.f};
@@ -89,7 +89,7 @@ const sf::Vector2f ACHIEVEMENT_END_POSITION = {WINDOW_WIDTH - ACHIEVEMENT_SIZE.x
 constexpr float ACHIEVEMENT_SHOW_TIME = 5.0f;
 constexpr float ACHIEVEMENT_ANIMATION_SPEED = 20.0f;
 constexpr float ACHIEVEMENT_FONT_SIZE = 50.0f;
-constexpr float ACHIEVEMENT_ANIMATION_ACCELERATION = 1.005f;
+constexpr float ACHIEVEMENT_ANIMATION_ACCELERATION = 1.05f;
 
 constexpr float FUEL_INDICATOR_FONT_SIZE = 30.0f;
 constexpr float MIN_FUEL_AMOUNT = 30.0f;

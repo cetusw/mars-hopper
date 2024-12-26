@@ -218,6 +218,10 @@ void Screen::handlePauseOptionList(GameState &state)
             selectedOption = 0;
             break;
         case 1:
+            state = GameState::Start;
+            selectedOption = 0;
+            break;
+        case 2:
             state = GameState::MainMenu;
             selectedOption = 0;
             break;
