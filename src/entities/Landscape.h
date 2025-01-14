@@ -3,7 +3,6 @@
 
 #include <string>
 #include <SFML/Graphics/ConvexShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 
 class Landscape
 {

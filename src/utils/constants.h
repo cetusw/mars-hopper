@@ -5,7 +5,7 @@
 #include <string>
 
 constexpr float WINDOW_WIDTH = 1920.0f;
-constexpr float WINDOW_HEIGHT = 1200.0f;
+constexpr float WINDOW_HEIGHT = 1080.0f;
 constexpr float WINDOW_EXPAND = 700.0f;
 const sf::Vector2f WINDOW_CENTER = {WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f};
 constexpr float FREE_MOVE_BOX_LEFT = (WINDOW_WIDTH / 5) * 2;

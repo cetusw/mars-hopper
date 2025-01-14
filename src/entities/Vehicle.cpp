@@ -359,7 +359,7 @@ void Vehicle::increasePlatformNumber(const int currentPlatformId, AchievementMan
     }
     if (std::ranges::find(passedPlatforms, currentPlatformId) == passedPlatforms.end())
     {
-        if (passedPlatforms.size() != 0 && currentPlatformId - passedPlatforms.back() > 1)
+        if (!passedPlatforms.empty() && currentPlatformId - passedPlatforms.back() > 1)
         {
             achievementManager.unlock("Skip over!");
         }
